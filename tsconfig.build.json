@@ -1,0 +1,7 @@
+{
+  "extends": "./tsconfig.json",
+  "exclude": ["rollup.config.ts", "tests", "node_modules"],
+  "compilerOptions": {
+    "outDir": "lib"
+  }
+}
