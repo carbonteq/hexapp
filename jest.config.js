@@ -14,7 +14,7 @@ const config = {
   },
   transformIgnorePatterns: ['/node_modules/'],
   moduleNameMapper: {
-    '^@carbonteq/app-result(.*)$': '<rootDir>/lib/$1',
+    '^@carbonteq/hexa-app$': '<rootDir>/lib',
   },
 };
 

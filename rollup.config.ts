@@ -1,7 +1,7 @@
 import pkg from './package.json';
 import { swc, defineRollupSwcOption } from 'rollup-plugin-swc3';
 import type { RollupOptions } from 'rollup';
-//todo: maybe use "rollup-plugin-dts" for d.ts
+
 const config: RollupOptions =
   // CommonJS (for Node) & ESM (for bundlers)
   {
@@ -15,6 +15,12 @@ const config: RollupOptions =
         defineRollupSwcOption({
           minify: true,
           tsconfig: './tsconfig.build.json',
+          jsc: {
+            minify: {
+              mangle: false,
+              compress: true,
+            },
+          },
         }),
       ),
     ],

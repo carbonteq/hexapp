@@ -23,7 +23,7 @@
     "skipLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@carbonteq/app-result": ["./lib"]
+      "@carbonteq/hexa-app": ["./lib"]
     }
   },
   "include": ["src/**/*.ts", "tests/**.*.ts", "rollup.config.ts"],
