@@ -1,5 +1,12 @@
 # @carbonteq/hexapp
 
+## 0.2.1
+
+### Patch Changes
+
+- 00936cc: add serialize method to Base Entity
+- 0bc8c3d: Make markUpdated protected in BaseEntity
+
 ## 0.2.0
 
 ### Minor Changes
