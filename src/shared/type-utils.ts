@@ -13,12 +13,12 @@ export type JsonObject = { [x: string]: JsonValue };
 
 export type JsonGuard<T> = T extends JsonValue ? T : never;
 
+export type PartialBy<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>;
+
 export type Constructable<T> = new (...args: unknown[]) => T;
 // export interface Type<T> extends Function {
 //   new (...args: any[]): T;
 // }
-
-export type PartialBy<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>;
 
 export type ExtractPromiseType<T extends Promise<any>> = T extends Promise<
   infer X
