@@ -1,4 +1,4 @@
-import { AppResult, AppResultError } from '@carbonteq/hexa-app';
+import { AppResult, AppResultError } from '@carbonteq/hexapp';
 import { Ok, Err } from 'oxide.ts';
 
 describe('when result', () => {
