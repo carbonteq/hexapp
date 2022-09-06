@@ -35,16 +35,55 @@ describe('when result', () => {
   });
 });
 
-describe('construct result from Oxide Result', () => {
-  it('ok result from ok result', () => {
-    const result = AppResult.fromResult(Ok(20));
+describe('alternative constructors', () => {
+  const val = 2;
+  const maybeThrows = (b: boolean) => {
+    if (b) throw new Error('err');
+    else return val;
+  };
 
-    expect(result.isOk).toBe(true);
-  });
+  const maybeThrowsPromise = async (b: boolean) => {
+    return maybeThrows(b);
+  };
 
-  it('err result from err result', () => {
-    const result = AppResult.fromResult(Err(20));
+  describe('Oxide Result', () => {
+    it('ok result from ok result', () => {
+      const result = AppResult.fromResult(Ok(20));
 
-    expect(result.isOk).toBe(false);
+      expect(result.isOk).toBe(true);
+    });
+
+    it('err result from err result', () => {
+      const result = AppResult.fromResult(Err(20));
+
+      expect(result.isOk).toBe(false);
+    });
+
+    it('tryFrom good func', () => {
+      const res = AppResult.tryFrom(() => maybeThrows(false));
+
+      expect(res.into()).toBe(val);
+    });
+
+    it('tryFrom bad func', () => {
+      const res = AppResult.tryFrom(() => maybeThrows(true));
+
+      expect(res.isOk).toBe(false);
+      expect(res.into()).toBeUndefined();
+    });
+
+    it('tryFrom good promise', async () => {
+      const res = await AppResult.tryFromPromise(maybeThrowsPromise(false));
+
+      expect(res.isOk).toBe(true);
+      expect(res.into()).toBe(val);
+    });
+
+    it('tryFrom bad promise', async () => {
+      const res = await AppResult.tryFromPromise(maybeThrowsPromise(true));
+
+      expect(res.isOk).toBe(false);
+      expect(res.into()).toBeUndefined();
+    });
   });
 });
