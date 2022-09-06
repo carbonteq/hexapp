@@ -31,4 +31,12 @@ export abstract class BaseEntity implements IEntity {
   protected forUpdate(): IEntityForUpdate {
     return { updatedAt: this._updatedAt };
   }
+
+  protected serialize(): IEntity {
+    return {
+      Id: this.Id,
+      createdAt: this.createdAt,
+      updatedAt: this.updatedAt,
+    };
+  }
 }

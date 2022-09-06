@@ -23,6 +23,10 @@ class TestEntity extends BaseEntity {
   updateEntity() {
     this.markUpdated();
   }
+
+  serialize() {
+    return super.serialize();
+  }
 }
 
 describe('base entity', () => {
@@ -44,6 +48,17 @@ describe('base entity', () => {
       expect(ent.updatedAt).toBeDate();
 
       expect(ent.updatedAt).toEqual(ent.createdAt);
+    });
+
+    it('serialize method returns IEntity object', () => {
+      const serializedEnt = ent.serialize();
+      const expectedObj: IEntity = {
+        Id: ent.Id,
+        createdAt: ent.createdAt,
+        updatedAt: ent.updatedAt,
+      };
+
+      expect(serializedEnt).toStrictEqual(expectedObj);
     });
 
     it('ids are not the same when multiple created', () => {
