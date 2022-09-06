@@ -24,7 +24,7 @@ export abstract class BaseEntity implements IEntity {
     return this._updatedAt;
   }
 
-  markUpdated(): void {
+  protected markUpdated(): void {
     this._updatedAt = new Date();
   }
 

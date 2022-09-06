@@ -18,6 +18,11 @@ class TestEntity extends BaseEntity {
   static from(other: ITestEntity): TestEntity {
     return new TestEntity(other);
   }
+
+  // dummy method that "updates" the entity
+  updateEntity() {
+    this.markUpdated();
+  }
 }
 
 describe('base entity', () => {
@@ -75,7 +80,7 @@ describe('base entity', () => {
 
     expect(ent.updatedAt).toEqual(ent.createdAt);
 
-    ent.markUpdated();
+    ent.updateEntity();
 
     expect(ent.updatedAt).toBeAfter(ent.createdAt);
   });
