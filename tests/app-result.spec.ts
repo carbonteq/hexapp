@@ -37,13 +37,30 @@ describe('when result', () => {
 
 describe('alternative constructors', () => {
   const val = 2;
-  const maybeThrows = (b: boolean) => {
-    if (b) throw new Error('err');
-    else return val;
+
+  class AppError extends Error {}
+  class NotFoundError extends AppError {}
+  class InvalidDataError extends AppError {}
+
+  const maybeThrows = (n = -1) => {
+    switch (n) {
+      case -1:
+        return val;
+      case 0:
+        throw new NotFoundError();
+      default:
+        throw new InvalidDataError();
+    }
   };
 
-  const maybeThrowsPromise = async (b: boolean) => {
-    return maybeThrows(b);
+  const maybeThrowsPromise = async (n = -1) => {
+    return maybeThrows(n);
+  };
+
+  const errTransformer = (err: Error): AppResultError => {
+    if (err instanceof NotFoundError) return AppResultError.NotFound;
+    else if (err instanceof InvalidDataError) return AppResultError.InvalidData;
+    else return AppResultError.Unknown;
   };
 
   describe('Oxide Result', () => {
@@ -60,30 +77,70 @@ describe('alternative constructors', () => {
     });
 
     it('tryFrom good func', () => {
-      const res = AppResult.tryFrom(() => maybeThrows(false));
+      const res = AppResult.tryFrom(() => maybeThrows());
 
       expect(res.into()).toBe(val);
     });
 
     it('tryFrom bad func', () => {
-      const res = AppResult.tryFrom(() => maybeThrows(true));
+      const res = AppResult.tryFrom(() => maybeThrows(0));
 
       expect(res.isOk).toBe(false);
       expect(res.into()).toBeUndefined();
+      expect(res.unwrapErr()).toBe(AppResultError.Unknown);
+    });
+
+    it('tryFrom bad func with err transformer (NotFound)', () => {
+      const res = AppResult.tryFrom(() => maybeThrows(0), errTransformer);
+
+      expect(res.isOk).toBe(false);
+      expect(res.into()).toBeUndefined();
+      expect(res.unwrapErr()).toBe(AppResultError.NotFound);
+    });
+
+    it('tryFrom bad func with err transformer (InvalidData)', () => {
+      const res = AppResult.tryFrom(() => maybeThrows(1), errTransformer);
+
+      expect(res.isOk).toBe(false);
+      expect(res.into()).toBeUndefined();
+      expect(res.unwrapErr()).toBe(AppResultError.InvalidData);
     });
 
     it('tryFrom good promise', async () => {
-      const res = await AppResult.tryFromPromise(maybeThrowsPromise(false));
+      const res = await AppResult.tryFromPromise(maybeThrowsPromise());
 
       expect(res.isOk).toBe(true);
       expect(res.into()).toBe(val);
     });
 
     it('tryFrom bad promise', async () => {
-      const res = await AppResult.tryFromPromise(maybeThrowsPromise(true));
+      const res = await AppResult.tryFromPromise(maybeThrowsPromise(0));
 
       expect(res.isOk).toBe(false);
       expect(res.into()).toBeUndefined();
+      expect(res.unwrapErr()).toBe(AppResultError.Unknown);
+    });
+
+    it('tryFrom bad promise with err transformer (NotFound)', async () => {
+      const res = await AppResult.tryFromPromise(
+        maybeThrowsPromise(0),
+        errTransformer,
+      );
+
+      expect(res.isOk).toBe(false);
+      expect(res.into()).toBeUndefined();
+      expect(res.unwrapErr()).toBe(AppResultError.NotFound);
+    });
+
+    it('tryFrom bad promise with err transformer (InvalidData)', async () => {
+      const res = await AppResult.tryFromPromise(
+        maybeThrowsPromise(1),
+        errTransformer,
+      );
+
+      expect(res.isOk).toBe(false);
+      expect(res.into()).toBeUndefined();
+      expect(res.unwrapErr()).toBe(AppResultError.InvalidData);
     });
   });
 });

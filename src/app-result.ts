@@ -14,7 +14,8 @@ interface AppResultInitParams<T> {
   result?: Result<T, AppResultError>;
 }
 
-const DefaultMapErrOp = () => AppResultError.Unknown;
+type ErrTransformer = (err: Error) => AppResultError;
+const DefaultMapErrOp: ErrTransformer = () => AppResultError.Unknown;
 
 export class AppResult<T> {
   readonly isOk: AppResultInitParams<T>['isOk'];
@@ -56,15 +57,19 @@ export class AppResult<T> {
 
   static tryFrom<T>(
     fn: () => T extends PromiseLike<any> ? never : T,
+    errTransformer?: ErrTransformer,
   ): AppResult<T> {
-    const result = Result.safe(fn).mapErr(DefaultMapErrOp);
+    const result = Result.safe(fn).mapErr(errTransformer ?? DefaultMapErrOp);
 
     return AppResult.fromResult(result);
   }
 
-  static tryFromPromise<T>(promise: Promise<T>): Promise<AppResult<T>> {
+  static tryFromPromise<T>(
+    promise: Promise<T>,
+    errTransformer?: ErrTransformer,
+  ): Promise<AppResult<T>> {
     return Result.safe(promise).then((res) =>
-      AppResult.fromResult(res.mapErr(DefaultMapErrOp)),
+      AppResult.fromResult(res.mapErr(errTransformer ?? DefaultMapErrOp)),
     );
   }
 
