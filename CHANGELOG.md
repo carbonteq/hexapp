@@ -1,5 +1,11 @@
 # @carbonteq/hexapp
 
+## 0.2.0
+
+### Minor Changes
+
+- 9bc7aee: Add base entity and tests
+
 ## 0.1.0
 
 ### Minor Changes
