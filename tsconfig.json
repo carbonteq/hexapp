@@ -23,9 +23,9 @@
     "skipLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@carbonteq/hexa-app": ["./lib"]
+      "@carbonteq/hexapp": ["./src"],
+      "@carbonteq/hexapp/*": ["./src/*"]
     }
   },
-  "include": ["src/**/*.ts", "tests/**.*.ts", "rollup.config.ts"],
   "exclude": ["node_modules", "jest.config.js"]
 }

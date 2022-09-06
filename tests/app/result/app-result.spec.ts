@@ -6,7 +6,7 @@ describe('when result', () => {
     const okResult = AppResult.Ok(2);
 
     it('isOkay is true', () => {
-      expect(okResult.isOk).toBe(true);
+      expect(okResult.isOk).toBeTrue();
     });
 
     it('into returns the correct value', () => {
@@ -22,7 +22,7 @@ describe('when result', () => {
     const errResult = AppResult.Err(AppResultError.NotFound);
 
     it('isOkay is false', () => {
-      expect(errResult.isOk).toBe(false);
+      expect(errResult.isOk).toBeFalse();
     });
 
     it('into returns undefined', () => {
@@ -67,13 +67,13 @@ describe('alternative constructors', () => {
     it('ok result from ok result', () => {
       const result = AppResult.fromResult(Ok(20));
 
-      expect(result.isOk).toBe(true);
+      expect(result.isOk).toBeTrue();
     });
 
     it('err result from err result', () => {
       const result = AppResult.fromResult(Err(20));
 
-      expect(result.isOk).toBe(false);
+      expect(result.isOk).toBeFalse();
     });
 
     it('tryFrom good func', () => {
@@ -85,7 +85,7 @@ describe('alternative constructors', () => {
     it('tryFrom bad func', () => {
       const res = AppResult.tryFrom(() => maybeThrows(0));
 
-      expect(res.isOk).toBe(false);
+      expect(res.isOk).toBeFalse();
       expect(res.into()).toBeUndefined();
       expect(res.unwrapErr()).toBe(AppResultError.Unknown);
     });
@@ -93,7 +93,7 @@ describe('alternative constructors', () => {
     it('tryFrom bad func with err transformer (NotFound)', () => {
       const res = AppResult.tryFrom(() => maybeThrows(0), errTransformer);
 
-      expect(res.isOk).toBe(false);
+      expect(res.isOk).toBeFalse();
       expect(res.into()).toBeUndefined();
       expect(res.unwrapErr()).toBe(AppResultError.NotFound);
     });
@@ -101,7 +101,7 @@ describe('alternative constructors', () => {
     it('tryFrom bad func with err transformer (InvalidData)', () => {
       const res = AppResult.tryFrom(() => maybeThrows(1), errTransformer);
 
-      expect(res.isOk).toBe(false);
+      expect(res.isOk).toBeFalse();
       expect(res.into()).toBeUndefined();
       expect(res.unwrapErr()).toBe(AppResultError.InvalidData);
     });
@@ -109,14 +109,14 @@ describe('alternative constructors', () => {
     it('tryFrom good promise', async () => {
       const res = await AppResult.tryFromPromise(maybeThrowsPromise());
 
-      expect(res.isOk).toBe(true);
+      expect(res.isOk).toBeTrue();
       expect(res.into()).toBe(val);
     });
 
     it('tryFrom bad promise', async () => {
       const res = await AppResult.tryFromPromise(maybeThrowsPromise(0));
 
-      expect(res.isOk).toBe(false);
+      expect(res.isOk).toBeFalse();
       expect(res.into()).toBeUndefined();
       expect(res.unwrapErr()).toBe(AppResultError.Unknown);
     });
@@ -127,7 +127,7 @@ describe('alternative constructors', () => {
         errTransformer,
       );
 
-      expect(res.isOk).toBe(false);
+      expect(res.isOk).toBeFalse();
       expect(res.into()).toBeUndefined();
       expect(res.unwrapErr()).toBe(AppResultError.NotFound);
     });
@@ -138,7 +138,7 @@ describe('alternative constructors', () => {
         errTransformer,
       );
 
-      expect(res.isOk).toBe(false);
+      expect(res.isOk).toBeFalse();
       expect(res.into()).toBeUndefined();
       expect(res.unwrapErr()).toBe(AppResultError.InvalidData);
     });

@@ -24,7 +24,7 @@ const config: RollupOptions =
         }),
       ),
     ],
-    external: ['oxide.ts'],
+    external: ['oxide.ts', 'node:crypto'],
   };
 
 export default config;
