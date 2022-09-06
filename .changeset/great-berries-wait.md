@@ -1,5 +1,5 @@
 ---
-'@carbonteq/app-result': patch
+'@carbonteq/hexapp': patch
 ---
 
 Initial structure. Very tentative

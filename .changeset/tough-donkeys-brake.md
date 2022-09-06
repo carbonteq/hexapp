@@ -1,5 +1,5 @@
 ---
-'@carbonteq/app-result': minor
+'@carbonteq/hexapp': minor
 ---
 
 Add constructors tryFrom and tryFromPromise

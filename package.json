@@ -1,5 +1,5 @@
 {
-  "name": "@carbonteq/hexa-app",
+  "name": "@carbonteq/hexapp",
   "version": "0.0.0",
   "main": "lib/index.js",
   "module": "lib/index.mjs",
@@ -18,12 +18,12 @@
   "scope": "@carbonteq",
   "repository": {
     "type": "git",
-    "url": "https://github.com/carbonteq/hexa-app"
+    "url": "https://github.com/carbonteq/hexapp"
   },
   "bugs": {
-    "url": "https://github.com/carbonteq/hexa-app/issues"
+    "url": "https://github.com/carbonteq/hexapp/issues"
   },
-  "homepage": "https://github.com/carbonteq/hexa-app#readme",
+  "homepage": "https://github.com/carbonteq/hexapp#readme",
   "sideEffects": false,
   "publishConfig": {
     "access": "public",

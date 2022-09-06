@@ -1,5 +1,5 @@
 ---
-'@carbonteq/hexa-app': minor
+'@carbonteq/hexapp': minor
 ---
 
-Rename to hexa-app. Update structure
+Rename to hexapp. Update structure
