@@ -1,6 +1,6 @@
 {
   "name": "@carbonteq/hexapp",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "main": "lib/index.js",
   "module": "lib/index.mjs",
   "types": "lib/index.d.ts",
@@ -39,7 +39,7 @@
     "postbuild": "tsc --emitDeclarationOnly --declaration --declarationMap --project tsconfig.build.json",
     "dev": "rollup -c rollup.config.ts -w --configPlugin swc3",
     "test": "jest --verbose",
-    "release": "npm publish --access public --registery https://registry.npmjs.org"
+    "release": "changeset publish"
   },
   "devDependencies": {
     "@changesets/cli": "^2.24.4",
