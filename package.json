@@ -1,5 +1,5 @@
 {
-  "name": "@carbonteq/app-result",
+  "name": "@carbonteq/hexa-app",
   "version": "0.0.0",
   "main": "lib/index.js",
   "module": "lib/index.mjs",
