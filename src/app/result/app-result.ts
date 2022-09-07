@@ -99,17 +99,17 @@ export class AppResult<T> {
   ): Promise<AppResult<T>> {
     const errMapper = errTransformer ?? DefaultMapErrOp;
 
-    // return promise
-    //   .then((val) => AppResult.fromResult(Ok(val)))
-    //   .catch((err) => {
-    //     const mappedErr = errMapper(err);
-    //     const res = Err(mappedErr);
-    //     return AppResult.fromResult(res);
-    //   });
+    return promise
+      .then((val) => AppResult.fromResult(Ok(val)))
+      .catch((err) => {
+        const mappedErr = errMapper(err);
+        const res = Err(mappedErr);
+        return AppResult.fromResult(res);
+      });
 
-    return Result.safe(promise)
-      .then((res) => AppResult.fromResult(res.mapErr(errMapper)))
-      .catch((err) => AppResult.Err(AppResultError.Unknown));
+    // return Result.safe(promise)
+    //   .then((res) => AppResult.fromResult(res.mapErr(errMapper)))
+    //   .catch((err) => AppResult.Err(AppResultError.Unknown));
   }
 
   unwrap(): T {
