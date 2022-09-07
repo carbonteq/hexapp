@@ -1,6 +1,9 @@
+import type { RollupOptions } from 'rollup';
+
 import pkg from './package.json';
 import { swc, defineRollupSwcOption } from 'rollup-plugin-swc3';
-import type { RollupOptions } from 'rollup';
+import { typescriptPaths } from 'rollup-plugin-typescript-paths';
+import externals from 'rollup-plugin-node-externals';
 
 const config: RollupOptions =
   // CommonJS (for Node) & ESM (for bundlers)
@@ -11,6 +14,8 @@ const config: RollupOptions =
       { file: pkg.module, format: 'es', sourcemap: false },
     ],
     plugins: [
+      typescriptPaths({ preserveExtensions: true }),
+      externals(),
       swc(
         defineRollupSwcOption({
           minify: true,
@@ -24,7 +29,7 @@ const config: RollupOptions =
         }),
       ),
     ],
-    external: ['oxide.ts', 'node:crypto'],
+    // external: ['oxide.ts', 'oxide.ts/dist/core', 'node:crypto'],
   };
 
 export default config;
