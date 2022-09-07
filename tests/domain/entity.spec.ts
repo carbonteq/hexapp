@@ -1,33 +1,8 @@
 import 'jest-extended';
 import { setTimeout } from 'node:timers/promises';
-import { BaseEntity, IEntity } from '@carbonteq/hexapp/domain/base.entity';
-
-type ITestEntity = IEntity;
+import { TestEntity, ITestEntity } from '../dummy-objects/test.entity';
 
 const getCurrentDate = () => new Date();
-
-class TestEntity extends BaseEntity {
-  private constructor(opts?: ITestEntity) {
-    super(opts);
-  }
-
-  static create(): TestEntity {
-    return new TestEntity();
-  }
-
-  static from(other: ITestEntity): TestEntity {
-    return new TestEntity(other);
-  }
-
-  // dummy method that "updates" the entity
-  updateEntity() {
-    this.markUpdated();
-  }
-
-  serialize() {
-    return super.serialize();
-  }
-}
 
 describe('base entity', () => {
   beforeEach(() => {
@@ -52,10 +27,11 @@ describe('base entity', () => {
 
     it('serialize method returns IEntity object', () => {
       const serializedEnt = ent.serialize();
-      const expectedObj: IEntity = {
+      const expectedObj: ITestEntity = {
         Id: ent.Id,
         createdAt: ent.createdAt,
         updatedAt: ent.updatedAt,
+        random: ent.random,
       };
 
       expect(serializedEnt).toStrictEqual(expectedObj);
@@ -73,6 +49,7 @@ describe('base entity', () => {
 
   describe('create with given data (like in a repo)', () => {
     const Id = 'abc';
+    const random = 23;
     const createdAt = getCurrentDate();
     const updatedAt = getCurrentDate();
 
@@ -80,12 +57,14 @@ describe('base entity', () => {
       Id,
       createdAt,
       updatedAt,
+      random,
     });
 
     it('matches the given data', () => {
       expect(ent.Id).toBe(Id);
       expect(ent.createdAt).toBe(createdAt);
       expect(ent.updatedAt).toBe(updatedAt);
+      expect(ent.random).toBe(random);
     });
   });
 
@@ -95,7 +74,7 @@ describe('base entity', () => {
 
     expect(ent.updatedAt).toEqual(ent.createdAt);
 
-    ent.updateEntity();
+    ent.updateRandomly();
 
     expect(ent.updatedAt).toBeAfter(ent.createdAt);
   });
