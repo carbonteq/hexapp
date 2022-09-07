@@ -1,5 +1,15 @@
 # @carbonteq/hexapp
 
+## 0.3.0
+
+### Minor Changes
+
+- 6aa77da: Add finish domain utils (tentative)
+
+### Patch Changes
+
+- d0d49cf: Add BaseRepository (w/o Result)
+
 ## 0.2.1
 
 ### Patch Changes
