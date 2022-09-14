@@ -7,16 +7,7 @@ import {
   ValidationError,
   AlreadyExistsError,
 } from '@carbonteq/hexapp/domain/base.exception';
-
-// todo: Add a way to include messages. Maybe use modules??
-export enum AppResultError {
-  Unknown,
-  NotFound,
-  Unauthorized,
-  InvalidData,
-  InvalidOperation,
-  AlreadyExists,
-}
+import { AppResultError } from './error';
 
 interface AppResultInitParams<T> {
   val: T | null;
@@ -29,13 +20,17 @@ type ErrTransformer = (err: Error) => AppResultError;
 const DefaultMapErrOp: ErrTransformer = (err: Error) => {
   if (!(err instanceof DomainError)) throw err;
 
-  if (err instanceof NotFoundError) return AppResultError.NotFound;
-  if (err instanceof ValidationError) return AppResultError.InvalidData;
-  if (err instanceof InvalidOperation) return AppResultError.InvalidOperation;
-  if (err instanceof UnauthorizedOperation) return AppResultError.Unauthorized;
-  if (err instanceof AlreadyExistsError) return AppResultError.AlreadyExists;
+  if (err instanceof NotFoundError) return AppResultError.NotFound(err.message);
+  if (err instanceof ValidationError)
+    return AppResultError.InvalidData(err.message);
+  if (err instanceof InvalidOperation)
+    return AppResultError.InvalidOperation(err.message);
+  if (err instanceof UnauthorizedOperation)
+    return AppResultError.Unauthorized(err.message);
+  if (err instanceof AlreadyExistsError)
+    return AppResultError.AlreadyExists(err.message);
 
-  return AppResultError.Unknown;
+  return AppResultError.Unknown(err.message);
 };
 
 export class AppResult<T> {

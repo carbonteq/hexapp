@@ -2,9 +2,8 @@ import {
   DummyTestRepository,
   TestRepository,
 } from '../dummy-objects/test.repository';
-import { AppResult, AppResultError } from '@carbonteq/hexapp/app/result';
+import { AppResult, AppResultErrStatus } from '@carbonteq/hexapp/app/result';
 import { TestEntity } from '../dummy-objects/test.entity';
-import { Result } from 'oxide.ts/dist';
 
 describe('test repository', () => {
   let repo: TestRepository;
@@ -55,26 +54,26 @@ describe('test repository', () => {
     it('on fetch', async () => {
       const res = await AppResult.tryFromPromise(repo.fetchById(ent2.Id));
 
-      expect(res.unwrapErr()).toBe(AppResultError.NotFound);
+      expect(res.unwrapErr().status).toBe(AppResultErrStatus.NotFound);
     });
 
     it('on insert', async () => {
       const res = await AppResult.tryFromPromise(repo.insert(ent1));
 
-      expect(res.unwrapErr()).toBe(AppResultError.AlreadyExists);
+      expect(res.unwrapErr().status).toBe(AppResultErrStatus.AlreadyExists);
     });
 
     it('on update', async () => {
       ent2.updateRandomly();
       const res = await AppResult.tryFromPromise(repo.update(ent2));
 
-      expect(res.unwrapErr()).toBe(AppResultError.NotFound);
+      expect(res.unwrapErr().status).toBe(AppResultErrStatus.NotFound);
     });
 
     it('on delete', async () => {
       const res = await AppResult.tryFromPromise(repo.deleteById(ent2.Id));
 
-      expect(res.unwrapErr()).toBe(AppResultError.NotFound);
+      expect(res.unwrapErr().status).toBe(AppResultErrStatus.NotFound);
     });
   });
 });

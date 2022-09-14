@@ -5,7 +5,8 @@ export class DomainError extends Error {
     super();
 
     this.name = this.constructor.name;
-    this.message = `${this.name}: ${msg}`;
+    this.message = msg;
+    // this.message = `${this.name}: ${msg}`;
   }
 }
 
