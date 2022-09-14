@@ -1,11 +1,13 @@
-import { Err, Ok, Result } from 'oxide.ts';
-
-export enum AppResultError {
-  Unknown,
-  NotFound,
-  Unauthorized,
-  InvalidData,
-}
+import { Err, Ok, Result } from 'oxide.ts/dist/core';
+import {
+  DomainError,
+  InvalidOperation,
+  NotFoundError,
+  UnauthorizedOperation,
+  ValidationError,
+  AlreadyExistsError,
+} from '@carbonteq/hexapp/domain/base.exception';
+import { AppResultError } from './error';
 
 interface AppResultInitParams<T> {
   val: T | null;
@@ -15,7 +17,21 @@ interface AppResultInitParams<T> {
 }
 
 type ErrTransformer = (err: Error) => AppResultError;
-const DefaultMapErrOp: ErrTransformer = () => AppResultError.Unknown;
+const DefaultMapErrOp: ErrTransformer = (err: Error) => {
+  if (!(err instanceof DomainError)) throw err;
+
+  if (err instanceof NotFoundError) return AppResultError.NotFound(err.message);
+  if (err instanceof ValidationError)
+    return AppResultError.InvalidData(err.message);
+  if (err instanceof InvalidOperation)
+    return AppResultError.InvalidOperation(err.message);
+  if (err instanceof UnauthorizedOperation)
+    return AppResultError.Unauthorized(err.message);
+  if (err instanceof AlreadyExistsError)
+    return AppResultError.AlreadyExists(err.message);
+
+  return AppResultError.Unknown(err.message);
+};
 
 export class AppResult<T> {
   readonly isOk: AppResultInitParams<T>['isOk'];
@@ -59,18 +75,36 @@ export class AppResult<T> {
     fn: () => T extends PromiseLike<any> ? never : T,
     errTransformer?: ErrTransformer,
   ): AppResult<T> {
-    const result = Result.safe(fn).mapErr(errTransformer ?? DefaultMapErrOp);
+    const errMapper = errTransformer ?? DefaultMapErrOp;
+    // const result = Result.safe(fn).mapErr(errMapper);
 
-    return AppResult.fromResult(result);
+    try {
+      const val = fn();
+      return AppResult.Ok(val);
+    } catch (err) {
+      return AppResult.Err(errMapper(err as Error));
+    }
+
+    // return AppResult.fromResult(result);
   }
 
   static tryFromPromise<T>(
     promise: Promise<T>,
     errTransformer?: ErrTransformer,
   ): Promise<AppResult<T>> {
-    return Result.safe(promise).then((res) =>
-      AppResult.fromResult(res.mapErr(errTransformer ?? DefaultMapErrOp)),
-    );
+    const errMapper = errTransformer ?? DefaultMapErrOp;
+
+    return promise
+      .then((val) => AppResult.fromResult(Ok(val)))
+      .catch((err) => {
+        const mappedErr = errMapper(err);
+        const res = Err(mappedErr);
+        return AppResult.fromResult(res);
+      });
+
+    // return Result.safe(promise)
+    //   .then((res) => AppResult.fromResult(res.mapErr(errMapper)))
+    //   .catch((err) => AppResult.Err(AppResultError.Unknown));
   }
 
   unwrap(): T {

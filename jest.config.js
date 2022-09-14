@@ -15,6 +15,7 @@ const config = {
   transformIgnorePatterns: ['/node_modules/'],
   moduleNameMapper: {
     '^@carbonteq/hexapp(.*)$': ['<rootDir>/lib'],
+    '^oxide.ts/(.*)$': ['<rootDir>/node_modules/oxide.ts/$1'],
   },
   setupFilesAfterEnv: ['jest-extended/all'],
 };
