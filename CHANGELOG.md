@@ -1,5 +1,11 @@
 # @carbonteq/hexapp
 
+## 0.4.0
+
+### Minor Changes
+
+- 2041498: Allow AppResult Err to include messages
+
 ## 0.3.0
 
 ### Minor Changes
