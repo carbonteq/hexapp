@@ -1,5 +1,11 @@
 # @carbonteq/hexapp
 
+## 0.4.1
+
+### Patch Changes
+
+- 9d83072: Fix: Import from oxide.ts directly to avoid import error in index.js
+
 ## 0.4.0
 
 ### Minor Changes
