@@ -1,4 +1,4 @@
-import { Err, Ok, Result } from 'oxide.ts/dist/core';
+import { Err, Ok, Result } from 'oxide.ts';
 import {
   DomainError,
   InvalidOperation,
