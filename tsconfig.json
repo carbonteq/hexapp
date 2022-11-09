@@ -23,9 +23,16 @@
     "skipLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@carbonteq/hexapp": ["./src"],
-      "@carbonteq/hexapp/*": ["./src/*"]
+      "@carbonteq/hexapp": [
+        "./src"
+      ],
+      "@carbonteq/hexapp/*": [
+        "./src/*"
+      ]
     }
   },
-  "exclude": ["node_modules", "jest.config.js"]
+  "exclude": [
+    "node_modules",
+    "jest.config.js"
+  ]
 }
