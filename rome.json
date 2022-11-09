@@ -14,8 +14,7 @@
     },
     "ignore": [
       "node_modules/*",
-      "prisma/*",
-      "dist/*",
+      "./lib/*",
       ".idea/*",
       ".vscode/*",
       ".husky/*",
@@ -29,8 +28,7 @@
     "indentStyle": "tab",
     "ignore": [
       "node_modules/*",
-      "prisma/*",
-      "dist/*",
+      "./lib/*",
       ".idea/*",
       ".vscode/*",
       ".husky/*",
