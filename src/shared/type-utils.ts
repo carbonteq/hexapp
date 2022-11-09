@@ -1,13 +1,13 @@
 import type { AppResult } from '@carbonteq/hexapp/app/result';
 
 export type JsonValue =
-  | string
-  | number
-  | boolean
-  | null
-  | Date
-  | Array<JsonValue>
-  | { [k: string]: JsonValue }; // JsonObject
+	| string
+	| number
+	| boolean
+	| null
+	| Date
+	| JsonValue[]
+	| { [k: string]: JsonValue }; // JsonObject
 
 export type JsonObject = { [x: string]: JsonValue };
 
@@ -21,19 +21,19 @@ export type Constructable<T> = new (...args: unknown[]) => T;
 // }
 
 export type ExtractPromiseType<T extends Promise<any>> = T extends Promise<
-  infer X
+	infer X
 >
-  ? X
-  : never;
+	? X
+	: never;
 
 export type AsyncReturnType<T extends (...args: any[]) => Promise<any>> =
-  T extends (...args: any[]) => Promise<infer R> ? R : never; // may replace never with any
+	T extends (...args: any[]) => Promise<infer R> ? R : never; // may replace never with any
 
 export type ExtractAppResultVal<T extends AppResult<any>> = T extends AppResult<
-  infer X
+	infer X
 >
-  ? X
-  : never;
+	? X
+	: never;
 
 // BETTER TO COMPOSE THE UTILITIES LISTED ABOVE
 
