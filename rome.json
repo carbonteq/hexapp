@@ -1,0 +1,46 @@
+{
+  "linter": {
+    "enabled": true,
+    "rules": {
+      "recommended": true,
+      "nursery": {
+        "noBannedTypes": "warn",
+        "noConstAssign": "error",
+        "useFlatMap": "warn",
+        "noInvalidConstructorSuper": "warn",
+        "useExhaustiveDependencies": "warn",
+        "useValidForDirection": "warn"
+      }
+    },
+    "ignore": [
+      "node_modules/*",
+      "prisma/*",
+      "dist/*",
+      ".idea/*",
+      ".vscode/*",
+      ".husky/*",
+      ".github/*"
+    ]
+  },
+  "formatter": {
+    "enabled": true,
+    "formatWithErrors": true,
+    "indentSize": 2,
+    "indentStyle": "tab",
+    "ignore": [
+      "node_modules/*",
+      "prisma/*",
+      "dist/*",
+      ".idea/*",
+      ".vscode/*",
+      ".husky/*",
+      ".github/*"
+    ]
+  },
+  "javascript": {
+    "formatter": {
+      "quoteStyle": "single",
+      "trailingComma": "all"
+    }
+  }
+}
