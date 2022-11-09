@@ -1,5 +1,19 @@
 # @carbonteq/hexapp
 
+## 0.5.0
+
+### Minor Changes
+
+- db221c6: Add express middleware and update dependencies
+
+### Patch Changes
+
+- cc6a637: Update tooling (rome, node, yarn)
+
+  - Rome used for linting and formatting instead of eslint + prettier
+  - Node now at 18.x (lts-hydrogen)
+  - Update npm and yarn versions accordingly
+
 ## 0.4.1
 
 ### Patch Changes
