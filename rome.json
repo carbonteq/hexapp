@@ -1,20 +1,41 @@
 {
+  "$schema": "./node_modules/rome/configuration_schema.json",
   "linter": {
     "enabled": true,
     "rules": {
       "recommended": true,
       "nursery": {
         "noBannedTypes": "warn",
-        "noConstAssign": "error",
-        "useFlatMap": "warn",
         "noInvalidConstructorSuper": "warn",
         "useExhaustiveDependencies": "warn",
+        "noDuplicateObjectKeys": "error",
+        "noConstructorReturn": "error",
+        "noExtraNonNullAssertion": "error",
+        "noSetterReturn": "error",
+        "noStringCaseMismatch": "error",
+        "useConst": "error",
+        "noVar": "error",
+        "useNumericLiterals": "warn",
+        "useDefaultSwitchClauseLast": "error",
+        "useDefaultParameterLast": "error",
+        "noUnsafeFinally": "error",
+        "useEnumInitializers": "off"
+      },
+      "correctness": {
+        "noConstAssign": "error",
         "useValidForDirection": "warn"
+      },
+      "complexity": {
+        "useFlatMap": "warn"
+      },
+      "suspicious": {
+        "noExplicitAny": "off"
       }
     },
     "ignore": [
       "node_modules/*",
-      "./lib/*",
+      "prisma/*",
+      "dist/*",
       ".idea/*",
       ".vscode/*",
       ".husky/*",
@@ -28,7 +49,8 @@
     "indentStyle": "tab",
     "ignore": [
       "node_modules/*",
-      "./lib/*",
+      "prisma/*",
+      "dist/*",
       ".idea/*",
       ".vscode/*",
       ".husky/*",
