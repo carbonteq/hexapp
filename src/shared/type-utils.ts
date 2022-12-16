@@ -46,3 +46,23 @@ export type ExtractAppResultVal<T extends AppResult<any>> = T extends AppResult<
 // > = ExtractAppResultVal<ReturnType<T>>;
 //
 // ------------------------------------------------------------------------
+
+/**
+ * Is used to ensure that all cases are handled in a switch statement. Throws error on runtime
+ * @internal
+ * @see https://www.typescriptlang.org/docs/handbook/advanced-types.html#exhaustiveness-checking
+ *
+ * @param x {never} - This is a type that should never be used. It is used to ensure that the switch statement is exhaustive.
+ */
+export const assertUnreachable = (x: never): never => {
+	throw new Error(`Unexpected object: ${x}`);
+};
+
+/**
+ * Is used to ensure that all cases are handled in a switch statement. Passes through the value on runtime
+ * @internal
+ * @see https://www.typescriptlang.org/docs/handbook/advanced-types.html#exhaustiveness-checking
+ *
+ * @param x {never} - This is a type that should never be used. It is used to ensure that the switch statement is exhaustive.
+ */
+export const assertUnreachablePassthrough = (x: never): never => x;
