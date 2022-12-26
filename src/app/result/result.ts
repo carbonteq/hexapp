@@ -7,76 +7,74 @@ import {
 	ValidationError,
 	AlreadyExistsError,
 } from '@carbonteq/hexapp/domain/base.exception';
-import { AppResultError } from './error';
+import { AppError } from './error';
 
-interface AppResultInitParams<T> {
-	val: T | null;
-	err: AppResultError | null;
-	isOk: boolean;
-	result?: Result<T, AppResultError>;
-}
+type InnerResult<T> = Result<T, AppError>;
 
-type ErrTransformer = (err: Error) => AppResultError;
+// interface AppResultInitParams<T> {
+// 	val: T | null;
+// 	err: AppResultError | null;
+// 	isOk: boolean;
+// 	result?: Result<T, AppResultError>;
+// }
+
+type ErrTransformer = (err: Error) => AppError;
 const DefaultMapErrOp: ErrTransformer = (err: Error) => {
 	if (!(err instanceof DomainError)) {
 		throw err;
 	}
 
 	if (err instanceof NotFoundError) {
-		return AppResultError.NotFound(err.message);
+		return AppError.NotFound(err.message);
 	}
 	if (err instanceof ValidationError) {
-		return AppResultError.InvalidData(err.message);
+		return AppError.InvalidData(err.message);
 	}
 	if (err instanceof InvalidOperation) {
-		return AppResultError.InvalidOperation(err.message);
+		return AppError.InvalidOperation(err.message);
 	}
 	if (err instanceof UnauthorizedOperation) {
-		return AppResultError.Unauthorized(err.message);
+		return AppError.Unauthorized(err.message);
 	}
 	if (err instanceof AlreadyExistsError) {
-		return AppResultError.AlreadyExists(err.message);
+		return AppError.AlreadyExists(err.message);
 	}
 
-	return AppResultError.Unknown(err.message);
+	return AppError.Unknown(err.message);
 };
 
 export class AppResult<T> {
-	readonly isOk: AppResultInitParams<T>['isOk'];
-	private readonly result: Result<T, AppResultError>;
+	readonly isOk: boolean;
 
-	private constructor({ val, err, isOk, result }: AppResultInitParams<T>) {
-		if (result !== undefined) {
-			this.result = result;
-			this.isOk = result.isOk();
-			return;
-		}
+	private constructor(private readonly result: InnerResult<T>) {
+		this.result = result;
+		this.isOk = result.isOk();
 
-		this.isOk = isOk;
-
-		if (isOk) {
-			if (val === null) {
-				throw new Error('val must not be null for a successful AppResult');
-			}
-			this.result = Ok(val);
-		} else {
-			if (err === null) {
-				throw new Error('err must not be null for a failed AppResult');
-			}
-			this.result = Err(err);
-		}
+		// this.isOk = isOk;
+		//
+		// if (isOk) {
+		// 	if (val === null) {
+		// 		throw new Error('val must not be null for a successful AppResult');
+		// 	}
+		// 	this.result = Ok(val);
+		// } else {
+		// 	if (err === null) {
+		// 		throw new Error('err must not be null for a failed AppResult');
+		// 	}
+		// 	this.result = Err(err);
+		// }
 	}
 
 	static Ok<T>(val: T): AppResult<T> {
-		return new AppResult({ val, isOk: true, err: null });
+		return new AppResult(Ok(val));
 	}
 
-	static Err(err: AppResultError): AppResult<never> {
-		return new AppResult<never>({ val: null, err, isOk: false });
+	static Err(err: AppError): AppResult<never> {
+		return new AppResult<never>(Err(err));
 	}
 
-	static fromResult<T>(result: Result<T, AppResultError>): AppResult<T> {
-		return new AppResult({ val: null, err: null, isOk: false, result });
+	static fromResult<T>(result: InnerResult<T>): AppResult<T> {
+		return new AppResult(result);
 	}
 
 	static tryFrom<T>(
@@ -116,15 +114,19 @@ export class AppResult<T> {
 	}
 
 	unwrap(): T {
-		return this.result.unwrap();
+		// have to add conditional so that the right type of error is thrown
+		if (this.result.isOk()) {
+			return this.result.unwrap();
+		} else {
+			throw this.result.unwrapErr();
+		}
 	}
 
 	unwrapOr(def: T): T {
-		this.result.mapErr;
 		return this.result.unwrapOr(def);
 	}
 
-	unwrapErr(): AppResultError {
+	unwrapErr(): AppError {
 		return this.result.unwrapErr();
 	}
 

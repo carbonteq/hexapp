@@ -2,7 +2,7 @@ import {
 	DummyTestRepository,
 	TestRepository,
 } from '../dummy-objects/test.repository';
-import { AppResult, AppResultErrStatus } from '@carbonteq/hexapp/app/result';
+import { AppResult, AppErrStatus } from '@carbonteq/hexapp/app/result';
 import { TestEntity } from '../dummy-objects/test.entity';
 
 describe('test repository', () => {
@@ -54,26 +54,26 @@ describe('test repository', () => {
 		it('on fetch', async () => {
 			const res = await AppResult.tryFromPromise(repo.fetchById(ent2.Id));
 
-			expect(res.unwrapErr().status).toBe(AppResultErrStatus.NotFound);
+			expect(res.unwrapErr().status).toBe(AppErrStatus.NotFound);
 		});
 
 		it('on insert', async () => {
 			const res = await AppResult.tryFromPromise(repo.insert(ent1));
 
-			expect(res.unwrapErr().status).toBe(AppResultErrStatus.AlreadyExists);
+			expect(res.unwrapErr().status).toBe(AppErrStatus.AlreadyExists);
 		});
 
 		it('on update', async () => {
 			ent2.updateRandomly();
 			const res = await AppResult.tryFromPromise(repo.update(ent2));
 
-			expect(res.unwrapErr().status).toBe(AppResultErrStatus.NotFound);
+			expect(res.unwrapErr().status).toBe(AppErrStatus.NotFound);
 		});
 
 		it('on delete', async () => {
 			const res = await AppResult.tryFromPromise(repo.deleteById(ent2.Id));
 
-			expect(res.unwrapErr().status).toBe(AppResultErrStatus.NotFound);
+			expect(res.unwrapErr().status).toBe(AppErrStatus.NotFound);
 		});
 	});
 });
