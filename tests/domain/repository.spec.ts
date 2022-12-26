@@ -2,7 +2,7 @@ import {
 	DummyTestRepository,
 	TestRepository,
 } from '../dummy-objects/test.repository';
-import { AppResult, AppErrStatus } from '@carbonteq/hexapp/app/result';
+import { AppResult, AppErrStatus } from '../../lib';
 import { TestEntity } from '../dummy-objects/test.entity';
 
 describe('test repository', () => {

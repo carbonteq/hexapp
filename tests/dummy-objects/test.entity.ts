@@ -1,4 +1,4 @@
-import { BaseEntity, IEntity } from '@carbonteq/hexapp/domain/base.entity';
+import { BaseEntity, IEntity } from '../../lib';
 import { randomInt } from 'node:crypto';
 
 export interface ITestEntity extends IEntity {

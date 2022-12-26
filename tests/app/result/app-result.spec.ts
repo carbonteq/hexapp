@@ -2,11 +2,9 @@ import {
 	AppResult,
 	AppError,
 	AppErrStatus,
-} from '@carbonteq/hexapp/app/result';
-import {
 	NotFoundError,
 	InvalidOperation,
-} from '@carbonteq/hexapp/domain/base.exception';
+} from '../../../lib';
 import { Ok, Err } from 'oxide.ts';
 
 describe('when result', () => {
