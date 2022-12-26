@@ -1,0 +1,12 @@
+{
+  "minify": true,
+  "jsc": {
+    "minify": {
+      "mangle": false,
+      "compress": true
+    },
+    "experimental": {
+      "keepImportAssertions": true
+    }
+  }
+}
