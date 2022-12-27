@@ -1,3 +1,11 @@
+import {
+	ExternalServiceFailure,
+	InvalidOperation,
+	UnauthorizedOperation,
+	ValidationError,
+	AlreadyExistsError,
+	NotFoundError,
+} from '@carbonteq/hexapp/domain/base.exception';
 import { AppErrStatus } from './status';
 
 export class AppError extends Error {
@@ -9,9 +17,6 @@ export class AppError extends Error {
 
 		super(msg);
 	}
-
-	static Unknown = (msg?: string): AppError =>
-		new AppError(AppErrStatus.Unknown, msg);
 
 	static NotFound = (msg?: string) => new AppError(AppErrStatus.NotFound, msg);
 
@@ -27,8 +32,36 @@ export class AppError extends Error {
 	static AlreadyExists = (msg?: string) =>
 		new AppError(AppErrStatus.AlreadyExists, msg);
 
+	static ExternalServiceFailure = (msg?: string) =>
+		new AppError(AppErrStatus.ExternalServiceFailure, msg);
+
 	static Generic = (msg: string) => new AppError(AppErrStatus.Generic, msg);
 
-	static fromError = (e: Error) =>
-		new AppError(AppErrStatus.Generic, e.message);
+	static fromErr = (e: Error) => {
+		if (e instanceof NotFoundError) {
+			return AppError.NotFound(e.message);
+		}
+
+		if (e instanceof AlreadyExistsError) {
+			return AppError.AlreadyExists(e.message);
+		}
+
+		if (e instanceof ExternalServiceFailure) {
+			return AppError.ExternalServiceFailure(e.message);
+		}
+
+		if (e instanceof InvalidOperation) {
+			return AppError.InvalidOperation(e.message);
+		}
+
+		if (e instanceof UnauthorizedOperation) {
+			return AppError.Unauthorized(e.message);
+		}
+
+		if (e instanceof ValidationError) {
+			return AppError.InvalidData(e.message);
+		}
+
+		return AppError.Generic(e.message);
+	};
 }
