@@ -39,7 +39,7 @@
     "prebuild": "rimraf lib",
     "build": "rollup -c rollup.config.js",
     "postbuild": "tsc --emitDeclarationOnly --declaration --declarationMap --project tsconfig.build.json",
-    "dev": "rollup -c rollup.config.ts -w --configPlugin swc3",
+    "dev": "rollup -c rollup.config.js",
     "test": "jest --verbose",
     "release": "changeset publish"
   },
