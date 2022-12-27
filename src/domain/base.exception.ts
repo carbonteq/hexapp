@@ -1,6 +1,6 @@
 import type { UUID } from './types';
 
-export class DomainError extends Error {
+class DomainError extends Error {
 	protected constructor(msg: string) {
 		super();
 
@@ -9,6 +9,8 @@ export class DomainError extends Error {
 		// this.message = `${this.name}: ${msg}`;
 	}
 }
+
+export class GenericDomainError extends DomainError {}
 
 export class NotFoundError extends DomainError {}
 
@@ -44,3 +46,18 @@ export class ValidationError extends DomainError {
 		super(`Validation failed for <${field} = ${value}> ${message}`);
 	}
 }
+
+export class ExternalServiceFailure extends DomainError {
+	constructor(message: string) {
+		super(message);
+	}
+}
+
+export type DomainErr =
+	| AlreadyExistsError
+	| ExternalServiceFailure
+	| GenericDomainError
+	| InvalidOperation
+	| NotFoundError
+	| UnauthorizedOperation
+	| ValidationError;

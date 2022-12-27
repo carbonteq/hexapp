@@ -1,46 +1,11 @@
 import { Err, Ok, Result } from 'oxide.ts';
-import {
-	DomainError,
-	InvalidOperation,
-	NotFoundError,
-	UnauthorizedOperation,
-	ValidationError,
-	AlreadyExistsError,
-} from '@carbonteq/hexapp/domain/base.exception';
 import { AppError } from './error';
 
 type InnerResult<T> = Result<T, AppError>;
 
-// interface AppResultInitParams<T> {
-// 	val: T | null;
-// 	err: AppResultError | null;
-// 	isOk: boolean;
-// 	result?: Result<T, AppResultError>;
-// }
-
 type ErrTransformer = (err: Error) => AppError;
 const DefaultMapErrOp: ErrTransformer = (err: Error) => {
-	if (!(err instanceof DomainError)) {
-		throw err;
-	}
-
-	if (err instanceof NotFoundError) {
-		return AppError.NotFound(err.message);
-	}
-	if (err instanceof ValidationError) {
-		return AppError.InvalidData(err.message);
-	}
-	if (err instanceof InvalidOperation) {
-		return AppError.InvalidOperation(err.message);
-	}
-	if (err instanceof UnauthorizedOperation) {
-		return AppError.Unauthorized(err.message);
-	}
-	if (err instanceof AlreadyExistsError) {
-		return AppError.AlreadyExists(err.message);
-	}
-
-	return AppError.Unknown(err.message);
+	return AppError.fromErr(err);
 };
 
 export class AppResult<T> {
@@ -49,20 +14,6 @@ export class AppResult<T> {
 	private constructor(private readonly result: InnerResult<T>) {
 		this.result = result;
 		this.isOk = result.isOk();
-
-		// this.isOk = isOk;
-		//
-		// if (isOk) {
-		// 	if (val === null) {
-		// 		throw new Error('val must not be null for a successful AppResult');
-		// 	}
-		// 	this.result = Ok(val);
-		// } else {
-		// 	if (err === null) {
-		// 		throw new Error('err must not be null for a failed AppResult');
-		// 	}
-		// 	this.result = Err(err);
-		// }
 	}
 
 	static Ok<T>(val: T): AppResult<T> {

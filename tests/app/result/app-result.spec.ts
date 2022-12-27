@@ -77,7 +77,7 @@ describe('alternative constructors', () => {
 		} else if (err instanceof InvalidOperation) {
 			return AppError.InvalidOperation(err.message);
 		} else {
-			return AppError.Unknown(err.message);
+			return AppError.Generic(err.message);
 		}
 	};
 
@@ -89,7 +89,7 @@ describe('alternative constructors', () => {
 		});
 
 		it('err result from err result', () => {
-			const result = AppResult.fromResult(Err(AppError.Unknown()));
+			const result = AppResult.fromResult(Err(AppError.Generic('')));
 
 			expect(result.isOk).toBeFalse();
 		});

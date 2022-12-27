@@ -1,5 +1,7 @@
 import type { AppResult } from '@carbonteq/hexapp/app/result';
 
+export type EmptyObject = Record<string, never>;
+
 export type JsonValue =
 	| string
 	| number
@@ -26,6 +28,7 @@ export type ExtractPromiseType<T extends Promise<any>> = T extends Promise<
 	? X
 	: never;
 
+// todo: replace with Awaited
 export type AsyncReturnType<T extends (...args: any[]) => Promise<any>> =
 	T extends (...args: any[]) => Promise<infer R> ? R : never; // may replace never with any
 
