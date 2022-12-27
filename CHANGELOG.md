@@ -1,5 +1,14 @@
 # @carbonteq/hexapp
 
+## 0.6.0
+
+### Minor Changes
+
+- 891c493: cleanup app result api
+- 98a3b98: Add copyBaseProps method to BaseEntity
+- 759af93: update to rollup v3
+- 0d42ab6: Update module type to nodenext
+
 ## 0.5.0
 
 ### Minor Changes
