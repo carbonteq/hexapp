@@ -1,4 +1,4 @@
-import { BaseRepository, UUID } from '@carbonteq/hexapp/domain';
+import { BaseRepository, UUID } from '../../lib';
 import { TestEntity } from './test.entity';
 import { TestEntAlreadyExists, TestEntNotFound } from './test.exception';
 

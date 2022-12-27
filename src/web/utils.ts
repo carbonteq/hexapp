@@ -1,11 +1,11 @@
 import type { RequestHandler } from 'express';
-import { AppResult, AppResultError } from '@carbonteq/hexapp/app';
+import { AppResult, AppError } from '@carbonteq/hexapp/app';
 
-export type AppResultErrorTransformer = (err: AppResultError) => any;
+export type AppResultErrorTransformer<E> = (err: AppError) => E;
 
-const getDataFromAppResult = (
+const getDataFromAppResult = <E>(
 	data: any,
-	errTransformer: AppResultErrorTransformer,
+	errTransformer: AppResultErrorTransformer<E>,
 ) => {
 	if (data instanceof AppResult) {
 		if (!data.isOk) {
@@ -19,38 +19,38 @@ const getDataFromAppResult = (
 };
 
 export const AppTransformerExpressMiddleware =
-	(errTransformer: AppResultErrorTransformer): RequestHandler =>
-	(_req, resp, next) => {
-		const oldSend = resp.send;
+	<E>(errTransformer: AppResultErrorTransformer<E>): RequestHandler =>
+		(_req, resp, next) => {
+			const oldSend = resp.send;
 
-		resp.send = (data) => {
-			if (data?.then !== undefined) {
-				// Is Async
-				return data
-					.then((d: any) => {
-						const finalData = getDataFromAppResult(d, errTransformer);
+			resp.send = (data) => {
+				if (data?.then !== undefined) {
+					// Is Async
+					return data
+						.then((d: any) => {
+							const finalData = getDataFromAppResult(d, errTransformer);
+
+							resp.send = oldSend;
+
+							return oldSend.call(resp, finalData);
+						})
+						.catch((err: unknown) => {
+							resp.send = oldSend;
+							next(err);
+						});
+				} else {
+					try {
+						const finalData = getDataFromAppResult(data, errTransformer);
 
 						resp.send = oldSend;
 
 						return oldSend.call(resp, finalData);
-					})
-					.catch((err: unknown) => {
+					} catch (err) {
 						resp.send = oldSend;
 						next(err);
-					});
-			} else {
-				try {
-					const finalData = getDataFromAppResult(data, errTransformer);
-
-					resp.send = oldSend;
-
-					return oldSend.call(resp, finalData);
-				} catch (err) {
-					resp.send = oldSend;
-					next(err);
+					}
 				}
-			}
-		};
+			};
 
-		next();
-	};
+			next();
+		};

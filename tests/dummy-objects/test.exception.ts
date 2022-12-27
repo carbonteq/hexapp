@@ -1,8 +1,4 @@
-import {
-	NotFoundError,
-	UUID,
-	AlreadyExistsError,
-} from '@carbonteq/hexapp/domain';
+import { NotFoundError, UUID, AlreadyExistsError } from '../../lib';
 
 export class TestEntNotFound extends NotFoundError {
 	constructor(id: UUID) {

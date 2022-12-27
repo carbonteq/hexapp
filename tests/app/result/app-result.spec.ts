@@ -1,12 +1,10 @@
 import {
 	AppResult,
-	AppResultError,
-	AppResultErrStatus,
-} from '@carbonteq/hexapp/app/result/app-result';
-import {
+	AppError,
+	AppErrStatus,
 	NotFoundError,
 	InvalidOperation,
-} from '@carbonteq/hexapp/domain/base.exception';
+} from '../../../lib';
 import { Ok, Err } from 'oxide.ts';
 
 describe('when result', () => {
@@ -27,7 +25,7 @@ describe('when result', () => {
 	});
 
 	describe('is err', () => {
-		const errResult = AppResult.Err(AppResultError.NotFound());
+		const errResult = AppResult.Err(AppError.NotFound());
 
 		it('isOkay is false', () => {
 			expect(errResult.isOk).toBeFalse();
@@ -38,7 +36,7 @@ describe('when result', () => {
 		});
 
 		it('unwrap throws an error', () => {
-			expect(() => errResult.unwrap()).toThrow();
+			expect(() => errResult.unwrap()).toThrow('NotFound');
 		});
 	});
 });
@@ -73,13 +71,13 @@ describe('alternative constructors', () => {
 		return maybeThrows(n);
 	};
 
-	const errTransformer = (err: Error): AppResultError => {
+	const errTransformer = (err: Error): AppError => {
 		if (err instanceof NotFoundError) {
-			return AppResultError.NotFound(err.message);
+			return AppError.NotFound(err.message);
 		} else if (err instanceof InvalidOperation) {
-			return AppResultError.InvalidOperation(err.message);
+			return AppError.InvalidOperation(err.message);
 		} else {
-			return AppResultError.Unknown(err.message);
+			return AppError.Unknown(err.message);
 		}
 	};
 
@@ -91,21 +89,23 @@ describe('alternative constructors', () => {
 		});
 
 		it('err result from err result', () => {
-			const result = AppResult.fromResult(Err(AppResultError.Unknown()));
+			const result = AppResult.fromResult(Err(AppError.Unknown()));
 
 			expect(result.isOk).toBeFalse();
 		});
 
 		it('from err result with msg', () => {
 			const msg = 'some message';
-			const err = AppResultError.InvalidOperation(msg);
+			const err = AppError.InvalidOperation(msg);
 			const result = AppResult.fromResult(Err(err));
 
 			expect(result.isOk).toBeFalse();
 			const unwrappedErr = result.unwrapErr();
 
-			expect(unwrappedErr.status).toBe(AppResultErrStatus.InvalidOperation);
-			expect(unwrappedErr.msg).toBe(`AppResult<InvalidOperation>: "${msg}"`);
+			expect(unwrappedErr.status).toBe(AppErrStatus.InvalidOperation);
+			expect(unwrappedErr.message).toBe(
+				`AppResult<InvalidOperation>: "${msg}"`,
+			);
 		});
 
 		it('tryFrom good func', () => {
@@ -121,7 +121,7 @@ describe('alternative constructors', () => {
 			expect(res.isOk).toBeFalse();
 			expect(res.into()).toBeUndefined();
 
-			expect(res.unwrapErr().status).toBe(AppResultErrStatus.NotFound);
+			expect(res.unwrapErr().status).toBe(AppErrStatus.NotFound);
 		});
 
 		it('tryFrom bad func with err transformer (NotFound)', () => {
@@ -131,8 +131,8 @@ describe('alternative constructors', () => {
 			expect(res.into()).toBeUndefined();
 
 			const unwrapped = res.unwrapErr();
-			expect(unwrapped.status).toBe(AppResultErrStatus.NotFound);
-			expect(unwrapped.msg).toBe('AppResult<NotFound>');
+			expect(unwrapped.status).toBe(AppErrStatus.NotFound);
+			expect(unwrapped.message).toBe('AppResult<NotFound>');
 		});
 
 		it('tryFrom bad func with err transformer (InvalidOperation)', () => {
@@ -140,7 +140,7 @@ describe('alternative constructors', () => {
 
 			expect(res.isOk).toBeFalse();
 			expect(res.into()).toBeUndefined();
-			expect(res.unwrapErr().status).toBe(AppResultErrStatus.InvalidOperation);
+			expect(res.unwrapErr().status).toBe(AppErrStatus.InvalidOperation);
 		});
 
 		it('tryFrom good promise', async () => {
@@ -155,7 +155,7 @@ describe('alternative constructors', () => {
 
 			expect(res.isOk).toBeFalse();
 			expect(res.into()).toBeUndefined();
-			expect(res.unwrapErr().status).toBe(AppResultErrStatus.NotFound);
+			expect(res.unwrapErr().status).toBe(AppErrStatus.NotFound);
 		});
 
 		it('tryFrom bad promise with err transformer (NotFound)', async () => {
@@ -166,7 +166,7 @@ describe('alternative constructors', () => {
 
 			expect(res.isOk).toBeFalse();
 			expect(res.into()).toBeUndefined();
-			expect(res.unwrapErr().status).toBe(AppResultErrStatus.NotFound);
+			expect(res.unwrapErr().status).toBe(AppErrStatus.NotFound);
 		});
 
 		it('tryFrom bad promise with err transformer (InvalidData)', async () => {
@@ -177,7 +177,7 @@ describe('alternative constructors', () => {
 
 			expect(res.isOk).toBeFalse();
 			expect(res.into()).toBeUndefined();
-			expect(res.unwrapErr().status).toBe(AppResultErrStatus.InvalidOperation);
+			expect(res.unwrapErr().status).toBe(AppErrStatus.InvalidOperation);
 		});
 	});
 });
