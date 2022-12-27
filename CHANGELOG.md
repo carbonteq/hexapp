@@ -1,5 +1,12 @@
 # @carbonteq/hexapp
 
+## 0.6.1
+
+### Patch Changes
+
+- 15f7367: add emptyobject type
+- dc0496d: add ExternalServiceFailure error
+
 ## 0.6.0
 
 ### Minor Changes
