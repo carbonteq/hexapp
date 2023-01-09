@@ -5,3 +5,4 @@ export * from './base.vo';
 export * from './base.exception';
 export * from './base.logger';
 export * from './base.repository';
+export * from './mock.repository';
