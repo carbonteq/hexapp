@@ -41,6 +41,7 @@
     "postbuild": "tsc --emitDeclarationOnly --declaration --declarationMap --project tsconfig.build.json",
     "dev": "rollup -c rollup.config.js",
     "test": "jest --verbose",
+    "test:dbg": "node --inspect-brk ./node_modules/jest/bin/jest.js --runInBand",
     "release": "changeset publish"
   },
   "devDependencies": {

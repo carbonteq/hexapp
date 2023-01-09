@@ -45,14 +45,14 @@ describe('alternative constructors', () => {
 	const val = 2;
 
 	class NotFoundErr extends NotFoundError {
-		constructor() {
-			super('');
+		constructor(msg = '') {
+			super(msg);
 		}
 	}
 
 	class InvalidOpErr extends InvalidOperation {
-		constructor() {
-			super('');
+		constructor(msg = '') {
+			super(msg);
 		}
 	}
 
@@ -96,16 +96,14 @@ describe('alternative constructors', () => {
 
 		it('from err result with msg', () => {
 			const msg = 'some message';
-			const err = AppError.InvalidOperation(msg);
+			const err = new InvalidOpErr(msg);
 			const result = AppResult.fromResult(Err(err));
 
 			expect(result.isOk).toBeFalse();
 			const unwrappedErr = result.unwrapErr();
 
 			expect(unwrappedErr.status).toBe(AppErrStatus.InvalidOperation);
-			expect(unwrappedErr.message).toBe(
-				`AppResult<InvalidOperation>: "${msg}"`,
-			);
+			expect(unwrappedErr.message).toBe(`AppError<InvalidOperation>: "${msg}"`);
 		});
 
 		it('tryFrom good func', () => {
@@ -132,7 +130,7 @@ describe('alternative constructors', () => {
 
 			const unwrapped = res.unwrapErr();
 			expect(unwrapped.status).toBe(AppErrStatus.NotFound);
-			expect(unwrapped.message).toBe('AppResult<NotFound>');
+			expect(unwrapped.message).toBe('AppError<NotFound>');
 		});
 
 		it('tryFrom bad func with err transformer (InvalidOperation)', () => {
