@@ -70,7 +70,7 @@ export abstract class MockRepository<
   async deleteById(
     Id: T['Id'],
   ): Promise<RepositoryResult<T, MockNotFoundError>> {
-    let res = await this.fetchById(Id);
+    const res = await this.fetchById(Id);
 
     if (res.isOk()) {
       this.db.delete(Id);
