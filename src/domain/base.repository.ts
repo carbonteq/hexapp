@@ -17,7 +17,10 @@ export type RepositoryError =
 	| NotFoundError
 	| AlreadyExistsError
 	| DatabaseConnectivityError;
-export type RepositoryResult<T, E> = Result<T, E | DatabaseConnectivityError>;
+export type RepositoryResult<T, E = DatabaseConnectivityError> = Result<
+	T,
+	E | DatabaseConnectivityError
+>;
 
 export abstract class BaseRepository<T extends BaseEntity> {
 	abstract fetchById(
