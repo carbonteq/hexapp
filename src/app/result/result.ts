@@ -111,7 +111,7 @@ export const toResult = <TRet>(
 
 	if (original) {
 		// @ts-ignore
-		descriptor.value = function(...args: any[]) {
+		descriptor.value = function (...args: any[]) {
 			try {
 				const r = original.call(this, ...args);
 
