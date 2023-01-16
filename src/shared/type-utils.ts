@@ -1,7 +1,10 @@
 import type { AppResult } from '@carbonteq/hexapp/app/result';
+import { ResultType } from 'oxide.ts/dist/result';
 
 export type EmptyObject = Record<string, never>;
 export type Unit = EmptyObject;
+
+export type UnitResult<E> = ResultType<Unit, E>;
 
 export type JsonValue =
 	| string
