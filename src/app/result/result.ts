@@ -101,3 +101,25 @@ export class AppResult<T> {
 		return this.result.into();
 	}
 }
+
+export const toResult = <TRet>(
+	_target: any,
+	_propertyKey: string,
+	descriptor: TypedPropertyDescriptor<(...args: any[]) => TRet>,
+) => {
+	const original = descriptor.value;
+
+	if (original) {
+		// @ts-ignore
+		descriptor.value = function(...args: any[]) {
+			try {
+				const r = original.call(this, ...args);
+
+				return AppResult.Ok(r);
+			} catch (err) {
+				const e = AppError.fromErr(err as Error);
+				return AppResult.Err(e);
+			}
+		};
+	}
+};

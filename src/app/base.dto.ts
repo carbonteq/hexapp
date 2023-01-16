@@ -19,8 +19,8 @@ export class DtoValidationError extends Error {
   }
 
   static fromZodError(err: ZodError): DtoValidationError {
-    const prettyErr = prettifyZodError(err);
-    return new DtoValidationError(prettyErr, err);
+    const prettyErrMsg = prettifyZodError(err);
+    return new DtoValidationError(prettyErrMsg, err);
   }
 }
 
