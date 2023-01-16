@@ -38,7 +38,7 @@ export abstract class MockRepository<
 		return Promise.resolve(res);
 	}
 
-	fetchAll(): Promise<RepositoryResult<T[], DatabaseConnectivityError>> {
+	fetchAll(): Promise<RepositoryResult<T[]>> {
 		return Promise.resolve(Ok(Object.values(this.db)));
 	}
 
