@@ -1,6 +1,7 @@
 import type { AppResult } from '@carbonteq/hexapp/app/result';
 
 export type EmptyObject = Record<string, never>;
+export type Unit = EmptyObject;
 
 export type JsonValue =
 	| string
@@ -18,19 +19,6 @@ export type JsonGuard<T> = T extends JsonValue ? T : never;
 export type PartialBy<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>;
 
 export type Constructable<T> = new (...args: unknown[]) => T;
-// export interface Type<T> extends Function {
-//   new (...args: any[]): T;
-// }
-
-export type ExtractPromiseType<T extends Promise<any>> = T extends Promise<
-	infer X
->
-	? X
-	: never;
-
-// todo: replace with Awaited
-export type AsyncReturnType<T extends (...args: any[]) => Promise<any>> =
-	T extends (...args: any[]) => Promise<infer R> ? R : never; // may replace never with any
 
 export type ExtractAppResultVal<T extends AppResult<any>> = T extends AppResult<
 	infer X
