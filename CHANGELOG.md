@@ -1,5 +1,11 @@
 # @carbonteq/hexapp
 
+## 0.7.1
+
+### Patch Changes
+
+- 47023ec: Add default type argument to repo result
+
 ## 0.7.0
 
 ### Minor Changes
