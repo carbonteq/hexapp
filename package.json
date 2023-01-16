@@ -41,6 +41,7 @@
     "postbuild": "tsc --emitDeclarationOnly --declaration --declarationMap --project tsconfig.build.json",
     "dev": "rollup -c rollup.config.js",
     "test": "jest --verbose",
+    "test:dbg": "node --inspect-brk ./node_modules/jest/bin/jest.js --runInBand",
     "release": "changeset publish"
   },
   "devDependencies": {
@@ -62,7 +63,8 @@
     "typescript": "^4.9.4"
   },
   "dependencies": {
-    "oxide.ts": "^1.1.0"
+    "oxide.ts": "^1.1.0",
+    "zod": "^3.20.2"
   },
   "engines": {
     "node": ">=18.0.0",

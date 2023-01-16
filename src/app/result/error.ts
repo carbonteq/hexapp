@@ -10,7 +10,7 @@ import { AppErrStatus } from './status';
 
 export class AppError extends Error {
 	private constructor(readonly status: AppErrStatus, message?: string) {
-		let msg = `AppResult<${status}>`;
+		let msg = `AppError<${status}>`;
 		if (message) {
 			msg += `: "${message}"`;
 		}

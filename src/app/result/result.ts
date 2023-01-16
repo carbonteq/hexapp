@@ -24,7 +24,13 @@ export class AppResult<T> {
 		return new AppResult<never>(Err(err));
 	}
 
-	static fromResult<T>(result: InnerResult<T>): AppResult<T> {
+	static fromResult<T, E extends Error>(result: Result<T, E>): AppResult<T> {
+		const r = result.mapErr((e) => AppError.fromErr(e));
+
+		return new AppResult(r);
+	}
+
+	static fromAppResult<T>(result: InnerResult<T>): AppResult<T> {
 		return new AppResult(result);
 	}
 
@@ -56,7 +62,7 @@ export class AppResult<T> {
 			.catch((err) => {
 				const mappedErr = errMapper(err);
 				const res = Err(mappedErr);
-				return AppResult.fromResult(res);
+				return new AppResult(res);
 			});
 
 		// return Result.safe(promise)
@@ -95,3 +101,25 @@ export class AppResult<T> {
 		return this.result.into();
 	}
 }
+
+export const toResult = <TRet>(
+	_target: any,
+	_propertyKey: string,
+	descriptor: TypedPropertyDescriptor<(...args: any[]) => TRet>,
+) => {
+	const original = descriptor.value;
+
+	if (original) {
+		// @ts-ignore
+		descriptor.value = function (...args: any[]) {
+			try {
+				const r = original.call(this, ...args);
+
+				return AppResult.Ok(r);
+			} catch (err) {
+				const e = AppError.fromErr(err as Error);
+				return AppResult.Err(e);
+			}
+		};
+	}
+};
