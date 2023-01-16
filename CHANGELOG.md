@@ -1,5 +1,15 @@
 # @carbonteq/hexapp
 
+## 0.7.0
+
+### Minor Changes
+
+- b43f3b6: Add BaseDTO
+
+### Patch Changes
+
+- cd3fef0: Polish AppResult further and add mock repository for testing
+
 ## 0.6.1
 
 ### Patch Changes
