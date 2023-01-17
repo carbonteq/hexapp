@@ -57,6 +57,7 @@ export abstract class MockRepository<
 
 	update(entity: T): Promise<RepositoryResult<T, MockNotFoundError>> {
 		let res: Result<T, MockNotFoundError>;
+
 		if (this.db.has(entity.Id)) {
 			this.db.set(entity.Id, entity.serialize());
 			res = Ok(entity);
@@ -79,7 +80,7 @@ export abstract class MockRepository<
 		return res;
 	}
 
-	existsById(Id: T['Id']): Promise<boolean> {
-		return Promise.resolve(this.db.has(Id));
+	existsById(Id: T['Id']): Promise<RepositoryResult<boolean>> {
+		return Promise.resolve(Ok(this.db.has(Id)));
 	}
 }

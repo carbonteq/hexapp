@@ -26,9 +26,8 @@ export abstract class BaseRepository<T extends BaseEntity> {
 	abstract fetchById(
 		Id: BaseEntity['Id'],
 	): Promise<RepositoryResult<T, NotFoundError>>;
-	abstract fetchAll(): Promise<
-		RepositoryResult<T[], DatabaseConnectivityError>
-	>;
+
+	abstract fetchAll(): Promise<RepositoryResult<T[]>>;
 
 	abstract insert(entity: T): Promise<RepositoryResult<T, AlreadyExistsError>>;
 
@@ -38,7 +37,7 @@ export abstract class BaseRepository<T extends BaseEntity> {
 		Id: BaseEntity['Id'],
 	): Promise<RepositoryResult<T, NotFoundError>>;
 
-	abstract existsById(Id: BaseEntity['Id']): Promise<boolean>;
+	abstract existsById(Id: BaseEntity['Id']): Promise<RepositoryResult<boolean>>;
 }
 
 export abstract class BaseRepositoryExtended<
@@ -48,9 +47,24 @@ export abstract class BaseRepositoryExtended<
 		prop: U,
 		val: T[U],
 	): Promise<RepositoryResult<T, NotFoundError>>; // val: ValueForProp<T, U>
-	abstract existsBy<U extends keyof T>(prop: U, val: T[U]): Promise<boolean>;
+	abstract existsBy<U extends keyof T>(
+		prop: U,
+		val: T[U],
+	): Promise<RepositoryResult<boolean>>;
 	abstract deleteBy<U extends keyof T>(
 		prop: U,
 		val: T[U],
 	): Promise<RepositoryResult<T, NotFoundError>>;
+
+	async fetchById(Id: T['Id']): Promise<RepositoryResult<T, NotFoundError>> {
+		return await this.fetchBy('Id', Id);
+	}
+
+	async existsById(Id: T['Id']): Promise<RepositoryResult<boolean>> {
+		return await this.existsBy('Id', Id);
+	}
+
+	async deleteById(Id: T['Id']): Promise<RepositoryResult<T, NotFoundError>> {
+		return await this.deleteBy('Id', Id);
+	}
 }

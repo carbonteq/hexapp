@@ -1,3 +1,4 @@
+import { Unit } from '@carbonteq/hexapp/shared';
 import { Err, Ok, Result } from 'oxide.ts';
 import { AppError } from './error';
 
@@ -11,9 +12,10 @@ const DefaultMapErrOp: ErrTransformer = (err: Error) => {
 export class AppResult<T> {
 	readonly isOk: boolean;
 
-	private constructor(private readonly result: InnerResult<T>) {
-		this.result = result;
-		this.isOk = result.isOk();
+	static readonly Unit: AppResult<Unit> = AppResult.Ok({});
+
+	private constructor(private readonly inner_result: InnerResult<T>) {
+		this.isOk = inner_result.isOk();
 	}
 
 	static Ok<T>(val: T): AppResult<T> {
@@ -30,8 +32,8 @@ export class AppResult<T> {
 		return new AppResult(r);
 	}
 
-	static fromAppResult<T>(result: InnerResult<T>): AppResult<T> {
-		return new AppResult(result);
+	static fromOther<T>(result: AppResult<T>): AppResult<T> {
+		return new AppResult(result.inner_result);
 	}
 
 	static tryFrom<T>(
@@ -39,7 +41,6 @@ export class AppResult<T> {
 		errTransformer?: ErrTransformer,
 	): AppResult<T> {
 		const errMapper = errTransformer ?? DefaultMapErrOp;
-		// const result = Result.safe(fn).mapErr(errMapper);
 
 		try {
 			const val = fn();
@@ -47,58 +48,53 @@ export class AppResult<T> {
 		} catch (err) {
 			return AppResult.Err(errMapper(err as Error));
 		}
-
-		// return AppResult.fromResult(result);
 	}
 
-	static tryFromPromise<T>(
+	static async tryFromPromise<T>(
 		promise: Promise<T>,
 		errTransformer?: ErrTransformer,
 	): Promise<AppResult<T>> {
 		const errMapper = errTransformer ?? DefaultMapErrOp;
 
-		return promise
-			.then((val) => AppResult.fromResult(Ok(val)))
-			.catch((err) => {
-				const mappedErr = errMapper(err);
-				const res = Err(mappedErr);
-				return new AppResult(res);
-			});
-
-		// return Result.safe(promise)
-		//   .then((res) => AppResult.fromResult(res.mapErr(errMapper)))
-		//   .catch((err) => AppResult.Err(AppResultError.Unknown));
+		try {
+			const val = await promise;
+			return AppResult.Ok(val);
+		} catch (err) {
+			const mappedErr = errMapper(err as Error); // convert the error to the appropriate domain error (if u want)
+			const res = Err(mappedErr); // create an app error from it
+			return new AppResult(res); // use to construct an AppResult
+		}
 	}
 
 	unwrap(): T {
 		// have to add conditional so that the right type of error is thrown
-		if (this.result.isOk()) {
-			return this.result.unwrap();
+		if (this.inner_result.isOk()) {
+			return this.inner_result.unwrap();
 		} else {
-			throw this.result.unwrapErr();
+			throw this.inner_result.unwrapErr();
 		}
 	}
 
 	unwrapOr(def: T): T {
-		return this.result.unwrapOr(def);
+		return this.inner_result.unwrapOr(def);
 	}
 
 	unwrapErr(): AppError {
-		return this.result.unwrapErr();
+		return this.inner_result.unwrapErr();
 	}
 
 	unwrapOrElse(fn: () => T): T {
-		return this.result.unwrapOrElse(fn);
+		return this.inner_result.unwrapOrElse(fn);
 	}
 
 	map<U>(fn: (val: T) => U): AppResult<U> {
-		const newResult = this.result.map(fn);
+		const newResult = this.inner_result.map(fn);
 
 		return AppResult.fromResult(newResult);
 	}
 
 	into(): T | undefined {
-		return this.result.into();
+		return this.inner_result.into();
 	}
 }
 
