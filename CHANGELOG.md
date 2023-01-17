@@ -1,5 +1,15 @@
 # @carbonteq/hexapp
 
+## 0.8.0
+
+### Minor Changes
+
+- 285d4e3: Add monadic utils, UnitResult, and fix AppResult.fromOther
+
+### Patch Changes
+
+- 00b665b: Default impls for byId methods in ExtendedRepo. existsBy returns RepoResult now
+
 ## 0.7.1
 
 ### Patch Changes
