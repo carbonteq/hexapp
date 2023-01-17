@@ -1,5 +1,11 @@
 # @carbonteq/hexapp
 
+## 0.8.2
+
+### Patch Changes
+
+- c6bfa5f: Remove type arg from UnitResult
+
 ## 0.8.1
 
 ### Patch Changes
