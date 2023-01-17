@@ -1,5 +1,11 @@
 # @carbonteq/hexapp
 
+## 0.8.1
+
+### Patch Changes
+
+- 546d251: Fix exports for MonadicUtils
+
 ## 0.8.0
 
 ### Minor Changes
