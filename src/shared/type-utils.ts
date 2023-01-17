@@ -4,7 +4,7 @@ import { ResultType } from 'oxide.ts/dist/result';
 export type EmptyObject = Record<string, never>;
 export type Unit = EmptyObject;
 
-export type UnitResult<E> = ResultType<Unit, E>;
+export type UnitResult<E = never> = ResultType<Unit, E>;
 
 export type JsonValue =
 	| string
