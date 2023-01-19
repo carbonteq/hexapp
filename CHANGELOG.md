@@ -1,5 +1,11 @@
 # @carbonteq/hexapp
 
+## 0.9.0
+
+### Minor Changes
+
+- 4e828eb: Updates to AppResult and addition of Base DTO
+
 ## 0.8.2
 
 ### Patch Changes
