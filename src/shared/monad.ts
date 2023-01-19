@@ -6,6 +6,45 @@ const errPred = <T, E>(el: Result<T, E>): boolean => el.isErr();
 const preds = [okPred, errPred];
 
 export class Monadic {
+	static async mapAsync<T, E, U>(
+		r: Result<T, E>,
+		f: (v: T) => Promise<U>,
+	): Promise<Result<U, E>> {
+		const resultOfPromise = r.map(f);
+
+		return Monadic.liftAsync(resultOfPromise);
+	}
+
+	static do<T, E>(r: Result<T, E>, f: (v: T) => void): Result<T, E> {
+		return r.map((val) => {
+			f(val);
+			return val;
+		});
+	}
+
+	static async doAsync<T, E>(
+		r: Result<T, E>,
+		f: (v: T) => Promise<void>,
+	): Promise<Result<T, E>> {
+		const res = r.map(async (val) => {
+			f(val);
+			return val;
+		});
+		const r2 = await Monadic.liftAsync(res);
+
+		return r2;
+	}
+
+	static async liftAsync<T, E>(
+		r: Result<Promise<T>, E>,
+	): Promise<Result<T, E>> {
+		if (r.isErr()) return r;
+
+		const p = await r.unwrap();
+
+		return Ok(p);
+	}
+
 	static bind<T, E, U>(r: Result<T, E>, f: (val: T) => Result<U, E>) {
 		if (r.isErr()) return r;
 

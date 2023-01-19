@@ -1,4 +1,4 @@
-import type { AppResult } from '@carbonteq/hexapp/app/result';
+import { AppResult } from '@carbonteq/hexapp/app/result';
 import { ResultType } from 'oxide.ts/dist/result';
 
 export type EmptyObject = Record<string, never>;
@@ -23,11 +23,16 @@ export type PartialBy<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>;
 
 export type Constructable<T> = new (...args: unknown[]) => T;
 
-export type ExtractAppResultVal<T extends AppResult<any>> = T extends AppResult<
-	infer X
->
-	? X
-	: never;
+export type ExtractAppResultType<U extends AppResult<any>> =
+	U extends AppResult<infer X> ? X : never;
+
+export type IterType<T> = T extends { [Symbol.iterator](): infer I }
+	? I
+	: unknown;
+
+export type InferAppResult<
+	T extends (...args: any[]) => Promise<AppResult<any>>,
+> = ExtractAppResultType<Awaited<ReturnType<T>>>;
 
 // BETTER TO COMPOSE THE UTILITIES LISTED ABOVE
 

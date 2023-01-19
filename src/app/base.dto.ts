@@ -24,13 +24,15 @@ export class DtoValidationError extends Error {
 	}
 }
 
-export abstract class BaseDto {
-	protected constructor() {}
+export type DtoResult<T> = Result<T, DtoValidationError>;
 
-	protected static validate<T>(
-		schema: z.Schema<T>,
+export abstract class BaseDto {
+	protected constructor() { }
+
+	protected static validate<T, U extends z.ZodType<T> = z.ZodType<T>>(
+		schema: U,
 		data: any,
-	): Result<T, DtoValidationError> {
+	): DtoResult<T> {
 		try {
 			const validatedData = schema.parse(data);
 

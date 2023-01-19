@@ -1,4 +1,4 @@
-import { Unit } from '@carbonteq/hexapp/shared';
+import { Unit, Monadic } from '@carbonteq/hexapp/shared';
 import { Err, Ok, Result } from 'oxide.ts';
 import { AppError } from './error';
 
@@ -9,13 +9,23 @@ const DefaultMapErrOp: ErrTransformer = (err: Error) => {
 	return AppError.fromErr(err);
 };
 
-export class AppResult<T> {
-	readonly isOk: boolean;
+export type EmptyResult = typeof AppResult.Empty;
 
-	static readonly Unit: AppResult<Unit> = AppResult.Ok({});
+export class AppResult<T> {
+	readonly _isOk: boolean;
+
+	static readonly Empty: AppResult<Unit> = AppResult.Ok({});
 
 	private constructor(private readonly inner_result: InnerResult<T>) {
-		this.isOk = inner_result.isOk();
+		this._isOk = inner_result.isOk();
+	}
+
+	isOk(): boolean {
+		return this.inner_result.isOk();
+	}
+
+	isErr(): this is AppResult<never> {
+		return this.inner_result.isErr();
 	}
 
 	static Ok<T>(val: T): AppResult<T> {
@@ -32,8 +42,48 @@ export class AppResult<T> {
 		return new AppResult(r);
 	}
 
+	toResult(): Result<T, AppError> {
+		return this.inner_result;
+	}
+
+	and<U>(other: AppResult<U>): AppResult<readonly [T, U]> {
+		const r = Monadic.bind(this.inner_result, (t) =>
+			other.inner_result.map((u) => [t, u] as const),
+		);
+
+		return new AppResult(r);
+	}
+
+	do(f: (val: T) => void): void {
+		Monadic.do(this.inner_result, f);
+	}
+
+	async doAsync(f: (val: T) => Promise<void>) {
+		await Monadic.doAsync(this.inner_result, f);
+	}
+
 	static fromOther<T>(result: AppResult<T>): AppResult<T> {
 		return new AppResult(result.inner_result);
+	}
+
+	static fromErr(err: Error): AppResult<never> {
+		const e = AppError.fromErr(err);
+
+		return new AppResult(Err(e));
+	}
+
+	bind<U>(f: (r: T) => Result<U, AppError>): AppResult<U> {
+		const r = Monadic.bind(this.inner_result, f);
+
+		return new AppResult(r);
+	}
+
+	async bindAsync<U>(
+		f: (r: T) => Promise<Result<U, AppError>>,
+	): Promise<AppResult<U>> {
+		const r = await Monadic.bindAsync(this.inner_result, f);
+
+		return new AppResult(r);
 	}
 
 	static tryFrom<T>(
@@ -107,7 +157,7 @@ export const toResult = <TRet>(
 
 	if (original) {
 		// @ts-ignore
-		descriptor.value = function (...args: any[]) {
+		descriptor.value = function(...args: any[]) {
 			try {
 				const r = original.call(this, ...args);
 

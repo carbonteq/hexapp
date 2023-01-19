@@ -1,8 +1,4 @@
-import {
-	BaseRepository,
-	DatabaseConnectivityError,
-	RepositoryResult,
-} from './base.repository';
+import { BaseRepository, RepositoryResult } from './base.repository';
 import { BaseEntity } from './base.entity';
 import { NotFoundError, AlreadyExistsError } from './base.exception';
 import { Err, Ok, Result } from 'oxide.ts';
