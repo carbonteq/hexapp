@@ -1,5 +1,5 @@
 import { DummyTestRepository } from '../dummy-objects/test.repository';
-import { AppResult, AppErrStatus, MockRepository, AppError } from '../../lib';
+import { AppResult, AppErrStatus, MockRepository } from '../../lib';
 import { TestEntity } from '../dummy-objects/test.entity';
 
 describe('test repository', () => {
@@ -53,7 +53,7 @@ describe('test repository', () => {
 
 			const res = AppResult.fromResult(fetchResult);
 
-			expect(res.isOk).toBeFalse();
+			expect(res.isOk()).toBeFalse();
 
 			const err = res.unwrapErr();
 			expect(err).toBeDefined();
