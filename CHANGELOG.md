@@ -1,5 +1,11 @@
 # @carbonteq/hexapp
 
+## 0.9.1
+
+### Patch Changes
+
+- f5c89e4: Add log method to logger interface
+
 ## 0.9.0
 
 ### Minor Changes
