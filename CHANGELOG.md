@@ -1,5 +1,11 @@
 # @carbonteq/hexapp
 
+## 0.9.3
+
+### Patch Changes
+
+- c12f131: Use safe parse in dto validation
+
 ## 0.9.2
 
 ### Patch Changes
