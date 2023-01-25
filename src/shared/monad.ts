@@ -45,7 +45,10 @@ export class Monadic {
 		return Ok(p);
 	}
 
-	static bind<T, E, U>(r: Result<T, E>, f: (val: T) => Result<U, E>) {
+	static bind<T, U, E1, E2>(
+		r: Result<T, E1>,
+		f: (val: T) => Result<U, E2>,
+	): Result<U, E1 | E2> {
 		if (r.isErr()) return r;
 
 		const val = r.unwrap();
@@ -53,10 +56,10 @@ export class Monadic {
 		return f(val);
 	}
 
-	static async bindAsync<T, E, U>(
-		r: Result<T, E>,
-		f: (val: T) => Promise<Result<U, E>>,
-	) {
+	static async bindAsync<T, U, E1, E2>(
+		r: Result<T, E1>,
+		f: (val: T) => Promise<Result<U, E2>>,
+	): Promise<Result<U, E1 | E2>> {
 		if (r.isErr()) return r;
 
 		const val = r.unwrap();
