@@ -13,8 +13,6 @@ export const createApp = async (): Promise<INestApplication> => {
 };
 
 const configureApp = (app: INestApplication) => {
-  // app.enableCors({ origin: '*' });
-
   const logger = app.get(PinoLogger);
 
   app.useLogger(logger);
