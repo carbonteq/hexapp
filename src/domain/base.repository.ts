@@ -4,6 +4,7 @@ import {
 	AlreadyExistsError,
 	NotFoundError,
 	ExternalServiceFailure,
+	InvalidOperation,
 } from './base.exception';
 
 export class DatabaseConnectivityError extends ExternalServiceFailure {
@@ -16,10 +17,14 @@ export class DatabaseConnectivityError extends ExternalServiceFailure {
 export type RepositoryError =
 	| NotFoundError
 	| AlreadyExistsError
+	| InvalidOperation
 	| DatabaseConnectivityError;
-export type RepositoryResult<T, E = DatabaseConnectivityError> = Result<
+
+type CommonRepoErrors = DatabaseConnectivityError | InvalidOperation;
+
+export type RepositoryResult<T, E = CommonRepoErrors> = Result<
 	T,
-	E | DatabaseConnectivityError
+	E | CommonRepoErrors
 >;
 
 export abstract class BaseRepository<T extends BaseEntity> {
