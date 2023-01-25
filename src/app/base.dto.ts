@@ -20,6 +20,7 @@ export class DtoValidationError extends Error {
 
 	static fromZodError(err: ZodError): DtoValidationError {
 		const prettyErrMsg = prettifyZodError(err);
+
 		return new DtoValidationError(prettyErrMsg, err);
 	}
 }
@@ -33,16 +34,12 @@ export abstract class BaseDto {
 		schema: U,
 		data: any,
 	): DtoResult<T> {
-		try {
-			const validatedData = schema.parse(data);
+		const r = schema.safeParse(data);
 
-			return Ok(validatedData);
-		} catch (err) {
-			if (err instanceof ZodError) {
-				return Err(DtoValidationError.fromZodError(err));
-			}
-
-			throw err;
+		if (r.success) {
+			return Ok(r.data);
+		} else {
+			return Err(DtoValidationError.fromZodError(r.error));
 		}
 	}
 }
