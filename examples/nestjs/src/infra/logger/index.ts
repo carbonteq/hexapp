@@ -21,3 +21,5 @@ import { LoggerModule as PinoLoggerModule } from 'nestjs-pino';
   exports: [AppLoggerProvider],
 })
 export class AppLoggerModule { }
+
+export { PinoAppLogger } from './pino.logger';

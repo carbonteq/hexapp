@@ -4,9 +4,7 @@ import {
   LogLevel,
   LOG_LEVEL,
 } from '@carbonteq/hexapp';
-
 import { Injectable, Provider, Scope, LoggerService } from '@nestjs/common';
-
 import pino, { Logger as PinoBaseLogger } from 'pino';
 
 export const transportOpts = {
@@ -99,36 +97,6 @@ export class PinoAppLogger implements Logger, LoggerService {
     }
   }
 }
-
-// @Injectable({ scope: Scope.TRANSIENT })
-// export class PinoAppLogger extends NestPinoLogger implements Logger {
-//   constructor(@Inject(PARAMS_PROVIDER_TOKEN) params: Params) {
-//     super(params);
-//   }
-//
-//   setLevel(lvl: LogLevel): void {
-//     this.logger.level = lvl;
-//   }
-//
-//   log(level: LogLevel, ...args: any[]): void {
-//     switch (level) {
-//       case LOG_LEVEL.ERROR:
-//         this.error(args);
-//         break;
-//       case LOG_LEVEL.WARN:
-//         this.warn(args);
-//         break;
-//       case LOG_LEVEL.INFO:
-//         this.info(args);
-//         break;
-//       case LOG_LEVEL.DEBUG:
-//         this.debug(args);
-//         break;
-//       default:
-//         assertUnreachablePassthrough(level);
-//     }
-//   }
-// }
 
 export const AppLoggerProvider: Provider<Logger> = {
   provide: Logger,

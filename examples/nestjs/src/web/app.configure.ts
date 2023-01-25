@@ -1,8 +1,9 @@
 import { INestApplication } from '@nestjs/common';
-// import { AppResultTransformInterceptor, ErrorsInterceptor } from '@web/utils';
+import { AppResultTransformer, ErrorsInterceptor } from '@web/utils';
 import { NestFactory } from '@nestjs/core';
 import { WebModule } from '@web/web.module';
 import { Logger as PinoLogger } from 'nestjs-pino';
+import { PinoAppLogger } from '@infra/logger';
 
 export const createApp = async (): Promise<INestApplication> => {
   return NestFactory.create(WebModule, {
@@ -17,10 +18,10 @@ const configureApp = (app: INestApplication) => {
   const logger = app.get(PinoLogger);
 
   app.useLogger(logger);
-  // app.useGlobalInterceptors(
-  //   new AppResultTransformInterceptor(logger),
-  //   new ErrorsInterceptor(logger),
-  // );
+  app.useGlobalInterceptors(
+    new AppResultTransformer(new PinoAppLogger()),
+    new ErrorsInterceptor(new PinoAppLogger()),
+  );
 };
 
 export const configureAppForTest = (app: INestApplication) => {
