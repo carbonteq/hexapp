@@ -1,5 +1,12 @@
 # @carbonteq/hexapp
 
+## 0.9.2
+
+### Patch Changes
+
+- 1474577: Update monadic bind func type inference
+- 41dc3e0: Update repo default errors to include InvalidOperation
+
 ## 0.9.1
 
 ### Patch Changes
