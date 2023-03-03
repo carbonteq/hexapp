@@ -347,13 +347,13 @@
   resolved "https://registry.yarnpkg.com/@bcoe/v8-coverage/-/v8-coverage-0.2.3.tgz#75a2e8b51cb758a7553d6804a5932d7aace75c39"
   integrity sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==
 
-"@carbonteq/hexapp@^0.9.3":
-  version "0.9.3"
-  resolved "https://registry.yarnpkg.com/@carbonteq/hexapp/-/hexapp-0.9.3.tgz#38811a8e02fee1aef02367d17fef06284ccd5345"
-  integrity sha512-M7sVPE18wlA0EHjz8ecVSJGUlMRpPCzHaR0NfOiWr1cD8w+NSrTqu0bC8exCltn7giC8QU5VvWIIyu/JmdRBbw==
+"@carbonteq/hexapp@^0.9.4":
+  version "0.9.4"
+  resolved "https://registry.yarnpkg.com/@carbonteq/hexapp/-/hexapp-0.9.4.tgz#491c119ac5d88b0a55948fa1a9c47d151c782b08"
+  integrity sha512-xA5ntUMw1dPHCm+2ONs2myy4nnzacVTVtJBpEQUSy0mTnVL5KZGrNBsSMMVarWaUewQaOUAANEwEhdp0aoRHSQ==
   dependencies:
     oxide.ts "^1.1.0"
-    zod "^3.20.2"
+    zod "^3.20.6"
 
 "@colors/colors@1.5.0":
   version "1.5.0"
@@ -4504,11 +4504,6 @@ yocto-queue@^0.1.0:
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/yocto-queue/-/yocto-queue-0.1.0.tgz#0294eb3dee05028d31ee1a5fa2c556a6aaf10a1b"
   integrity sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==
-
-zod@^3.20.2:
-  version "3.20.2"
-  resolved "https://registry.yarnpkg.com/zod/-/zod-3.20.2.tgz#068606642c8f51b3333981f91c0a8ab37dfc2807"
-  integrity sha512-1MzNQdAvO+54H+EaK5YpyEy0T+Ejo/7YLHS93G3RnYWh5gaotGHwGeN/ZO687qEDU2y4CdStQYXVHIgrUl5UVQ==
 
 zod@^3.20.6:
   version "3.20.6"

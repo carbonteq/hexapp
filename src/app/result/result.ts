@@ -148,7 +148,7 @@ export class AppResult<T> {
 	}
 }
 
-export const toResult = <TRet>(
+export const toAppResult = <TRet>(
 	_target: any,
 	_propertyKey: string,
 	descriptor: TypedPropertyDescriptor<(...args: any[]) => TRet>,

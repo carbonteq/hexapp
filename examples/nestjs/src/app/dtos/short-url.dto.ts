@@ -1,4 +1,4 @@
-import { BaseDto, DtoResult } from '@carbonteq/hexapp';
+import { BaseDto, DtoValidationResult } from '@carbonteq/hexapp';
 import { ShortUrlEntity } from '@domain/entities/short-url.entity';
 import { z } from 'zod';
 
@@ -11,7 +11,7 @@ export class NewShortUrlDto extends BaseDto {
     super();
   }
 
-  static create(data: unknown): DtoResult<NewShortUrlDto> {
+  static create(data: unknown): DtoValidationResult<NewShortUrlDto> {
     const res = BaseDto.validate<{ url: string }>(NewShortUrlDto.schema, data);
 
     return res.map(({ url }) => new NewShortUrlDto(url));
@@ -27,7 +27,7 @@ export class FetchUrlDto extends BaseDto {
     super();
   }
 
-  static create(shortId: string): DtoResult<FetchUrlDto> {
+  static create(shortId: string): DtoValidationResult<FetchUrlDto> {
     const res = BaseDto.validate(FetchUrlDto.schema, { shortId });
 
     return res.map((_) => new FetchUrlDto(shortId));
@@ -43,7 +43,7 @@ export class DeleteShortUrlDto extends BaseDto {
     super();
   }
 
-  static create(shortId: string): DtoResult<DeleteShortUrlDto> {
+  static create(shortId: string): DtoValidationResult<DeleteShortUrlDto> {
     const res = DeleteShortUrlDto.validate(DeleteShortUrlDto.schema, {
       shortId,
     });

@@ -24,7 +24,7 @@
     "test:e2e": "jest --config ./test/jest-e2e.json"
   },
   "dependencies": {
-    "@carbonteq/hexapp": "^0.9.3",
+    "@carbonteq/hexapp": "^0.9.4",
     "@nestjs/common": "^9.3.9",
     "@nestjs/core": "^9.3.9",
     "@nestjs/platform-express": "^9.3.9",
