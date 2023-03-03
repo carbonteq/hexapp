@@ -1,5 +1,11 @@
 # @carbonteq/hexapp
 
+## 0.10.2
+
+### Patch Changes
+
+- 014058a: Add toResult util for DtoValidationResult
+
 ## 0.10.1
 
 ### Patch Changes
