@@ -6,7 +6,6 @@ import {
 import { ShortUrlService } from '@app/services/short-url.service';
 import { Logger } from '@carbonteq/hexapp';
 import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
-import { execService } from '@shared/utils';
 
 @Controller('/s')
 export class ShortUrlController {
@@ -22,22 +21,22 @@ export class ShortUrlController {
   @Post()
   async createNew(@Body() body: string) {
     // unwrapping here as error interceptor will catch the error
-    const dto = NewShortUrlDto.create(body);
+    const dto = NewShortUrlDto.create(body).unwrap();
 
-    return await execService(dto, this.serv.addNew);
+    return await this.serv.addNew(dto);
   }
 
   @Get("/:id")
   async fetchLongUrl(@Param('id') shortId: string) {
-    const dto = FetchUrlDto.create(shortId);
+    const dto = FetchUrlDto.create(shortId).unwrap();
 
-    return await execService(dto, this.serv.getLongVersion);
+    return await this.serv.getLongVersion(dto);
   }
 
   @Delete('/:id')
   async deleteUrl(@Param('id') shortId: string) {
-    const dto = DeleteShortUrlDto.create(shortId);
+    const dto = DeleteShortUrlDto.create(shortId).unwrap();
 
-    return await execService(dto, this.serv.getLongVersion);
+    return await this.serv.getLongVersion(dto);
   }
 }
