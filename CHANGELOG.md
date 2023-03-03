@@ -1,5 +1,11 @@
 # @carbonteq/hexapp
 
+## 0.10.0
+
+### Minor Changes
+
+- 64ab2ef: DtoValidationResult is now a proper class, not a type alias
+
 ## 0.9.4
 
 ### Patch Changes
