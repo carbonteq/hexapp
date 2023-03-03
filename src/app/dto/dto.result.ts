@@ -50,4 +50,8 @@ export class DtoValidationResult<T> {
     const e = Err(DtoValidationError.fromZodError(err));
     return new DtoValidationResult(e);
   }
+
+  static fromErr(err: DtoValidationError): DtoValidationResult<never> {
+    return new DtoValidationResult(Err(err));
+  }
 }
