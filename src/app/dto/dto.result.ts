@@ -42,6 +42,10 @@ export class DtoValidationResult<T> {
     return this.inner_result.isErr();
   }
 
+  toResult(): Result<T, DtoValidationError> {
+    return this.inner_result;
+  }
+
   static fromVal<X>(val: X): DtoValidationResult<X> {
     return new DtoValidationResult(Ok(val));
   }
