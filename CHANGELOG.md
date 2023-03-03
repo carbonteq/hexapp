@@ -1,5 +1,11 @@
 # @carbonteq/hexapp
 
+## 0.10.1
+
+### Patch Changes
+
+- 26e5a5b: add fromErr for DtoValidationResult
+
 ## 0.10.0
 
 ### Minor Changes
