@@ -1,5 +1,11 @@
 # @carbonteq/hexapp
 
+## 0.11.0
+
+### Minor Changes
+
+- c72a6c9: Add zipF and zipFAsync utils
+
 ## 0.10.2
 
 ### Patch Changes
