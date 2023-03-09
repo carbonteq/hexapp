@@ -38,6 +38,10 @@ export class AppError extends Error {
 	static Generic = (msg: string) => new AppError(AppErrStatus.Generic, msg);
 
 	static fromErr = (e: Error) => {
+		if (e instanceof AppError) {
+			return new AppError(e.status, e.message);
+		}
+
 		if (e instanceof NotFoundError) {
 			return AppError.NotFound(e.message);
 		}

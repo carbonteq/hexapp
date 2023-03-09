@@ -72,6 +72,20 @@ export class AppResult<T> {
 		return new AppResult(Err(e));
 	}
 
+	zipF<U>(f: (r: T) => Result<U, AppError>): AppResult<[T, U]> {
+		const zipped = Monadic.zipF(this.inner_result, f);
+
+		return new AppResult(zipped);
+	}
+
+	async zipFAsync<U>(
+		f: (r: T) => Promise<Result<U, AppError>>,
+	): Promise<AppResult<[T, U]>> {
+		const zipped = await Monadic.zipFAsync(this.inner_result, f);
+
+		return new AppResult(zipped);
+	}
+
 	bind<U>(f: (r: T) => Result<U, AppError>): AppResult<U> {
 		const r = Monadic.bind(this.inner_result, f);
 
@@ -140,7 +154,7 @@ export class AppResult<T> {
 	map<U>(fn: (val: T) => U): AppResult<U> {
 		const newResult = this.inner_result.map(fn);
 
-		return AppResult.fromResult(newResult);
+		return new AppResult(newResult);
 	}
 
 	into(): T | undefined {

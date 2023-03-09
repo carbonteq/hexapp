@@ -45,6 +45,32 @@ export class Monadic {
 		return Ok(p);
 	}
 
+	static zipF<T, U, E>(
+		r: Result<T, E>,
+		f: (val: T) => Result<U, E>,
+	): Result<[T, U], E> {
+		if (r.isErr()) return r;
+
+		const val = r.unwrap();
+
+		return f(val).map((u) => {
+			const returned = [val, u] as [T, U];
+
+			return returned;
+		});
+	}
+
+	static async zipFAsync<T, U, E>(
+		r: Result<T, E>,
+		f: (val: T) => Promise<Result<U, E>>,
+	): Promise<Result<[T, U], E>> {
+		if (r.isErr()) return r;
+
+		const val = r.unwrap();
+
+		return f(val).then((uRes) => uRes.map((u) => [val, u] as [T, U]));
+	}
+
 	static bind<T, U, E1, E2>(
 		r: Result<T, E1>,
 		f: (val: T) => Result<U, E2>,
@@ -64,7 +90,7 @@ export class Monadic {
 
 		const val = r.unwrap();
 
-		return await f(val);
+		return f(val);
 	}
 
 	static sequence<T, E>(r: Array<Result<T, E>>): Result<Array<T>, E> {
