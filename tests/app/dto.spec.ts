@@ -1,5 +1,5 @@
 import { BaseDto, DtoValidationError } from '../../lib';
-import { Result } from 'oxide.ts';
+import { Result } from '@carbonteq/fp';
 import { z } from 'zod';
 
 const COLOR_LEN = 7;
@@ -73,8 +73,8 @@ describe('when dto input', () => {
 
       expect(dtoResult.isOk());
 
-      let dto: NewThemeDto;
-      expect(dto === dtoResult.unwrap()).toBeInstanceOf(NewThemeDto);
+      const dto = dtoResult.unwrap();
+      expect(dto).toBeInstanceOf(NewThemeDto);
 
       expect(dto.validData).toEqual(validData1);
     });
@@ -84,8 +84,8 @@ describe('when dto input', () => {
 
       expect(dtoResult.isOk());
 
-      let dto: NewThemeDto;
-      expect(dto === dtoResult.unwrap()).toBeInstanceOf(NewThemeDto);
+      const dto = dtoResult.unwrap();
+      expect(dto).toBeInstanceOf(NewThemeDto);
 
       expect(dto.validData).toEqual(validData2);
     });

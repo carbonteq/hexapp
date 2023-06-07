@@ -10,9 +10,11 @@ import {
 
 export class AppError extends Error {
   private constructor(readonly status: AppErrStatus, message?: string) {
-    let msg = `AppError<${status}>`;
+    let msg: string;
     if (message) {
-      msg += `: "${message}"`;
+      msg = `<${status}>: "${message}"`;
+    } else {
+      msg = `AppError<${status}>`;
     }
 
     super(msg);

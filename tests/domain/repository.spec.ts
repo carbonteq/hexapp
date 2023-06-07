@@ -18,13 +18,13 @@ describe('test repository', () => {
     it('on fetch', async () => {
       const res = await repo.fetchById(ent1.Id);
 
-      expect(res.into()).toEqual(ent1.serialize());
+      expect(res.unwrap()).toEqual(ent1.serialize());
     });
 
     it('on insert', async () => {
       const res = await repo.insert(ent2);
 
-      expect(res.into()).toBe(ent2);
+      expect(res.unwrap()).toBe(ent2);
     });
 
     it('on update', async () => {
@@ -33,7 +33,7 @@ describe('test repository', () => {
 
       const res = await repo.update(ent1Changed);
 
-      const entReturned = res.into();
+      const entReturned = res.unwrap();
 
       expect(entReturned).toBe(ent1Changed);
       expect(entReturned?.Id).toBe(ent1.Id);
@@ -43,7 +43,7 @@ describe('test repository', () => {
     it('on delete', async () => {
       const res = await repo.deleteById(ent1.Id);
 
-      expect(res.into()).toEqual(ent1.serialize());
+      expect(res.unwrap()).toEqual(ent1.serialize());
     });
   });
 

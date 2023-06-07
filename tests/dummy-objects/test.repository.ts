@@ -1,18 +1,16 @@
+import { MockRepository, NotFoundError, RepositoryResult } from '../../lib';
 import { TestEntity } from './test.entity';
 import { Result } from '@carbonteq/fp';
-import {
-  DatabaseConnectivityError,
-  MockRepository,
-  RepositoryResult,
-  // } from '../../lib';
-} from '@carbonteq/hexapp';
+import { InvalidOperation } from '@carbonteq/hexapp';
+
+export class DummyRepoError extends NotFoundError {
+  constructor() {
+    super('dummy not found error');
+  }
+}
 
 export class DummyTestRepository extends MockRepository<TestEntity> {
-  fetchAll(): Promise<
-    RepositoryResult<TestEntity[], DatabaseConnectivityError>
-  > {
-    return Promise.resolve(
-      Result.Err(new DatabaseConnectivityError("couldn't connect to database")),
-    );
+  fetchAll(): Promise<RepositoryResult<TestEntity[]>> {
+    return Promise.resolve(Result.Err(new DummyRepoError()));
   }
 }

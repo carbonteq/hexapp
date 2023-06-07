@@ -1,5 +1,4 @@
-// import { BaseEntity, IEntity } from '../../lib';
-import { BaseEntity, IEntity } from '@carbonteq/hexapp';
+import { BaseEntity, IEntity } from '../../lib';
 import { randomInt } from 'node:crypto';
 
 export interface ITestEntity extends IEntity {
