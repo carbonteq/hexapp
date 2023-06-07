@@ -1,5 +1,11 @@
 # @carbonteq/hexapp
 
+## 0.12.0
+
+### Minor Changes
+
+- 56b595c: Use @carbonteq/fp instead of oxide
+
 ## 0.11.0
 
 ### Minor Changes
