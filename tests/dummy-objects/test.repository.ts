@@ -1,21 +1,16 @@
-import { Err } from 'oxide.ts';
-import {
-	MockRepository,
-	DatabaseConnectivityError,
-	RepositoryResult,
-} from '../../lib';
+import { MockRepository, NotFoundError, RepositoryResult } from '../../lib';
 import { TestEntity } from './test.entity';
+import { Result } from '@carbonteq/fp';
+import { InvalidOperation } from '@carbonteq/hexapp';
+
+export class DummyRepoError extends NotFoundError {
+  constructor() {
+    super('dummy not found error');
+  }
+}
 
 export class DummyTestRepository extends MockRepository<TestEntity> {
-	constructor() {
-		super();
-	}
-
-	fetchAll(): Promise<
-		RepositoryResult<TestEntity[], DatabaseConnectivityError>
-	> {
-		return Promise.resolve(
-			Err(new DatabaseConnectivityError("couldn't connect to database")),
-		);
-	}
+  fetchAll(): Promise<RepositoryResult<TestEntity[]>> {
+    return Promise.resolve(Result.Err(new DummyRepoError()));
+  }
 }

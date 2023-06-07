@@ -1,3 +1,3 @@
 export abstract class BaseValueObject<T> {
-	public abstract serialize(): T;
+  public abstract serialize(): T;
 }

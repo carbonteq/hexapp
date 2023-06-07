@@ -1,185 +1,144 @@
-import { Unit, Monadic } from '@carbonteq/hexapp/shared';
-import { Err, Ok, Result } from 'oxide.ts';
 import { AppError } from './error';
+import { Result } from '@carbonteq/fp';
+import { TUnit, UNIT } from '@carbonteq/hexapp/shared';
 
 type InnerResult<T> = Result<T, AppError>;
 
-type ErrTransformer = (err: Error) => AppError;
-const DefaultMapErrOp: ErrTransformer = (err: Error) => {
-	return AppError.fromErr(err);
-};
+// type ErrTransformer = (err: Error) => AppError;
+// const DefaultMapErrOp: ErrTransformer = (err: Error) => {
+// 	return AppError.fromErr(err);
+// };
 
-export type EmptyResult = typeof AppResult.Empty;
+export type EmptyResult = typeof AppResult.EMPTY;
 
 export class AppResult<T> {
-	readonly _isOk: boolean;
+  readonly _isOk: boolean;
 
-	static readonly Empty: AppResult<Unit> = AppResult.Ok({});
+  static readonly EMPTY: AppResult<TUnit> = AppResult.Ok(UNIT);
 
-	private constructor(private readonly inner_result: InnerResult<T>) {
-		this._isOk = inner_result.isOk();
-	}
+  private constructor(private readonly inner_result: InnerResult<T>) {
+    this._isOk = inner_result.isOk();
+  }
 
-	isOk(): boolean {
-		return this.inner_result.isOk();
-	}
+  isOk(): this is AppResult<T> {
+    return this.inner_result.isOk();
+  }
 
-	isErr(): this is AppResult<never> {
-		return this.inner_result.isErr();
-	}
+  isErr(): this is AppResult<never> {
+    return this.inner_result.isErr();
+  }
 
-	static Ok<T>(val: T): AppResult<T> {
-		return new AppResult(Ok(val));
-	}
+  static Ok<T>(val: T): AppResult<T> {
+    return new AppResult(Result.Ok(val));
+  }
 
-	static Err(err: AppError): AppResult<never> {
-		return new AppResult<never>(Err(err));
-	}
+  static Err(err: Error): AppResult<never> {
+    const e = AppError.fromErr(err);
 
-	static fromResult<T, E extends Error>(result: Result<T, E>): AppResult<T> {
-		const r = result.mapErr((e) => AppError.fromErr(e));
+    return new AppResult<never>(Result.Err(e));
+  }
 
-		return new AppResult(r);
-	}
+  static fromResult<T, E extends Error>(result: Result<T, E>): AppResult<T> {
+    const r = result.mapErr((e) => AppError.fromErr(e));
 
-	toResult(): Result<T, AppError> {
-		return this.inner_result;
-	}
+    return new AppResult(r);
+  }
 
-	and<U>(other: AppResult<U>): AppResult<readonly [T, U]> {
-		const r = Monadic.bind(this.inner_result, (t) =>
-			other.inner_result.map((u) => [t, u] as const),
-		);
+  toResult(): Result<T, AppError> {
+    return this.inner_result;
+  }
 
-		return new AppResult(r);
-	}
+  and<U>(other: AppResult<U>): AppResult<readonly [T, U]> {
+    return new AppResult(this.inner_result.and(other.inner_result));
+  }
 
-	do(f: (val: T) => void): void {
-		Monadic.do(this.inner_result, f);
-	}
+  do(f: (val: T) => void): AppResult<T> {
+    this.inner_result.do(f);
 
-	async doAsync(f: (val: T) => Promise<void>) {
-		await Monadic.doAsync(this.inner_result, f);
-	}
+    return this;
+  }
 
-	static fromOther<T>(result: AppResult<T>): AppResult<T> {
-		return new AppResult(result.inner_result);
-	}
+  async doAsync(f: (val: T) => Promise<void>): Promise<AppResult<T>> {
+    await this.inner_result.doAsync(f);
 
-	static fromErr(err: Error): AppResult<never> {
-		const e = AppError.fromErr(err);
+    return this;
+  }
 
-		return new AppResult(Err(e));
-	}
+  static fromOther<T>(result: AppResult<T>): AppResult<T> {
+    return new AppResult(result.inner_result);
+  }
 
-	zipF<U>(f: (r: T) => Result<U, AppError>): AppResult<[T, U]> {
-		const zipped = Monadic.zipF(this.inner_result, f);
+  zipF<U>(f: (r: T) => Result<U, AppError>): AppResult<[T, U]> {
+    return new AppResult(this.inner_result.zipF(f));
+  }
 
-		return new AppResult(zipped);
-	}
+  async zipFAsync<U>(
+    f: (r: T) => Promise<Result<U, AppError>>,
+  ): Promise<AppResult<[T, U]>> {
+    return this.inner_result.zipFAsync(f).then((r) => new AppResult(r));
+  }
 
-	async zipFAsync<U>(
-		f: (r: T) => Promise<Result<U, AppError>>,
-	): Promise<AppResult<[T, U]>> {
-		const zipped = await Monadic.zipFAsync(this.inner_result, f);
+  bind<U>(f: (r: T) => Result<U, AppError>): AppResult<U> {
+    return new AppResult(this.inner_result.bind(f));
+  }
 
-		return new AppResult(zipped);
-	}
+  async bindAsync<U>(
+    f: (r: T) => Promise<Result<U, AppError>>,
+  ): Promise<AppResult<U>> {
+    return this.inner_result.bind(f).then((r) => new AppResult(r));
+  }
 
-	bind<U>(f: (r: T) => Result<U, AppError>): AppResult<U> {
-		const r = Monadic.bind(this.inner_result, f);
+  unwrap(): T {
+    return this.inner_result.unwrap();
+  }
 
-		return new AppResult(r);
-	}
+  unwrapErr(): AppError {
+    return this.inner_result.unwrapErr();
+  }
 
-	async bindAsync<U>(
-		f: (r: T) => Promise<Result<U, AppError>>,
-	): Promise<AppResult<U>> {
-		const r = await Monadic.bindAsync(this.inner_result, f);
+  unwrapOr(def: T): T {
+    return this.inner_result.unwrapOr(def);
+  }
 
-		return new AppResult(r);
-	}
+  unwrapOrElse(fn: () => T): T;
+  unwrapOrElse(fn: () => Promise<T>): Promise<T>;
+  unwrapOrElse(fn: () => T | Promise<T>): T | Promise<T> {
+    return this.inner_result.unwrapOrElse(fn as () => T); // type patch
+  }
 
-	static tryFrom<T>(
-		fn: () => T extends PromiseLike<any> ? never : T,
-		errTransformer?: ErrTransformer,
-	): AppResult<T> {
-		const errMapper = errTransformer ?? DefaultMapErrOp;
+  map<U>(fn: (val: T) => U): AppResult<U> {
+    const newResult = this.inner_result.map(fn);
 
-		try {
-			const val = fn();
-			return AppResult.Ok(val);
-		} catch (err) {
-			return AppResult.Err(errMapper(err as Error));
-		}
-	}
+    return new AppResult(newResult);
+  }
 
-	static async tryFromPromise<T>(
-		promise: Promise<T>,
-		errTransformer?: ErrTransformer,
-	): Promise<AppResult<T>> {
-		const errMapper = errTransformer ?? DefaultMapErrOp;
+  mapErr(fn: (err: AppError) => AppError): AppResult<T> {
+    return new AppResult(this.inner_result.mapErr(fn));
+  }
 
-		try {
-			const val = await promise;
-			return AppResult.Ok(val);
-		} catch (err) {
-			const mappedErr = errMapper(err as Error); // convert the error to the appropriate domain error (if u want)
-			const res = Err(mappedErr); // create an app error from it
-			return new AppResult(res); // use to construct an AppResult
-		}
-	}
-
-	unwrap(): T {
-		// have to add conditional so that the right type of error is thrown
-		if (this.inner_result.isOk()) {
-			return this.inner_result.unwrap();
-		} else {
-			throw this.inner_result.unwrapErr();
-		}
-	}
-
-	unwrapOr(def: T): T {
-		return this.inner_result.unwrapOr(def);
-	}
-
-	unwrapErr(): AppError {
-		return this.inner_result.unwrapErr();
-	}
-
-	unwrapOrElse(fn: () => T): T {
-		return this.inner_result.unwrapOrElse(fn);
-	}
-
-	map<U>(fn: (val: T) => U): AppResult<U> {
-		const newResult = this.inner_result.map(fn);
-
-		return new AppResult(newResult);
-	}
-
-	into(): T | undefined {
-		return this.inner_result.into();
-	}
+  safeUnwrap(): T | null {
+    return this.inner_result.safeUnwrap();
+  }
 }
 
-export const toAppResult = <TRet>(
-	_target: any,
-	_propertyKey: string,
-	descriptor: TypedPropertyDescriptor<(...args: any[]) => TRet>,
-) => {
-	const original = descriptor.value;
-
-	if (original) {
-		// @ts-ignore
-		descriptor.value = function(...args: any[]) {
-			try {
-				const r = original.call(this, ...args);
-
-				return AppResult.Ok(r);
-			} catch (err) {
-				const e = AppError.fromErr(err as Error);
-				return AppResult.Err(e);
-			}
-		};
-	}
-};
+// export const toAppResult = <TRet>(
+// 	_target: any,
+// 	_propertyKey: string,
+// 	descriptor: TypedPropertyDescriptor<(...args: any[]) => TRet>,
+// ) => {
+// 	const original = descriptor.value;
+//
+// 	if (original) {
+// 		// @ts-ignore
+// 		descriptor.value = function (...args: any[]) {
+// 			try {
+// 				const r = original.call(this, ...args);
+//
+// 				return AppResult.Ok(r);
+// 			} catch (err) {
+// 				const e = AppError.fromErr(err as Error);
+// 				return AppResult.Err(e);
+// 			}
+// 		};
+// 	}
+// };

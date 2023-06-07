@@ -1,19 +1,20 @@
-import { AppResult } from '@carbonteq/hexapp/app/result';
-import { ResultType } from 'oxide.ts/dist/result';
+import type { AppResult } from '..//app/result';
+import type { Result } from '@carbonteq/fp';
 
 export type EmptyObject = Record<string, never>;
-export type Unit = EmptyObject;
+export const UNIT = Symbol('EMPTY');
+export type TUnit = typeof UNIT;
 
-export type UnitResult<E = never> = ResultType<Unit, E>;
+export type UnitResult<E = never> = Result<TUnit, E>;
 
 export type JsonValue =
-	| string
-	| number
-	| boolean
-	| null
-	| Date
-	| JsonValue[]
-	| { [k: string]: JsonValue }; // JsonObject
+  | string
+  | number
+  | boolean
+  | null
+  | Date
+  | JsonValue[]
+  | { [k: string]: JsonValue }; // JsonObject
 
 export type JsonObject = { [x: string]: JsonValue };
 
@@ -23,15 +24,14 @@ export type PartialBy<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>;
 
 export type Constructable<T> = new (...args: unknown[]) => T;
 
-export type ExtractAppResultType<U extends AppResult<any>> =
-	U extends AppResult<infer X> ? X : never;
+export type ExtractAppResultType<U> = U extends AppResult<infer X> ? X : never;
 
 export type IterType<T> = T extends { [Symbol.iterator](): infer I }
-	? I
-	: unknown;
+  ? I
+  : unknown;
 
 export type InferAppResult<
-	T extends (...args: any[]) => Promise<AppResult<any>>,
+  T extends (...args: any[]) => Promise<AppResult<any>>,
 > = ExtractAppResultType<Awaited<ReturnType<T>>>;
 
 // BETTER TO COMPOSE THE UTILITIES LISTED ABOVE
@@ -54,7 +54,7 @@ export type InferAppResult<
  * @param x {never} - This is a type that should never be used. It is used to ensure that the switch statement is exhaustive.
  */
 export const assertUnreachable = (x: never): never => {
-	throw new Error(`Unexpected object: ${x}`);
+  throw new Error(`Unexpected object: ${x}`);
 };
 
 /**
