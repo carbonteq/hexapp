@@ -1,61 +1,33 @@
-import { Ok, Err, Result } from 'oxide.ts';
+import { Result } from '@carbonteq/fp';
 import type { ZodError } from 'zod';
 
 import { DtoValidationError } from './dto.error';
 
-export class DtoValidationResult<T> {
-  private inner_result: Result<T, DtoValidationError>;
+export type DtoValidationResult<T> = Result<T, DtoValidationError>;
 
-  private constructor(result: Result<T, DtoValidationError>) {
-    this.inner_result = result;
-  }
+// export namespace DtoValidationResult {
+export const fromVal = <X>(val: X): DtoValidationResult<X> => Result.Ok(val);
 
-  /**
-   * Throws DtoValidationError
-   *
-   * @throws {DtoValidationError}
-   */
-  unwrap(): T {
-    if (this.inner_result.isOk()) {
-      return this.inner_result.unwrap();
-    } else {
-      const e = this.inner_result.unwrapErr();
-      throw e;
-    }
-  }
+export const fromZodErr = (err: ZodError): DtoValidationResult<never> =>
+  Result.Err(DtoValidationError.fromZodError(err));
+// }
 
-  unwrapErr(): DtoValidationError {
-    return this.inner_result.unwrapErr();
-  }
-
-  map<U>(f: (val: T) => U): DtoValidationResult<U> {
-    const res = this.inner_result.map(f);
-
-    return new DtoValidationResult(res);
-  }
-
-  isOk(): this is DtoValidationResult<T> {
-    return this.inner_result.isOk();
-  }
-
-  isErr(): this is DtoValidationResult<never> {
-    return this.inner_result.isErr();
-  }
-
-  toResult(): Result<T, DtoValidationError> {
-    return this.inner_result;
-  }
-
-  static fromVal<X>(val: X): DtoValidationResult<X> {
-    return new DtoValidationResult(Ok(val));
-  }
-
-  static fromZodError(err: ZodError): DtoValidationResult<never> {
-    const e = Err(DtoValidationError.fromZodError(err));
-    return new DtoValidationResult(e);
-  }
-
-  static fromErr(err: DtoValidationError): DtoValidationResult<never> {
-    return new DtoValidationResult(Err(err));
-  }
-}
+// export class DtoValidationResult<T> extends Result<T, DtoValidationError> {
+// 	static fromVal<X>(val: X): DtoValidationResult<X> {
+// 		return Result.Ok(val);
+// 	}
+//
+// 	static fromZodErr(err: ZodError): DtoValidationResult<never> {
+// 		return Result.Err(DtoValidationError.fromZodError(err));
+// 	}
+//
+// 	// toString(): string {
+// 	//   const v = this.safeUnwrap()
+// 	//   const e = this.safeUnwrapErr()
+// 	//
+// 	//   if(v !== null){
+// 	//     const x = v
+// 	//     // return `DtoValidationResult::Ok<${v.name ? v.name : v}>`
+// 	//   }
+// 	// }
+// }

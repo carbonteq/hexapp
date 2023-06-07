@@ -1,50 +1,51 @@
-import { BaseEntity, IEntity } from '../../lib';
+// import { BaseEntity, IEntity } from '../../lib';
+import { BaseEntity, IEntity } from '@carbonteq/hexapp';
 import { randomInt } from 'node:crypto';
 
 export interface ITestEntity extends IEntity {
-	random: number;
+  random: number;
 }
 
 export class TestEntity extends BaseEntity implements ITestEntity {
-	static readonly MAX_RANDOM = 42;
-	static readonly MIN_RANDOM = 13;
+  static readonly MAX_RANDOM = 42;
+  static readonly MIN_RANDOM = 13;
 
-	private _random: number; // as `random` is public, it must be readonly to prevent tampering from outside
+  private _random: number; // as `random` is public, it must be readonly to prevent tampering from outside
 
-	private constructor(opts?: ITestEntity) {
-		super(opts);
+  private constructor(opts?: ITestEntity) {
+    super(opts);
 
-		this._random = opts?.random ?? TestEntity.getRandomNumber();
-	}
+    this._random = opts?.random ?? TestEntity.getRandomNumber();
+  }
 
-	private static getRandomNumber(): number {
-		return randomInt(TestEntity.MIN_RANDOM, TestEntity.MAX_RANDOM + 1);
-	}
+  private static getRandomNumber(): number {
+    return randomInt(TestEntity.MIN_RANDOM, TestEntity.MAX_RANDOM + 1);
+  }
 
-	static create(): TestEntity {
-		return new TestEntity();
-	}
+  static create(): TestEntity {
+    return new TestEntity();
+  }
 
-	static from(other: ITestEntity): TestEntity {
-		return new TestEntity(other);
-	}
+  static from(other: ITestEntity): TestEntity {
+    return new TestEntity(other);
+  }
 
-	get random() {
-		return this._random;
-	}
+  get random() {
+    return this._random;
+  }
 
-	set random(num) {
-		this._random = num;
+  set random(num) {
+    this._random = num;
 
-		this.markUpdated();
-	}
+    this.markUpdated();
+  }
 
-	updateRandomly() {
-		this._random = TestEntity.getRandomNumber();
-		this.markUpdated();
-	}
+  updateRandomly() {
+    this._random = TestEntity.getRandomNumber();
+    this.markUpdated();
+  }
 
-	serialize(): ITestEntity {
-		return { ...super._serialize(), random: this._random };
-	}
+  serialize(): ITestEntity {
+    return { ...super._serialize(), random: this._random };
+  }
 }
