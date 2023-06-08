@@ -1,5 +1,11 @@
 # @carbonteq/hexapp
 
+## 0.12.1
+
+### Patch Changes
+
+- 65fa1fb: Add UUID value object
+
 ## 0.12.0
 
 ### Minor Changes
