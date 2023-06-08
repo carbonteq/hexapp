@@ -1,4 +1,4 @@
-import { SerializedEntity, BaseEntity, IEntity } from '../../lib';
+import { BaseEntity, IEntity, SerializedEntity } from '../../lib';
 import { randomInt } from 'node:crypto';
 
 export interface ITestEntity extends IEntity {
