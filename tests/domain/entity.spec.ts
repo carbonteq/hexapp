@@ -1,6 +1,6 @@
+import { UUIDVo } from '../../lib';
 import { ITestEntity, TestEntity } from '../dummy-objects/test.entity';
 import 'jest-extended';
-import { UUIDVo } from '../../lib';
 import { setTimeout } from 'node:timers/promises';
 
 const getCurrentDate = () => new Date();
