@@ -1,5 +1,5 @@
 import { BaseEntity } from './base.entity';
-import { AlreadyExistsError, NotFoundError } from './base.exception';
+import { AlreadyExistsError, NotFoundError } from './base.errors';
 import { BaseRepository, RepositoryResult } from './base.repository';
 import { Result } from '@carbonteq/fp';
 

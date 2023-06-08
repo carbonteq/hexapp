@@ -1,8 +1,14 @@
-import type { DateTime } from './types';
+import type { DateTime, UUIDStr } from './types';
 import { UUIDVo } from './valueObjects/uuid.vo';
 
 export interface IEntity {
   readonly Id: UUIDVo;
+  readonly createdAt: DateTime;
+  readonly updatedAt: DateTime;
+}
+
+export interface SerializedEntity {
+  readonly Id: UUIDStr;
   readonly createdAt: DateTime;
   readonly updatedAt: DateTime;
 }
@@ -14,10 +20,14 @@ export abstract class BaseEntity implements IEntity {
   private _createdAt: DateTime;
   private _updatedAt: DateTime;
 
-  protected constructor(opts?: Partial<IEntity>) {
-    this._id = opts?.Id ?? UUIDVo.new();
-    this._createdAt = opts?.createdAt ?? new Date();
-    this._updatedAt = opts?.updatedAt ?? this.createdAt; // equals createdAt by default
+  protected constructor() {
+    // this._id = opts?.Id ?? UUIDVo.new();
+    // this._createdAt = opts?.createdAt ?? new Date();
+    // this._updatedAt = opts?.updatedAt ?? this.createdAt; // equals createdAt by default
+
+    this._id = UUIDVo.new();
+    this._createdAt = new Date();
+    this._updatedAt = this._createdAt;
   }
 
   get Id(): UUIDVo {
@@ -40,15 +50,22 @@ export abstract class BaseEntity implements IEntity {
     return { updatedAt: this._updatedAt };
   }
 
+  // for construction within safe boundaries of the domain
   protected _copyBaseProps(other: IEntity) {
     this._id = other.Id;
     this._createdAt = other.createdAt;
     this._updatedAt = other.updatedAt;
   }
 
-  protected _serialize(): IEntity {
+  protected _fromSerialized(other: SerializedEntity) {
+    this._id = UUIDVo.fromStrNoValidation(other.Id);
+    this._createdAt = other.createdAt;
+    this._updatedAt = other.updatedAt;
+  }
+
+  protected _serialize(): SerializedEntity {
     return {
-      Id: this.Id,
+      Id: this.Id.serialize(),
       createdAt: this.createdAt,
       updatedAt: this.updatedAt,
     };

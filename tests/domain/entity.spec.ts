@@ -1,5 +1,9 @@
 import { UUIDVo } from '../../lib';
-import { ITestEntity, TestEntity } from '../dummy-objects/test.entity';
+import {
+  ITestEntity,
+  TestEntity,
+  TestEntitySerialized,
+} from '../dummy-objects/test.entity';
 import 'jest-extended';
 import { setTimeout } from 'node:timers/promises';
 
@@ -26,10 +30,10 @@ describe('base entity', () => {
       expect(ent.updatedAt).toEqual(ent.createdAt);
     });
 
-    it('serialize method returns IEntity object', () => {
+    it('serialize method returns SerializedEntity object', () => {
       const serializedEnt = ent.serialize();
-      const expectedObj: ITestEntity = {
-        Id: ent.Id,
+      const expectedObj: TestEntitySerialized = {
+        Id: ent.Id.serialize(),
         createdAt: ent.createdAt,
         updatedAt: ent.updatedAt,
         random: ent.random,
@@ -49,7 +53,7 @@ describe('base entity', () => {
   });
 
   describe('create with given data (like in a repo)', () => {
-    const Id = 'abc';
+    const Id = UUIDVo.new();
     const random = 23;
     const createdAt = getCurrentDate();
     const updatedAt = getCurrentDate();

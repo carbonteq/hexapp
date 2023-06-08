@@ -1,7 +1,11 @@
-import { BaseEntity, IEntity } from '../../lib';
+import { BaseEntity, IEntity, SerializedEntity } from '../../lib';
 import { randomInt } from 'node:crypto';
 
 export interface ITestEntity extends IEntity {
+  random: number;
+}
+
+export interface TestEntitySerialized extends SerializedEntity {
   random: number;
 }
 
@@ -12,7 +16,7 @@ export class TestEntity extends BaseEntity implements ITestEntity {
   private _random: number; // as `random` is public, it must be readonly to prevent tampering from outside
 
   private constructor(opts?: ITestEntity) {
-    super(opts);
+    super();
 
     this._random = opts?.random ?? TestEntity.getRandomNumber();
   }
@@ -26,7 +30,9 @@ export class TestEntity extends BaseEntity implements ITestEntity {
   }
 
   static from(other: ITestEntity): TestEntity {
-    return new TestEntity(other);
+    const e = new TestEntity(other);
+    e._copyBaseProps(other);
+    return e;
   }
 
   get random() {
@@ -44,7 +50,7 @@ export class TestEntity extends BaseEntity implements ITestEntity {
     this.markUpdated();
   }
 
-  serialize(): ITestEntity {
+  serialize(): TestEntitySerialized {
     return { ...super._serialize(), random: this._random };
   }
 }

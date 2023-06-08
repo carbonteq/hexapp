@@ -1,10 +1,19 @@
+import { Result } from '@carbonteq/fp';
 import { z } from 'zod';
 
 export class ZodUtils {
-  static readonly BUFFER_SCHEMA = z.custom<Buffer>(
-    (data: unknown) => Buffer.isBuffer(data),
-    { message: 'Buffer expected' },
-  );
+  static safeParseResult<E, T = unknown, U extends z.ZodType<T> = z.ZodType<T>>(
+    schema: U,
+    data: unknown,
+    errConst: (err: z.ZodError) => E,
+  ): Result<z.infer<U>, E> {
+    const r = schema.safeParse(data);
 
-  static readonly UUID_SCHEMA = z.string().uuid();
+    if (r.success) {
+      return Result.Ok(r.data);
+    } else {
+      const err = errConst(r.error);
+      return Result.Err(err);
+    }
+  }
 }

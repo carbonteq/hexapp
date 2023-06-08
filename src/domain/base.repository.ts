@@ -3,7 +3,7 @@ import {
   AlreadyExistsError,
   InvalidOperation,
   NotFoundError,
-} from './base.exception';
+} from './base.errors';
 import { Result } from '@carbonteq/fp';
 
 export type RepositoryError =

@@ -1,4 +1,4 @@
-import { AppError, AppResult } from '@carbonteq/hexapp/app';
+import { AppError, AppResult } from '../app';
 import type { RequestHandler } from 'express';
 
 export type AppResultErrorTransformer<E> = (err: AppError) => E;
