@@ -1,5 +1,11 @@
 # @carbonteq/hexapp
 
+## 0.12.3
+
+### Patch Changes
+
+- 57b3369: Use unit from @ct/fp and add Omitt type util
+
 ## 0.12.2
 
 ### Patch Changes
