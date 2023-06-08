@@ -1,5 +1,6 @@
 import { ITestEntity, TestEntity } from '../dummy-objects/test.entity';
 import 'jest-extended';
+import { UUIDVo } from '../../lib';
 import { setTimeout } from 'node:timers/promises';
 
 const getCurrentDate = () => new Date();
@@ -14,7 +15,7 @@ describe('base entity', () => {
 
     it('base entity props are present and of correct type', () => {
       expect(ent.Id).toBeDefined();
-      expect(ent.Id).toBeString();
+      expect(ent.Id).toBeInstanceOf(UUIDVo);
 
       expect(ent.createdAt).toBeDefined();
       expect(ent.createdAt).toBeDate();
