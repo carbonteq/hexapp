@@ -1,8 +1,8 @@
-import type { DateTime, UUID } from './types';
-import { randomUUID } from 'node:crypto';
+import type { DateTime } from './types';
+import { UUIDVo } from './valueObjects/uuid.vo';
 
 export interface IEntity {
-  readonly Id: UUID;
+  readonly Id: UUIDVo;
   readonly createdAt: DateTime;
   readonly updatedAt: DateTime;
 }
@@ -10,17 +10,17 @@ export interface IEntity {
 export type IEntityForUpdate = Pick<IEntity, 'updatedAt'>;
 
 export abstract class BaseEntity implements IEntity {
-  private _id: UUID = randomUUID();
+  private _id: UUIDVo = UUIDVo.new();
   private _createdAt: DateTime;
   private _updatedAt: DateTime;
 
   protected constructor(opts?: Partial<IEntity>) {
-    this._id = opts?.Id ?? randomUUID();
+    this._id = opts?.Id ?? UUIDVo.new();
     this._createdAt = opts?.createdAt ?? new Date();
     this._updatedAt = opts?.updatedAt ?? this.createdAt; // equals createdAt by default
   }
 
-  get Id(): UUID {
+  get Id(): UUIDVo {
     return this._id;
   }
 

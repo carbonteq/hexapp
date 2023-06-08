@@ -5,4 +5,6 @@ export class ZodUtils {
     (data: unknown) => Buffer.isBuffer(data),
     { message: 'Buffer expected' },
   );
+
+  static readonly UUID_SCHEMA = z.string().uuid();
 }

@@ -20,7 +20,7 @@ export type RepositoryResult<T, E = CommonRepoErrors> = Result<
 
 export abstract class BaseRepository<T extends BaseEntity> {
   abstract fetchById(
-    Id: BaseEntity['Id'],
+    id: BaseEntity['Id'],
   ): Promise<RepositoryResult<T, NotFoundError>>;
 
   abstract fetchAll(): Promise<RepositoryResult<T[]>>;
@@ -52,15 +52,15 @@ export abstract class BaseRepositoryExtended<
     val: T[U],
   ): Promise<RepositoryResult<T, NotFoundError>>;
 
-  async fetchById(Id: T['Id']): Promise<RepositoryResult<T, NotFoundError>> {
-    return await this.fetchBy('Id', Id);
+  async fetchById(id: T['Id']): Promise<RepositoryResult<T, NotFoundError>> {
+    return await this.fetchBy('Id', id);
   }
 
-  async existsById(Id: T['Id']): Promise<RepositoryResult<boolean>> {
-    return await this.existsBy('Id', Id);
+  async existsById(id: T['Id']): Promise<RepositoryResult<boolean>> {
+    return await this.existsBy('Id', id);
   }
 
-  async deleteById(Id: T['Id']): Promise<RepositoryResult<T, NotFoundError>> {
-    return await this.deleteBy('Id', Id);
+  async deleteById(id: T['Id']): Promise<RepositoryResult<T, NotFoundError>> {
+    return await this.deleteBy('Id', id);
   }
 }

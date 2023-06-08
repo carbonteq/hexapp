@@ -1,4 +1,4 @@
-import type { UUID } from './types';
+import { UUIDVo } from './valueObjects/uuid.vo';
 
 class DomainError extends Error {
   protected constructor(msg: string) {
@@ -20,11 +20,11 @@ export class RelationNotFoundError extends NotFoundError {
   constructor(
     childEntName: string,
     parentEntName: string,
-    childId: UUID,
-    parentId: UUID,
+    childId: UUIDVo,
+    parentId: UUIDVo,
   ) {
     super(
-      `${childEntName} <ID: ${childId}> does not exists for ${parentEntName} <ID: ${parentId}>`,
+      `${childEntName} <${childId.toString()}> does not exists for ${parentEntName} <${parentId.toString()}>`,
     );
   }
 }
@@ -33,7 +33,9 @@ export class UnauthorizedOperation extends DomainError {}
 
 export class InvalidOperation extends DomainError {}
 
-export class ValidationError extends DomainError {
+export class ValidationError extends DomainError {}
+
+export class FieldValidationError extends ValidationError {
   constructor(field: string, value: string, message = '') {
     super(`Validation failed for <${field} = ${value}> ${message}`);
   }
@@ -48,4 +50,5 @@ export type DomainErr =
   | InvalidOperation
   | NotFoundError
   | UnauthorizedOperation
-  | ValidationError;
+  | ValidationError
+  | FieldValidationError;
