@@ -1,5 +1,11 @@
 # @carbonteq/hexapp
 
+## 0.13.0
+
+### Minor Changes
+
+- 28a5cf2: Add ValueObjects and Zod utilities
+
 ## 0.12.3
 
 ### Patch Changes
