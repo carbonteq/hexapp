@@ -1,5 +1,11 @@
 # @carbonteq/hexapp
 
+## 0.12.2
+
+### Patch Changes
+
+- a9a3455: Fix exports
+
 ## 0.12.1
 
 ### Patch Changes
