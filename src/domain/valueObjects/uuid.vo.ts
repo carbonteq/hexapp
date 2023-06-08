@@ -1,8 +1,8 @@
-import { Result } from '@carbonteq/fp';
-import { BaseValueObject } from './base.vo';
-import { randomUUID } from 'node:crypto';
 import { ValidationError } from '../base.exception';
+import { BaseValueObject } from './base.vo';
+import { Result } from '@carbonteq/fp';
 import { ZodUtils } from '@carbonteq/hexapp/shared/zod.utils';
+import { randomUUID } from 'node:crypto';
 
 export class InvalidUUIDError extends ValidationError {
   constructor(uuid_str: string) {
