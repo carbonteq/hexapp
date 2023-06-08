@@ -63,7 +63,7 @@
     "typescript": "^5.1.3"
   },
   "dependencies": {
-    "@carbonteq/fp": "^0.2.0",
+    "@carbonteq/fp": "^0.3.1",
     "zod": "^3.21.4"
   },
   "engines": {

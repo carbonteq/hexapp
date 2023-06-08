@@ -1,6 +1,5 @@
 import { AppError } from './error';
-import { Result } from '@carbonteq/fp';
-import { TUnit, UNIT } from '@carbonteq/hexapp/shared';
+import { Result, TUnit } from '@carbonteq/fp';
 
 type InnerResult<T> = Result<T, AppError>;
 
@@ -14,7 +13,7 @@ export type EmptyResult = typeof AppResult.EMPTY;
 export class AppResult<T> {
   readonly _isOk: boolean;
 
-  static readonly EMPTY: AppResult<TUnit> = AppResult.Ok(UNIT);
+  static readonly EMPTY: AppResult<TUnit> = new AppResult(Result.UNIT_RESULT);
 
   private constructor(private readonly inner_result: InnerResult<T>) {
     this._isOk = inner_result.isOk();

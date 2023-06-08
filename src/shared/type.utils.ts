@@ -1,13 +1,8 @@
 import type { AppResult } from '..//app/result';
-import type { Result } from '@carbonteq/fp';
 
 export type EmptyObject = Record<string, never>;
-export const UNIT = Symbol('EMPTY');
-export type TUnit = typeof UNIT;
 
-export type UnitResult<E = never> = Result<TUnit, E>;
-
-export type JsonValue =
+type JsonValue =
   | string
   | number
   | boolean
@@ -16,19 +11,20 @@ export type JsonValue =
   | JsonValue[]
   | { [k: string]: JsonValue }; // JsonObject
 
-export type JsonObject = { [x: string]: JsonValue };
-
-export type JsonGuard<T> = T extends JsonValue ? T : never;
+type JsonObject = { [x: string]: JsonValue };
+type JsonGuard<T> = T extends JsonValue ? T : never;
 
 export type PartialBy<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>;
+export type Omitt<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
 
 export type Constructable<T> = new (...args: unknown[]) => T;
 
 export type ExtractAppResultType<U> = U extends AppResult<infer X> ? X : never;
 
+export type ArrType<T> = T extends Array<infer R> ? R : never;
 export type IterType<T> = T extends { [Symbol.iterator](): infer I }
   ? I
-  : unknown;
+  : never;
 
 export type InferAppResult<
   T extends (...args: any[]) => Promise<AppResult<any>>,
