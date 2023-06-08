@@ -1,2 +1,3 @@
 export { BaseValueObject } from './base.vo';
-export { UUIDVo, InvalidUUIDError } from './uuid.vo';
+export { UUIDVo, InvalidUUID } from './uuid.vo';
+export { EmailVo, InvalidEmail } from './email.vo';

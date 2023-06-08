@@ -1,4 +1,3 @@
-import { AppErrStatus } from './status';
 import {
   AlreadyExistsError,
   ExternalServiceFailure,
@@ -6,7 +5,8 @@ import {
   NotFoundError,
   UnauthorizedOperation,
   ValidationError,
-} from '@carbonteq/hexapp/domain/base.exception';
+} from '../../domain/base.errors';
+import { AppErrStatus } from './status';
 
 export class AppError extends Error {
   private constructor(readonly status: AppErrStatus, message?: string) {

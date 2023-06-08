@@ -1,17 +1,18 @@
-import { ValidationError } from '../base.exception';
+import { ZodUtils } from '../../shared/zod.utils';
+import { ValidationError } from '../base.errors';
 import { BaseValueObject } from './base.vo';
 import { Result } from '@carbonteq/fp';
-import { ZodUtils } from '@carbonteq/hexapp/shared/zod.utils';
 import { randomUUID } from 'node:crypto';
+import { z } from 'zod';
 
-export class InvalidUUIDError extends ValidationError {
+export class InvalidUUID extends ValidationError {
   constructor(uuid_str: string) {
     super(`Invalid UUID <${uuid_str}>`);
   }
 }
 
 export class UUIDVo extends BaseValueObject<string> {
-  private constructor(private readonly uuid_str: string) {
+  private constructor(private readonly uuid: string) {
     super();
   }
 
@@ -21,25 +22,24 @@ export class UUIDVo extends BaseValueObject<string> {
     return new UUIDVo(uuid_str);
   }
 
-  static from_str_no_validation(uuid: string): UUIDVo {
+  static fromStrNoValidation(uuid: string): UUIDVo {
     return new UUIDVo(uuid);
   }
 
-  static from_str(uuid_candidate: string): Result<UUIDVo, InvalidUUIDError> {
-    const validationResult = ZodUtils.UUID_SCHEMA.safeParse(uuid_candidate);
-
-    if (validationResult.success) {
-      return Result.Ok(new UUIDVo(uuid_candidate));
-    } else {
-      return Result.Err(new InvalidUUIDError(uuid_candidate));
-    }
+  static fromStr(uuidCandidate: string): Result<UUIDVo, InvalidUUID> {
+    return ZodUtils.safeParseResult(
+      UUID_SCHEMA,
+      uuidCandidate,
+      (_) => new InvalidUUID(uuidCandidate),
+    );
   }
 
   serialize(): string {
-    return this.uuid_str;
-  }
-
-  toString(): string {
-    return `UUID<${this.uuid_str}>`;
+    return this.uuid;
   }
 }
+
+export const UUID_SCHEMA = z
+  .string()
+  .uuid()
+  .transform<UUIDVo>(UUIDVo.fromStrNoValidation);
