@@ -1,5 +1,11 @@
 # @carbonteq/hexapp
 
+## 0.13.1
+
+### Patch Changes
+
+- fc5bcb6: Update @carbonteq/fp version
+
 ## 0.13.0
 
 ### Minor Changes
