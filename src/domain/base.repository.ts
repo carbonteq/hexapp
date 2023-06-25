@@ -1,10 +1,10 @@
 import type { BaseEntity } from './base.entity';
-import {
+import type {
   AlreadyExistsError,
   InvalidOperation,
   NotFoundError,
 } from './base.errors';
-import { Result } from '@carbonteq/fp';
+import type { Result } from '@carbonteq/fp';
 
 export type RepositoryError =
   | NotFoundError
@@ -32,8 +32,6 @@ export abstract class BaseRepository<T extends BaseEntity> {
   abstract deleteById(
     Id: BaseEntity['Id'],
   ): Promise<RepositoryResult<T, NotFoundError>>;
-
-  abstract existsById(Id: BaseEntity['Id']): Promise<RepositoryResult<boolean>>;
 }
 
 export abstract class BaseRepositoryExtended<
@@ -54,10 +52,6 @@ export abstract class BaseRepositoryExtended<
 
   async fetchById(id: T['Id']): Promise<RepositoryResult<T, NotFoundError>> {
     return await this.fetchBy('Id', id);
-  }
-
-  async existsById(id: T['Id']): Promise<RepositoryResult<boolean>> {
-    return await this.existsBy('Id', id);
   }
 
   async deleteById(id: T['Id']): Promise<RepositoryResult<T, NotFoundError>> {
