@@ -1,5 +1,12 @@
 # @carbonteq/hexapp
 
+## 0.13.2
+
+### Patch Changes
+
+- 592ff0c: Remove existsById from BaseRepository
+- f76700d: Add JSON_SCHEMA to ZodSchemas
+
 ## 0.13.1
 
 ### Patch Changes
