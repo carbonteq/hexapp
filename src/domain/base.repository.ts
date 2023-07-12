@@ -4,6 +4,7 @@ import type {
   InvalidOperation,
   NotFoundError,
 } from './base.errors';
+import type { Paginated, PaginationOptions } from './pagination';
 import type { Result } from '@carbonteq/fp';
 
 export type RepositoryError =
@@ -24,6 +25,9 @@ export abstract class BaseRepository<T extends BaseEntity> {
   ): Promise<RepositoryResult<T, NotFoundError>>;
 
   abstract fetchAll(): Promise<RepositoryResult<T[]>>;
+  abstract fetchPaginated(
+    options: PaginationOptions,
+  ): Promise<RepositoryResult<Paginated<T>>>;
 
   abstract insert(entity: T): Promise<RepositoryResult<T, AlreadyExistsError>>;
 

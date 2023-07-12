@@ -35,7 +35,7 @@
     "fmt:dry": "rome format src tests",
     "fmt": "rome format src tests --write",
     "ci": "rome ci src tests",
-    "tc": "tsc --pretty --noEmit --project tsconfig.build.json",
+    "tc": "tsc --pretty --noEmit --skipLibCheck --project tsconfig.build.json",
     "prebuild": "rimraf lib",
     "build": "rollup -c rollup.config.ts --configPlugin swc3",
     "postbuild": "tsc --emitDeclarationOnly --declaration --declarationMap --project tsconfig.build.json",

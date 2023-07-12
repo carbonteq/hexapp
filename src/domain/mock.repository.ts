@@ -1,6 +1,7 @@
 import { BaseEntity } from './base.entity';
 import { AlreadyExistsError, NotFoundError } from './base.errors';
 import { BaseRepository, RepositoryResult } from './base.repository';
+import { Paginated, PaginationOptions } from './pagination';
 import { Result } from '@carbonteq/fp';
 
 export class MockNotFoundError extends NotFoundError {
@@ -15,12 +16,12 @@ export class MockAlreadyExistsError extends AlreadyExistsError {
   }
 }
 
-type GetSerialize<Ent extends BaseEntity> = ReturnType<Ent['serialize']>;
+type GetSerialized<Ent extends BaseEntity> = ReturnType<Ent['serialize']>;
 
 export abstract class MockRepository<
   T extends BaseEntity,
 > extends BaseRepository<T> {
-  db: Map<T['Id'], GetSerialize<T>>;
+  db: Map<T['Id'], GetSerialized<T>>;
 
   protected constructor() {
     super();
@@ -29,7 +30,7 @@ export abstract class MockRepository<
 
   fetchById(Id: T['Id']): Promise<RepositoryResult<T, MockNotFoundError>> {
     const optEnt = this.db.get(Id);
-    let res: Result<GetSerialize<T>, MockNotFoundError>;
+    let res: Result<GetSerialized<T>, MockNotFoundError>;
 
     if (optEnt) {
       res = Result.Ok(optEnt);
@@ -41,7 +42,7 @@ export abstract class MockRepository<
   }
 
   fetchAll(): Promise<RepositoryResult<T[]>> {
-    return Promise.resolve(Result.Ok(Object.values(this.db)));
+    return Promise.resolve(Result.Ok(Array.from(this.db.values())));
   }
 
   insert(entity: T): Promise<RepositoryResult<T, MockAlreadyExistsError>> {
@@ -55,6 +56,14 @@ export abstract class MockRepository<
     }
 
     return Promise.resolve(res);
+  }
+
+  fetchPaginated(
+    options: PaginationOptions,
+  ): Promise<RepositoryResult<Paginated<T>>> {
+    const all = Array.from(this.db.values());
+
+    return Promise.resolve(Result.Ok(Paginated.fromAll(all, options)));
   }
 
   update(entity: T): Promise<RepositoryResult<T, MockNotFoundError>> {

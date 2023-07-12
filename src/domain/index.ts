@@ -6,3 +6,8 @@ export * from './base.errors';
 export * from './base.logger';
 export * from './base.repository';
 export * from './mock.repository';
+export {
+  PaginationOptions,
+  Paginated,
+  PaginationOptionsValidationError,
+} from './pagination';
