@@ -10,6 +10,11 @@ type InnerResult<T> = Result<T, AppError>;
 
 export type EmptyResult = typeof AppResult.EMPTY;
 
+  /**
+ * AppResult is a monad that provides a clean way to return an object or error from your application layer.
+ *
+ * @template T - The type of the successful result.
+ */
 export class AppResult<T> {
   readonly _isOk: boolean;
 
@@ -37,6 +42,18 @@ export class AppResult<T> {
     return new AppResult<never>(Result.Err(e));
   }
 
+  /**
+ * Converts the Result monad into an AppResult.
+ *
+ * @template T - The type of the successful result.
+ * @template E - The type of the error.
+ * @param {Result<T, E>} result - The Result object to convert.
+ * @returns {AppResult<T>} - An AppResult object containing the transformed result.
+ *
+ * @example
+ * const person: Result<PersonModel, Error> = findPersonById(23);
+ * return AppResult.fromResult(person);
+ */
   static fromResult<T, E extends Error>(result: Result<T, E>): AppResult<T> {
     const r = result.mapErr((e) => AppError.fromErr(e));
 
