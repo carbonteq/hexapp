@@ -1,5 +1,16 @@
 # @carbonteq/hexapp
 
+## 0.14.0
+
+### Minor Changes
+
+- 375b949: Upgrade zod utils
+
+### Patch Changes
+
+- 06a705f: Pagination API RC
+- d0569b7: Update rollup to version 4
+
 ## 0.13.2
 
 ### Patch Changes
