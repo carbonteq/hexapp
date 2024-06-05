@@ -104,7 +104,7 @@ describe("when dto input", () => {
 			expect(dtoErr).toBeInstanceOf(DtoValidationError);
 
 			expect(dtoErr.message).toEqual(
-				"['primaryColor' -> String must contain exactly 7 character(s)]",
+				'Validation error: String must contain exactly 7 character(s) at "primaryColor"',
 			);
 		});
 
@@ -120,7 +120,7 @@ describe("when dto input", () => {
 			expect(dtoErr).toBeInstanceOf(DtoValidationError);
 
 			expect(dtoErr.message).toEqual(
-				"['secondaryColor' -> String must contain exactly 7 character(s)]",
+				'Validation error: String must contain exactly 7 character(s) at "secondaryColor"',
 			);
 		});
 
@@ -136,7 +136,7 @@ describe("when dto input", () => {
 			expect(dtoErr).toBeInstanceOf(DtoValidationError);
 
 			expect(dtoErr.message).toEqual(
-				"['primaryFont' -> String must contain at least 3 character(s)]",
+				'Validation error: String must contain at least 3 character(s) at "primaryFont"',
 			);
 		});
 
@@ -152,7 +152,7 @@ describe("when dto input", () => {
 			expect(dtoErr).toBeInstanceOf(DtoValidationError);
 
 			expect(dtoErr.message).toEqual(
-				"['secondaryFont' -> String must contain at least 3 character(s)]",
+				'Validation error: String must contain at least 3 character(s) at "secondaryFont"',
 			);
 		});
 
@@ -168,7 +168,7 @@ describe("when dto input", () => {
 			expect(dtoErr).toBeInstanceOf(DtoValidationError);
 
 			expect(dtoErr.message).toEqual(
-				"['label' -> Invalid enum value. Expected 'default' | 'rounded' | 'rectangle', received 'random']",
+				"Validation error: Invalid enum value. Expected 'default' | 'rounded' | 'rectangle', received 'random' at \"label\"",
 			);
 		});
 
@@ -181,14 +181,6 @@ describe("when dto input", () => {
 				label: "random",
 			};
 
-			const errors = [
-				"'primaryColor' -> String must contain exactly 7 character(s)",
-				"'secondaryColor' -> String must contain exactly 7 character(s)",
-				"'primaryFont' -> String must contain at least 3 character(s)",
-				"'secondaryFont' -> String must contain at least 3 character(s)",
-				"'label' -> Invalid enum value. Expected 'default' | 'rounded' | 'rectangle', received 'random'",
-			];
-
 			const dtoRes = NewThemeDto.create(badData);
 
 			expect(dtoRes.isErr());
@@ -197,7 +189,9 @@ describe("when dto input", () => {
 
 			expect(dtoErr).toBeInstanceOf(DtoValidationError);
 
-			expect(dtoErr.message).toEqual(`[${errors.join(",")}]`);
+			expect(dtoErr.message).toEqual(
+				'Validation error: String must contain exactly 7 character(s) at "primaryColor"; String must contain exactly 7 character(s) at "secondaryColor"; String must contain at least 3 character(s) at "primaryFont"; String must contain at least 3 character(s) at "secondaryFont"; Invalid enum value. Expected \'default\' | \'rounded\' | \'rectangle\', received \'random\' at "label"',
+			);
 		});
 	});
 });

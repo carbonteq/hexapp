@@ -1,7 +1,7 @@
 import { Result } from "@carbonteq/fp";
 import type { ZodType, z } from "zod";
 import { fromZodError } from "zod-validation-error";
-import { ValidationError } from "../domain";
+import { ValidationError } from "../domain/base.errors";
 
 export type ParsedSchema<T extends ZodType> = Readonly<z.infer<T>>;
 
