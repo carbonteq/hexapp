@@ -1,15 +1,15 @@
-import type { AppResult } from '..//app/result';
+import type { AppResult } from "..//app/result";
 
 export type EmptyObject = Record<string, never>;
 
 type JsonValue =
-  | string
-  | number
-  | boolean
-  | null
-  | Date
-  | JsonValue[]
-  | { [k: string]: JsonValue }; // JsonObject
+	| string
+	| number
+	| boolean
+	| null
+	| Date
+	| JsonValue[]
+	| { [k: string]: JsonValue }; // JsonObject
 
 type JsonObject = { [x: string]: JsonValue };
 type JsonGuard<T> = T extends JsonValue ? T : never;
@@ -23,11 +23,11 @@ export type ExtractAppResultType<U> = U extends AppResult<infer X> ? X : never;
 
 export type ArrType<T> = T extends Array<infer R> ? R : never;
 export type IterType<T> = T extends { [Symbol.iterator](): infer I }
-  ? I
-  : never;
+	? I
+	: never;
 
 export type InferAppResult<
-  T extends (...args: any[]) => Promise<AppResult<any>>,
+	T extends (...args: unknown[]) => Promise<AppResult<unknown>>,
 > = ExtractAppResultType<Awaited<ReturnType<T>>>;
 
 // BETTER TO COMPOSE THE UTILITIES LISTED ABOVE
@@ -50,7 +50,7 @@ export type InferAppResult<
  * @param x {never} - This is a type that should never be used. It is used to ensure that the switch statement is exhaustive.
  */
 export const assertUnreachable = (x: never): never => {
-  throw new Error(`Unexpected object: ${x}`);
+	throw new Error(`Unexpected object: ${x}`);
 };
 
 /**

@@ -1,25 +1,27 @@
-import type { ZodError } from 'zod';
+import type { ZodError } from "zod";
+import { fromZodError as zodErrTransform } from "zod-validation-error";
+import { ValidationError } from "../../domain/base.errors";
 
-export const prettifyZodError = (err: ZodError): string => {
-  const issues = err.issues.map((i) => `'${i.path[0]}' -> ${i.message}`);
+// export const prettifyZodError = (err: ZodError): string => {
+// 	const issues = err.issues.map((i) => `'${i.path[0]}' -> ${i.message}`);
+//
+// 	return `[${issues.join(",")}]`;
+// };
 
-  return `[${issues.join(',')}]`;
-};
+export class DtoValidationError extends ValidationError {
+	constructor(msg: string, err?: Error) {
+		super(msg);
 
-export class DtoValidationError extends Error {
-  constructor(msg: string, err?: Error) {
-    super();
+		this.name = "DTOValidationError";
+		this.message = msg;
+		if (err) {
+			this.stack = err.stack;
+		}
+	}
 
-    this.name = 'DTOValidationError';
-    this.message = msg;
-    if (err) {
-      this.stack = err.stack;
-    }
-  }
+	static fromZodError(err: ZodError): DtoValidationError {
+		const prettyErrMsg = zodErrTransform(err).message;
 
-  static fromZodError(err: ZodError): DtoValidationError {
-    const prettyErrMsg = prettifyZodError(err);
-
-    return new DtoValidationError(prettyErrMsg, err);
-  }
+		return new DtoValidationError(prettyErrMsg, err);
+	}
 }
