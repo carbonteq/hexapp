@@ -33,7 +33,12 @@ export class UnauthorizedOperation extends DomainError {}
 
 export class InvalidOperation extends DomainError {}
 
-export class ValidationError extends DomainError {}
+export class ValidationError extends DomainError {
+	// biome-ignore lint/complexity/noUselessConstructor: Need to make the constructor public
+	public constructor(message: string) {
+		super(message);
+	}
+}
 
 export class FieldValidationError extends ValidationError {
 	constructor(field: string, value: string, message = "") {

@@ -71,5 +71,6 @@ export abstract class BaseEntity implements IEntity {
 		};
 	}
 
-	abstract serialize(): unknown;
+	// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+	abstract serialize(): any;
 }

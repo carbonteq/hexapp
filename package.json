@@ -12,7 +12,9 @@
 			"types": "./lib/index.d.ts"
 		}
 	},
-	"files": ["/lib"],
+	"files": [
+		"/lib"
+	],
 	"scope": "@carbonteq",
 	"repository": {
 		"type": "git",
@@ -63,7 +65,8 @@
 	},
 	"dependencies": {
 		"@carbonteq/fp": "^0.3.2",
-		"zod": "^3.23.8"
+		"zod": "^3.23.8",
+		"zod-validation-error": "^3.3.0"
 	},
 	"engines": {
 		"node": ">=18.0.0",

@@ -1,14 +1,16 @@
+import { ValidationError } from "lib";
 import type { ZodError } from "zod";
+import { fromZodError as zodErrTransform } from "zod-validation-error";
 
-export const prettifyZodError = (err: ZodError): string => {
-	const issues = err.issues.map((i) => `'${i.path[0]}' -> ${i.message}`);
+// export const prettifyZodError = (err: ZodError): string => {
+// 	const issues = err.issues.map((i) => `'${i.path[0]}' -> ${i.message}`);
+//
+// 	return `[${issues.join(",")}]`;
+// };
 
-	return `[${issues.join(",")}]`;
-};
-
-export class DtoValidationError extends Error {
+export class DtoValidationError extends ValidationError {
 	constructor(msg: string, err?: Error) {
-		super();
+		super(msg);
 
 		this.name = "DTOValidationError";
 		this.message = msg;
@@ -18,7 +20,7 @@ export class DtoValidationError extends Error {
 	}
 
 	static fromZodError(err: ZodError): DtoValidationError {
-		const prettyErrMsg = prettifyZodError(err);
+		const prettyErrMsg = zodErrTransform(err).message;
 
 		return new DtoValidationError(prettyErrMsg, err);
 	}

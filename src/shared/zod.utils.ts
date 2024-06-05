@@ -1,5 +1,13 @@
 import { Result } from "@carbonteq/fp";
-import type { z } from "zod";
+import type { ZodType, z } from "zod";
+import { fromZodError } from "zod-validation-error";
+import { ValidationError } from "../domain";
+
+export type ParsedSchema<T extends ZodType> = Readonly<z.infer<T>>;
+
+export const handleZodErr = (err: z.ZodError) => {
+	return new ValidationError(fromZodError(err).message);
+};
 
 export const ZodUtils = {
 	safeParseResult<E, T = unknown, U extends z.ZodType<T> = z.ZodType<T>>(

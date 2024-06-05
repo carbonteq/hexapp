@@ -3,19 +3,19 @@ import { type AppError, AppResult } from "../app";
 
 export type AppResultErrorTransformer<E> = (err: AppError) => E;
 
-const getDataFromAppResult = <E>(
-	data: unknown,
-	errTransformer: AppResultErrorTransformer<E>,
-) => {
-	if (data instanceof AppResult) {
-		if (!data._isOk) {
-			return errTransformer(data.unwrapErr());
-		}
-
-		return data.unwrap();
-	}
-	return data;
-};
+// const getDataFromAppResult = <E>(
+// 	data: unknown,
+// 	errTransformer: AppResultErrorTransformer<E>,
+// ) => {
+// 	if (data instanceof AppResult) {
+// 		if (!data._isOk) {
+// 			return errTransformer(data.unwrapErr());
+// 		}
+//
+// 		return data.unwrap();
+// 	}
+// 	return data;
+// };
 
 // export const AppTransformerExpressMiddleware =
 // 	<E>(errTransformer: AppResultErrorTransformer<E>): RequestHandler =>
