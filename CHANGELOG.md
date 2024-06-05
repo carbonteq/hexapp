@@ -1,5 +1,11 @@
 # @carbonteq/hexapp
 
+## 0.14.1
+
+### Patch Changes
+
+- baf4dc7: Fix export for handleZodError
+
 ## 0.14.0
 
 ### Minor Changes
