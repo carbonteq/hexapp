@@ -30,6 +30,16 @@ export type InferAppResult<
 	T extends (...args: unknown[]) => Promise<AppResult<unknown>>,
 > = ExtractAppResultType<Awaited<ReturnType<T>>>;
 
+export type GetKeysWithSpecificTypeValue<
+	T extends Record<string, unknown>,
+	ValType,
+> = {
+	[K in keyof T]: T[K] extends ValType ? K : never;
+}[keyof T];
+
+type FooBar = { a: number; b: number; c: string; d: Date };
+type KeyForNumber = GetKeysWithSpecificTypeValue<FooBar, number>; // is 'a' | 'b'
+
 // BETTER TO COMPOSE THE UTILITIES LISTED ABOVE
 
 // export type ExtractAsyncAppResultVal<
