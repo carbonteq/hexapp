@@ -32,7 +32,7 @@ export class EmailVo extends BaseValueObject<string> {
 	}
 }
 
-export const EMAIL_SCHEMA = z
+export const EMAIL_SCHEMA: z.ZodEffects<z.ZodString, EmailVo> = z
 	.string()
 	.email()
 	.transform<EmailVo>(EmailVo.fromStrNoValidation);

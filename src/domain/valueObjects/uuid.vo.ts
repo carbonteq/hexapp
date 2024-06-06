@@ -39,7 +39,7 @@ export class UUIDVo extends BaseValueObject<string> {
 	}
 }
 
-export const UUID_SCHEMA = z
+export const UUID_SCHEMA: z.ZodEffects<z.ZodString, UUIDVo> = z
 	.string()
 	.uuid()
 	.transform<UUIDVo>(UUIDVo.fromStrNoValidation);

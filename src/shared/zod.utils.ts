@@ -5,11 +5,20 @@ import { ValidationError } from "../domain/base.errors";
 
 export type ParsedSchema<T extends ZodType> = Readonly<z.infer<T>>;
 
-export const handleZodErr = (err: z.ZodError) => {
+/** Will commonly be used in error interceptors */
+export const handleZodErr = (err: z.ZodError): ValidationError => {
 	return new ValidationError(fromZodError(err).message);
 };
 
-export const ZodUtils = {
+interface ZodUtils {
+	safeParseResult<E, T = unknown, U extends z.ZodType<T> = z.ZodType<T>>(
+		schema: U,
+		data: unknown,
+		errConst: (err: z.ZodError) => E,
+	): Result<z.infer<U>, E>;
+}
+
+export const ZodUtils: ZodUtils = {
 	safeParseResult<E, T = unknown, U extends z.ZodType<T> = z.ZodType<T>>(
 		schema: U,
 		data: unknown,
