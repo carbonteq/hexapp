@@ -1,6 +1,7 @@
 import { Result } from "@carbonteq/fp";
 import { z } from "zod";
 import { ValidationError } from "./base.errors";
+import { fromZodError } from "zod-validation-error";
 
 export class PaginationOptionsValidationError extends ValidationError {
 	constructor(issues: string) {
@@ -16,6 +17,15 @@ const DEFAULT_PAGINATION_OPTS = {
 const DISCRIMINANT = Symbol("PaginationOptions");
 
 export class PaginationOptions {
+	static readonly DEFAULT_PAGE_NUM = DEFAULT_PAGINATION_OPTS.pageNum;
+	static readonly DEFAULT_PAGE_SIZE = DEFAULT_PAGINATION_OPTS.pageSize;
+
+	/** Offset (Assumes page 0 is your first page) */
+	readonly offset: number;
+
+	/** Offset (Assumes page 1 is your first page) */
+	// readonly offset1: number;
+
 	private static readonly schema = z.object({
 		pageNum: z.coerce
 			.number()
@@ -31,7 +41,10 @@ export class PaginationOptions {
 	private constructor(
 		readonly pageNum: number,
 		readonly pageSize: number,
-	) {}
+	) {
+		this.offset = pageSize * pageNum;
+		// this.offset1 = pageSize * (pageNum - 1);
+	}
 
 	/**
 	 * Validate the passed options to create `PaginationOptions` instance
@@ -49,8 +62,8 @@ export class PaginationOptions {
 			return Result.Ok(new PaginationOptions(r.data.pageNum, r.data.pageSize));
 		}
 
-		const err = JSON.stringify(r.error.flatten());
-		return Result.Err(new PaginationOptionsValidationError(err));
+		const err = fromZodError(r.error);
+		return Result.Err(new PaginationOptionsValidationError(err.message));
 	}
 }
 
@@ -61,43 +74,26 @@ export interface Paginated<T> {
 	readonly totalPages: number;
 }
 
-export class Paginator {
-	static readonly DEFAULT_PAGINATION_OPTS = DEFAULT_PAGINATION_OPTS;
-
-	private constructor(
-		readonly paginationOpts: PaginationOptions = DEFAULT_PAGINATION_OPTS as PaginationOptions,
-	) {}
-
-	fromAll<T>(coll: T[]): Paginated<T> {
-		return Paginator.fromAll(coll, this.paginationOpts);
-	}
-
-	fromSubset<T>(coll: T[], totalElements: number): Paginated<T> {
-		return Paginator.fromSubset(coll, this.paginationOpts, totalElements);
-	}
-
-	static fromAll<T>(
+export const Paginator: {
+	paginate: <T>(coll: T[], opts: PaginationOptions) => Paginated<T>;
+	// paginate1: <T>(coll: T[], opts: PaginationOptions) => Paginated<T>;
+} = {
+	paginate<T>(
 		coll: T[],
-		{ pageNum, pageSize }: PaginationOptions,
+		{ pageNum, pageSize, offset: offset0 }: PaginationOptions,
 	): Paginated<T> {
 		const totalPages = Math.ceil(coll.length / pageSize) || 1;
-		const startIdx = (pageNum - 1) * pageSize;
-		const collSlice = coll.slice(startIdx, startIdx + pageSize);
+		const collSlice = coll.slice(offset0, offset0 + pageSize);
 
 		return { data: collSlice, pageNum, pageSize, totalPages };
-	}
-
-	/**
-	 * For cases where the input data has already been sliced according to the pagination options, e.g. using a DB query
-	 */
-	static fromSubset<T>(
-		coll: T[],
-		{ pageSize, pageNum }: PaginationOptions,
-		totalElements: number,
-	): Paginated<T> {
-		const totalPages = Math.ceil(totalElements / pageSize) || 1; // For empty input
-		const collSlice = coll.slice(0, pageSize); // Ensure the size of data <= pageSize, which is a guarantee Paginated<T> provides
-
-		return { data: collSlice, pageNum, pageSize, totalPages };
-	}
-}
+	},
+	// paginate1<T>(
+	// 	coll: T[],
+	// 	{ pageNum, pageSize, offset1 }: PaginationOptions,
+	// ): Paginated<T> {
+	// 	const totalPages = Math.ceil(coll.length / pageSize) || 1;
+	// 	const collSlice = coll.slice(offset1, offset1 + pageSize);
+	//
+	// 	return { data: collSlice, pageNum, pageSize, totalPages };
+	// },
+} as const;
