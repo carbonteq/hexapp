@@ -67,7 +67,7 @@ export abstract class MockRepository<
 	): Promise<RepositoryResult<Paginated<T>>> {
 		const all = Array.from(this.db.values());
 
-		return Promise.resolve(Result.Ok(Paginator.fromAll(all, options)));
+		return Promise.resolve(Result.Ok(Paginator.paginate(all, options)));
 	}
 
 	update(entity: T): Promise<RepositoryResult<T, MockNotFoundError>> {
