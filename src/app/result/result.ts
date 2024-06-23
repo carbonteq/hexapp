@@ -3,11 +3,6 @@ import { AppError } from "./error";
 
 type InnerResult<T> = Result<T, AppError>;
 
-// type ErrTransformer = (err: Error) => AppError;
-// const DefaultMapErrOp: ErrTransformer = (err: Error) => {
-// 	return AppError.fromErr(err);
-// };
-
 export type EmptyResult = typeof AppResult.EMPTY;
 
 export class AppResult<T> {

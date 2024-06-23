@@ -1,6 +1,5 @@
 import {
 	AlreadyExistsError,
-	ExternalServiceFailure,
 	InvalidOperation,
 	NotFoundError,
 	UnauthorizedOperation,
@@ -37,8 +36,8 @@ export class AppError extends Error {
 	static AlreadyExists = (msg?: string) =>
 		new AppError(AppErrStatus.AlreadyExists, msg);
 
-	static ExternalServiceFailure = (msg?: string) =>
-		new AppError(AppErrStatus.ExternalServiceFailure, msg);
+	static GuardViolation = (msg?: string) =>
+		new AppError(AppErrStatus.GuardViolation, msg);
 
 	static Generic = (msg: string) => new AppError(AppErrStatus.Generic, msg);
 
@@ -53,10 +52,6 @@ export class AppError extends Error {
 
 		if (e instanceof AlreadyExistsError) {
 			return AppError.AlreadyExists(e.message);
-		}
-
-		if (e instanceof ExternalServiceFailure) {
-			return AppError.ExternalServiceFailure(e.message);
 		}
 
 		if (e instanceof InvalidOperation) {

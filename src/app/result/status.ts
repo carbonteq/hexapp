@@ -4,6 +4,6 @@ export enum AppErrStatus {
 	InvalidData = "InvalidData",
 	InvalidOperation = "InvalidOperation",
 	AlreadyExists = "AlreadyExists",
-	ExternalServiceFailure = "ExternalServiceFailure",
+	GuardViolation = "GuardViolation",
 	Generic = "Generic",
 }

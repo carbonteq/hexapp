@@ -61,10 +61,11 @@
 		"rollup-plugin-node-externals": "^7.1.2",
 		"rollup-plugin-swc3": "0.11.2",
 		"rollup-plugin-typescript-paths": "^1.5.0",
-		"typescript": "^5.4.5"
+		"typescript": "5.4.2"
 	},
 	"dependencies": {
 		"@carbonteq/fp": "^0.3.2",
+		"effect": "^3.4.0",
 		"zod": "^3.23.8",
 		"zod-validation-error": "^3.3.0"
 	},

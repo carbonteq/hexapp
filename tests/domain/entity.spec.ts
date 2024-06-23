@@ -1,6 +1,5 @@
-import { UUIDVo } from "../../lib";
+import { UUID } from "../../lib";
 import {
-	ITestEntity,
 	TestEntity,
 	type TestEntitySerialized,
 } from "../dummy-objects/test.entity";
@@ -19,7 +18,7 @@ describe("base entity", () => {
 
 		it("base entity props are present and of correct type", () => {
 			expect(ent.Id).toBeDefined();
-			expect(ent.Id).toBeInstanceOf(UUIDVo);
+			expect(ent.Id).toBeString();
 
 			expect(ent.createdAt).toBeDefined();
 			expect(ent.createdAt).toBeDate();
@@ -33,7 +32,7 @@ describe("base entity", () => {
 		it("serialize method returns SerializedEntity object", () => {
 			const serializedEnt = ent.serialize();
 			const expectedObj: TestEntitySerialized = {
-				Id: ent.Id.serialize(),
+				Id: ent.Id,
 				createdAt: ent.createdAt,
 				updatedAt: ent.updatedAt,
 				random: ent.random,
@@ -53,7 +52,7 @@ describe("base entity", () => {
 	});
 
 	describe("create with given data (like in a repo)", () => {
-		const Id = UUIDVo.new();
+		const Id = UUID.init();
 		const random = 23;
 		const createdAt = getCurrentDate();
 		const updatedAt = getCurrentDate();

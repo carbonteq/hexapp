@@ -2,12 +2,6 @@ import type { ZodError } from "zod";
 import { fromZodError as zodErrTransform } from "zod-validation-error";
 import { ValidationError } from "../../domain/base.errors";
 
-// export const prettifyZodError = (err: ZodError): string => {
-// 	const issues = err.issues.map((i) => `'${i.path[0]}' -> ${i.message}`);
-//
-// 	return `[${issues.join(",")}]`;
-// };
-
 export class DtoValidationError extends ValidationError {
 	constructor(msg: string, err?: Error) {
 		super(msg);

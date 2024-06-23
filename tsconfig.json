@@ -11,6 +11,7 @@
 		"noUnusedParameters": false,
 		"preserveWatchOutput": true,
 		"allowJs": false,
+		"strict": true,
 		"emitDecoratorMetadata": true,
 		"experimentalDecorators": true,
 		"declaration": true,
@@ -22,5 +23,5 @@
 			"@carbonteq/hexapp/*": ["./src/*"]
 		}
 	},
-	"exclude": ["node_modules", "jest.config.js"]
+	"exclude": ["node_modules", "jest.config.js", "lib"]
 }
