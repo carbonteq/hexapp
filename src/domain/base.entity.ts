@@ -1,4 +1,4 @@
-import { UUID } from "./nominal.types";
+import { DateTime, UUID } from "./refined.types";
 
 export interface IEntity {
 	readonly Id: UUID;
@@ -12,12 +12,12 @@ export type IEntityForUpdate = Pick<IEntity, "updatedAt">;
 
 export abstract class BaseEntity implements IEntity {
 	#id: UUID;
-	#createdAt: Date;
-	#updatedAt: Date;
+	#createdAt: DateTime;
+	#updatedAt: DateTime;
 
 	protected constructor() {
 		this.#id = UUID.init();
-		this.#createdAt = new Date();
+		this.#createdAt = DateTime.now();
 		this.#updatedAt = this.#createdAt;
 	}
 
@@ -34,8 +34,7 @@ export abstract class BaseEntity implements IEntity {
 	}
 
 	protected markUpdated(): void {
-		console.debug("Marking as updated");
-		this.#updatedAt = new Date();
+		this.#updatedAt = DateTime.now();
 	}
 
 	protected forUpdate(): IEntityForUpdate {
@@ -45,14 +44,14 @@ export abstract class BaseEntity implements IEntity {
 	// for construction within safe boundaries of the domain
 	protected _copyBaseProps(other: IEntity) {
 		this.#id = other.Id;
-		this.#createdAt = other.createdAt;
-		this.#updatedAt = other.updatedAt;
+		this.#createdAt = DateTime.from(other.createdAt);
+		this.#updatedAt = DateTime.from(other.updatedAt);
 	}
 
 	protected _fromSerialized(other: Readonly<SerializedEntity>) {
 		this.#id = other.Id;
-		this.#createdAt = other.createdAt;
-		this.#updatedAt = other.updatedAt;
+		this.#createdAt = DateTime.from(other.createdAt);
+		this.#updatedAt = DateTime.from(other.updatedAt);
 	}
 
 	protected _serialize(): SerializedEntity {

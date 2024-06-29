@@ -1,1 +1,1 @@
-export * from "./utils";
+export { dataURIToBuffer } from "./utils";
