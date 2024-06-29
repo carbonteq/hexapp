@@ -1,5 +1,4 @@
 import { Result } from "@carbonteq/fp";
-import { InvalidOperation } from "@carbonteq/hexapp";
 import {
 	MockRepository,
 	NotFoundError,
@@ -14,6 +13,11 @@ export class DummyRepoError extends NotFoundError {
 }
 
 export class DummyTestRepository extends MockRepository<TestEntity> {
+	// biome-ignore lint/complexity/noUselessConstructor: <explanation>
+	constructor() {
+		super();
+	}
+
 	fetchAll(): Promise<RepositoryResult<TestEntity[]>> {
 		return Promise.resolve(Result.Err(new DummyRepoError()));
 	}

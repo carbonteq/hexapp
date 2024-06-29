@@ -1,7 +1,5 @@
 import { z } from "zod";
 // import nodeqs from "node:querystring";
-import { EMAIL_SCHEMA } from "../domain/valueObjects/email.vo";
-import { UUID_SCHEMA } from "../domain/valueObjects/uuid.vo";
 
 export const STRING_SCHEMA = z.string();
 export const OPTIONAL_STR_SCHEMA = STRING_SCHEMA.optional();
@@ -46,8 +44,6 @@ export const ZodSchemas = {
 
 	DATE_SCHEMA: z.date(),
 
-	UUID_SCHEMA: UUID_SCHEMA, // To prevent circular import issues
-	EMAIL_SCHEMA: EMAIL_SCHEMA,
 	JSON_LITERAL_SCHEMA: jsonLiteralSchema,
 	JSON_SCHEMA: jsonSchema as z.ZodType<Json>,
 } as const;

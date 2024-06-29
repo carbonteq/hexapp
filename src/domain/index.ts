@@ -1,14 +1,44 @@
-export * from "./base.entity";
-export * from "./types";
-export * from "./aggregate-root.entity";
-export * from "./valueObjects";
-export * from "./base.errors";
-export * from "./base.logger";
-export * from "./base.repository";
-export * from "./mock.repository";
+export { BaseEntity } from "./base.entity";
+export type {
+	IEntity,
+	IEntityForUpdate,
+	SerializedEntity,
+} from "./base.entity";
+export {
+	InvalidEmail,
+	UUID,
+	InvalidDateTime,
+	Email,
+	DateTime,
+	createRefinedType,
+	InvalidUUID,
+} from "./refined.types";
+export { AggregateRoot } from "./aggregate-root.entity";
+export {
+	BaseValueObject,
+	DateRange,
+	InvalidDateRange,
+} from "./base.vo";
+export type { IDateRange } from "./base.vo";
+export {
+	AlreadyExistsError,
+	DomainError,
+	GenericDomainError,
+	GuardViolationError,
+	InvalidOperation,
+	NotFoundError,
+	UnauthorizedOperation,
+	ValidationError,
+} from "./base.errors";
+export type { DomainErr } from "./base.errors";
+export { BaseRepository } from "./base.repository";
+export type {
+	RepositoryError,
+	RepositoryResult,
+} from "./base.repository";
 export {
 	PaginationOptions,
-	type Paginated,
 	Paginator,
 	PaginationOptionsValidationError,
 } from "./pagination";
+export type { Paginated } from "./pagination";

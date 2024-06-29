@@ -1,76 +1,67 @@
-import type { DateTime, UUIDStr } from "./types";
-import { UUIDVo } from "./valueObjects/uuid.vo";
+import { DateTime, UUID } from "./refined.types";
 
 export interface IEntity {
-	readonly Id: UUIDVo;
-	readonly createdAt: DateTime;
-	readonly updatedAt: DateTime;
+	readonly Id: UUID;
+	readonly createdAt: Date;
+	readonly updatedAt: Date;
 }
 
-export interface SerializedEntity {
-	readonly Id: UUIDStr;
-	readonly createdAt: DateTime;
-	readonly updatedAt: DateTime;
-}
+export type SerializedEntity = IEntity;
 
 export type IEntityForUpdate = Pick<IEntity, "updatedAt">;
 
 export abstract class BaseEntity implements IEntity {
-	private _id: UUIDVo = UUIDVo.new();
-	private _createdAt: DateTime;
-	private _updatedAt: DateTime;
+	#id: UUID;
+	#createdAt: DateTime;
+	#updatedAt: DateTime;
 
 	protected constructor() {
-		// this._id = opts?.Id ?? UUIDVo.new();
-		// this._createdAt = opts?.createdAt ?? new Date();
-		// this._updatedAt = opts?.updatedAt ?? this.createdAt; // equals createdAt by default
-
-		this._id = UUIDVo.new();
-		this._createdAt = new Date();
-		this._updatedAt = this._createdAt;
+		this.#id = UUID.init();
+		this.#createdAt = DateTime.now();
+		this.#updatedAt = this.#createdAt;
 	}
 
-	get Id(): UUIDVo {
-		return this._id;
+	get Id(): UUID {
+		return this.#id;
 	}
 
-	get createdAt(): DateTime {
-		return this._createdAt;
+	get createdAt(): Date {
+		return this.#createdAt;
 	}
 
-	get updatedAt(): DateTime {
-		return this._updatedAt;
+	get updatedAt(): Date {
+		return this.#updatedAt;
 	}
 
 	protected markUpdated(): void {
-		this._updatedAt = new Date();
+		this.#updatedAt = DateTime.now();
 	}
 
 	protected forUpdate(): IEntityForUpdate {
-		return { updatedAt: this._updatedAt };
+		return { updatedAt: this.#updatedAt };
 	}
 
 	// for construction within safe boundaries of the domain
 	protected _copyBaseProps(other: IEntity) {
-		this._id = other.Id;
-		this._createdAt = other.createdAt;
-		this._updatedAt = other.updatedAt;
+		this.#id = other.Id;
+		this.#createdAt = DateTime.from(other.createdAt);
+		this.#updatedAt = DateTime.from(other.updatedAt);
 	}
 
-	protected _fromSerialized(other: SerializedEntity) {
-		this._id = UUIDVo.fromStrNoValidation(other.Id);
-		this._createdAt = other.createdAt;
-		this._updatedAt = other.updatedAt;
+	protected _fromSerialized(other: Readonly<SerializedEntity>) {
+		this.#id = other.Id;
+		this.#createdAt = DateTime.from(other.createdAt);
+		this.#updatedAt = DateTime.from(other.updatedAt);
 	}
 
 	protected _serialize(): SerializedEntity {
 		return {
-			Id: this.Id.serialize(),
+			Id: this.Id,
 			createdAt: this.createdAt,
 			updatedAt: this.updatedAt,
 		};
 	}
 
-	// biome-ignore lint/suspicious/noExplicitAny: <explanation>
-	abstract serialize(): any;
+	//@ts-ignore
+	abstract serialize();
 }
