@@ -40,6 +40,11 @@ export type GetKeysWithSpecificTypeValue<
 type FooBar = { a: number; b: number; c: string; d: Date };
 type KeyForNumber = GetKeysWithSpecificTypeValue<FooBar, number>; // is 'a' | 'b'
 
+export type RequireAtLeastOne<T> = {
+	[K in keyof T]-?: Required<Pick<T, K>> &
+		Partial<Pick<T, Exclude<keyof T, K>>>;
+}[keyof T];
+
 // BETTER TO COMPOSE THE UTILITIES LISTED ABOVE
 
 // export type ExtractAsyncAppResultVal<

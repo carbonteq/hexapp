@@ -1,4 +1,4 @@
-import { Result, type TUnit } from "@carbonteq/fp";
+import { Result, type UNIT } from "@carbonteq/fp";
 import { AppError } from "./error";
 
 type InnerResult<T> = Result<T, AppError>;
@@ -8,7 +8,7 @@ export type EmptyResult = typeof AppResult.EMPTY;
 export class AppResult<T> {
 	readonly _isOk: boolean;
 
-	static readonly EMPTY: AppResult<TUnit> = new AppResult(Result.UNIT_RESULT);
+	static readonly EMPTY: AppResult<UNIT> = new AppResult(Result.UNIT_RESULT);
 
 	private constructor(private readonly inner_result: InnerResult<T>) {
 		this._isOk = inner_result.isOk();
@@ -62,14 +62,14 @@ export class AppResult<T> {
 		return new AppResult(result.inner_result);
 	}
 
-	zipF<U>(f: (r: T) => Result<U, AppError>): AppResult<[T, U]> {
-		return new AppResult(this.inner_result.zipF(f));
+	zip<U>(f: (r: T) => Result<U, AppError>): AppResult<[T, U]> {
+		return new AppResult(this.inner_result.zip(f));
 	}
 
-	async zipFAsync<U>(
+	async zipAsync<U>(
 		f: (r: T) => Promise<Result<U, AppError>>,
 	): Promise<AppResult<[T, U]>> {
-		return this.inner_result.zipFAsync(f).then((r) => new AppResult(r));
+		return this.inner_result.zipAsync(f).then((r) => new AppResult(r));
 	}
 
 	bind<U>(f: (r: T) => Result<U, AppError>): AppResult<U> {
