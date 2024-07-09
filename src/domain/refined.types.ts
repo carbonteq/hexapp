@@ -76,6 +76,10 @@ export function createRefinedType<
 	return finalBranded;
 }
 
+export type Unbrand<T> = T extends z.ZodType<unknown, z.ZodTypeDef, infer U>
+	? U
+	: T;
+
 export class InvalidUUID extends ValidationError {
 	constructor(data: unknown) {
 		super(`Invalid UUID: ${data}`);
@@ -107,6 +111,7 @@ const UUIDInner = createRefinedType(
 export type UUID = z.infer<typeof UUIDInner>;
 export const UUID = extend(UUIDInner, {
 	init: () => randomUUID() as UUID,
+	fromTrusted: (uuid: string) => uuid as UUID,
 });
 
 export class InvalidDateTime extends ValidationError {

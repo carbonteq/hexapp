@@ -12,6 +12,7 @@ export {
 	DateTime,
 	createRefinedType,
 	InvalidUUID,
+	type Unbrand,
 } from "./refined.types";
 export { AggregateRoot } from "./aggregate-root.entity";
 export {

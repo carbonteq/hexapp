@@ -27,9 +27,9 @@ export abstract class BaseRepository<T extends BaseEntity> {
 	fetchPaginated?(
 		options: PaginationOptions,
 	): Promise<RepositoryResult<Paginated<T>>>;
-	fetchById?(id: BaseEntity["Id"]): Promise<RepositoryResult<T, NotFoundError>>;
+	fetchById?(id: BaseEntity["id"]): Promise<RepositoryResult<T, NotFoundError>>;
 	deleteById?(
-		Id: BaseEntity["Id"],
+		Id: BaseEntity["id"],
 	): Promise<RepositoryResult<T, NotFoundError>>;
 	fetchBy?<U extends keyof T>(
 		prop: U,
