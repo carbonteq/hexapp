@@ -1,12 +1,16 @@
 import { DateTime, UUID } from "./refined.types";
 
 export interface IEntity {
-	readonly Id: UUID;
+	readonly id: UUID;
+	readonly createdAt: DateTime;
+	readonly updatedAt: DateTime;
+}
+
+export interface SerializedEntity {
+	readonly id: string;
 	readonly createdAt: Date;
 	readonly updatedAt: Date;
 }
-
-export type SerializedEntity = IEntity;
 
 export type IEntityForUpdate = Pick<IEntity, "updatedAt">;
 
@@ -21,15 +25,15 @@ export abstract class BaseEntity implements IEntity {
 		this.#updatedAt = this.#createdAt;
 	}
 
-	get Id(): UUID {
+	get id(): UUID {
 		return this.#id;
 	}
 
-	get createdAt(): Date {
+	get createdAt(): DateTime {
 		return this.#createdAt;
 	}
 
-	get updatedAt(): Date {
+	get updatedAt(): DateTime {
 		return this.#updatedAt;
 	}
 
@@ -43,20 +47,22 @@ export abstract class BaseEntity implements IEntity {
 
 	// for construction within safe boundaries of the domain
 	protected _copyBaseProps(other: IEntity) {
-		this.#id = other.Id;
+		this.#id = other.id;
 		this.#createdAt = DateTime.from(other.createdAt);
 		this.#updatedAt = DateTime.from(other.updatedAt);
 	}
 
 	protected _fromSerialized(other: Readonly<SerializedEntity>) {
-		this.#id = other.Id;
+		this.#id = UUID.fromTrusted(other.id); // only to simplify fromSerialized implementation on developer side
 		this.#createdAt = DateTime.from(other.createdAt);
 		this.#updatedAt = DateTime.from(other.updatedAt);
+
+		return this;
 	}
 
 	protected _serialize(): SerializedEntity {
 		return {
-			Id: this.Id,
+			id: this.id,
 			createdAt: this.createdAt,
 			updatedAt: this.updatedAt,
 		};

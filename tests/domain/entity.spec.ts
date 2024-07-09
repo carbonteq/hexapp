@@ -17,8 +17,8 @@ describe("base entity", () => {
 		const ent = TestEntity.create();
 
 		it("base entity props are present and of correct type", () => {
-			expect(ent.Id).toBeDefined();
-			expect(ent.Id).toBeString();
+			expect(ent.id).toBeDefined();
+			expect(ent.id).toBeString();
 
 			expect(ent.createdAt).toBeDefined();
 			expect(ent.createdAt).toBeDate();
@@ -32,7 +32,7 @@ describe("base entity", () => {
 		it("serialize method returns SerializedEntity object", () => {
 			const serializedEnt = ent.serialize();
 			const expectedObj: TestEntitySerialized = {
-				Id: ent.Id,
+				id: ent.id,
 				createdAt: ent.createdAt,
 				updatedAt: ent.updatedAt,
 				random: ent.random,
@@ -45,27 +45,27 @@ describe("base entity", () => {
 			const ent2 = TestEntity.create();
 			const ent3 = TestEntity.create();
 
-			expect(ent2.Id).toBeDefined();
-			expect(ent3.Id).toBeDefined();
-			expect(ent2.Id).not.toEqual(ent3.Id);
+			expect(ent2.id).toBeDefined();
+			expect(ent3.id).toBeDefined();
+			expect(ent2.id).not.toEqual(ent3.id);
 		});
 	});
 
 	describe("create with given data (like in a repo)", () => {
-		const Id = UUID.init();
+		const id = UUID.init();
 		const random = 23;
 		const createdAt = getCurrentDate();
 		const updatedAt = getCurrentDate();
 
-		const ent = TestEntity.from({
-			Id,
+		const ent = TestEntity.fromSerialized({
+			id,
 			createdAt,
 			updatedAt,
 			random,
 		});
 
 		it("matches the given data", () => {
-			expect(ent.Id).toBe(Id);
+			expect(ent.id).toBe(id);
 			expect(ent.createdAt).toBe(createdAt);
 			expect(ent.updatedAt).toBe(updatedAt);
 			expect(ent.random).toBe(random);

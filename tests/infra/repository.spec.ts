@@ -16,7 +16,7 @@ describe("test repository", () => {
 
 	describe("valid operations", () => {
 		it("on fetch", async () => {
-			const res = await repo.fetchById(ent1.Id);
+			const res = await repo.fetchById(ent1.id);
 
 			expect(res.unwrap()).toEqual(ent1.serialize());
 		});
@@ -36,12 +36,12 @@ describe("test repository", () => {
 			const entReturned = res.unwrap();
 
 			expect(entReturned).toBe(ent1Changed);
-			expect(entReturned?.Id).toBe(ent1.Id);
+			expect(entReturned?.id).toBe(ent1.id);
 			expect(entReturned?.random).not.toBe(ent1.random);
 		});
 
 		it("on delete", async () => {
-			const res = await repo.deleteById(ent1.Id);
+			const res = await repo.deleteById(ent1.id);
 
 			expect(res.unwrap()).toEqual(ent1.serialize());
 		});
@@ -49,7 +49,7 @@ describe("test repository", () => {
 
 	describe("bubbling errors with app result tryFromPromise", () => {
 		it("on fetch", async () => {
-			const fetchResult = await repo.fetchById(ent2.Id);
+			const fetchResult = await repo.fetchById(ent2.id);
 
 			const res = AppResult.fromResult(fetchResult);
 
@@ -77,7 +77,7 @@ describe("test repository", () => {
 		});
 
 		it("on delete", async () => {
-			const opRes = await repo.deleteById(ent2.Id);
+			const opRes = await repo.deleteById(ent2.id);
 
 			const res = AppResult.fromResult(opRes);
 

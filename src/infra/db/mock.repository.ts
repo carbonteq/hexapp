@@ -12,13 +12,13 @@ import {
 } from "../../domain/pagination";
 
 export class MockNotFoundError extends NotFoundError {
-	constructor(entityId: BaseEntity["Id"]) {
+	constructor(entityId: BaseEntity["id"]) {
 		super(`entity with ID<${entityId}> not found by mock repository`);
 	}
 }
 
 export class MockAlreadyExistsError extends AlreadyExistsError {
-	constructor(entityId: BaseEntity["Id"]) {
+	constructor(entityId: BaseEntity["id"]) {
 		super(`entity with ID<${entityId}> already exists in mock repository`);
 	}
 }
@@ -28,14 +28,14 @@ type GetSerialized<Ent extends BaseEntity> = ReturnType<Ent["serialize"]>;
 export abstract class MockRepository<
 	T extends BaseEntity,
 > extends BaseRepository<T> {
-	db: Map<T["Id"], GetSerialized<T>>;
+	db: Map<T["id"], GetSerialized<T>>;
 
 	protected constructor() {
 		super();
 		this.db = new Map();
 	}
 
-	fetchById(Id: T["Id"]): Promise<RepositoryResult<T, MockNotFoundError>> {
+	fetchById(Id: T["id"]): Promise<RepositoryResult<T, MockNotFoundError>> {
 		const optEnt = this.db.get(Id);
 		let res: Result<GetSerialized<T>, MockNotFoundError>;
 
@@ -55,10 +55,10 @@ export abstract class MockRepository<
 	insert(entity: T): Promise<RepositoryResult<T, MockAlreadyExistsError>> {
 		let res: Result<T, AlreadyExistsError>;
 
-		if (this.db.has(entity.Id)) {
-			res = Result.Err(new MockAlreadyExistsError(entity.Id));
+		if (this.db.has(entity.id)) {
+			res = Result.Err(new MockAlreadyExistsError(entity.id));
 		} else {
-			this.db.set(entity.Id, entity.serialize());
+			this.db.set(entity.id, entity.serialize());
 			res = Result.Ok(entity);
 		}
 
@@ -76,18 +76,18 @@ export abstract class MockRepository<
 	update(entity: T): Promise<RepositoryResult<T, MockNotFoundError>> {
 		let res: Result<T, MockNotFoundError>;
 
-		if (this.db.has(entity.Id)) {
-			this.db.set(entity.Id, entity.serialize());
+		if (this.db.has(entity.id)) {
+			this.db.set(entity.id, entity.serialize());
 			res = Result.Ok(entity);
 		} else {
-			res = Result.Err(new MockNotFoundError(entity.Id));
+			res = Result.Err(new MockNotFoundError(entity.id));
 		}
 
 		return Promise.resolve(res);
 	}
 
 	async deleteById(
-		Id: T["Id"],
+		Id: T["id"],
 	): Promise<RepositoryResult<T, MockNotFoundError>> {
 		const res = await this.fetchById(Id);
 
@@ -98,7 +98,7 @@ export abstract class MockRepository<
 		return res;
 	}
 
-	existsById(Id: T["Id"]): Promise<RepositoryResult<boolean>> {
+	existsById(Id: T["id"]): Promise<RepositoryResult<boolean>> {
 		return Promise.resolve(Result.Ok(this.db.has(Id)));
 	}
 }

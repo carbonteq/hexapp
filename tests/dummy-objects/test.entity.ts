@@ -15,10 +15,10 @@ export class TestEntity extends BaseEntity implements ITestEntity {
 
 	private _random: number; // as `random` is public, it must be readonly to prevent tampering from outside
 
-	private constructor(opts?: ITestEntity) {
+	private constructor(random?: ITestEntity["random"]) {
 		super();
 
-		this._random = opts?.random ?? TestEntity.getRandomNumber();
+		this._random = random ?? TestEntity.getRandomNumber();
 	}
 
 	private static getRandomNumber(): number {
@@ -30,9 +30,15 @@ export class TestEntity extends BaseEntity implements ITestEntity {
 	}
 
 	static from(other: ITestEntity): TestEntity {
-		const e = new TestEntity(other);
+		const e = new TestEntity(other.random);
 		e._copyBaseProps(other);
 		return e;
+	}
+
+	static fromSerialized(other: TestEntitySerialized) {
+		const e = new TestEntity(other.random);
+
+		return e._fromSerialized(other);
 	}
 
 	get random() {
