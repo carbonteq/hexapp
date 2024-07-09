@@ -1,5 +1,30 @@
 # @carbonteq/hexapp
 
+## 0.17.0
+
+### Minor Changes
+
+- cbd1c1c: - Rename nominal types to refined types
+  - Add `extend` util for adding custom method to an object or class while retaining type safety (an alternative is spread operator, but that approach removes the runtime private props)
+  - Add `DateTime` refined type
+  - Add an optionally implementable `getParser` method in `BaseValueObject` to allow sharing schematic (syntactic + semantic) validation logic with domain boundaries
+  - Add a `DateRange` type to show case how to use refined types and the structure of a value object with schematic and domain validations
+  - Update `BaseEntity` to utilize the new refined types for `Id` (`UUID`), `createdAt` (`DateTime`) and `updatedAt` (`DateTime`) fields
+- 9686ab1: - Add nominal/branded types (and a helper function to simplify their creation)
+  - Remove ExternalServiceFailure error port
+  - Add GuardViolationError and AppErrStatus
+  - Simplify BaseRepository, only insert and update are mandatory to implement now
+  - Remove UUID and Email value objects, shift to UUID and Email branded types
+  - Simplify types in SerializedEntity interface (can reuse UUID in both IEntity and SerializedEntity)
+  - Move Logger interface to shared
+  - Move MockRepository to infra
+  - Remove EMAIL and UUID schema types from ZodSchemas
+  - Update tests to cater to above changes, add new tests for nominal types
+
+### Patch Changes
+
+- 7482c4c: Simplify serialized entity
+
 ## 0.16.1
 
 ### Patch Changes
