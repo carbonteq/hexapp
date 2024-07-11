@@ -81,3 +81,9 @@ export const extend = <T, U extends Record<string, unknown>>(
 
 	return res;
 };
+
+// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+export const isPromise = <T>(obj: any): obj is Promise<T> =>
+	!!obj &&
+	(typeof obj === "object" || typeof obj === "function") &&
+	typeof obj.then === "function";

@@ -1,5 +1,11 @@
 # @carbonteq/hexapp
 
+## 0.17.1
+
+### Patch Changes
+
+- a18e818: Add createEnumType, update to use @carbonteq/fp@0.5.0. Add isPromise type guard
+
 ## 0.17.0
 
 ### Minor Changes
