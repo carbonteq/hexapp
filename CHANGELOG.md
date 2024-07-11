@@ -1,5 +1,11 @@
 # @carbonteq/hexapp
 
+## 0.17.2
+
+### Patch Changes
+
+- cc3ce7d: Dummy release with fixed exports
+
 ## 0.17.1
 
 ### Patch Changes
