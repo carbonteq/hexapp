@@ -27,6 +27,7 @@ export {
 	randomChoice,
 	shuffle,
 	shuffleInplace,
+	isPromise,
 } from "./misc.utils";
 export { ZodUtils, handleZodErr } from "./zod.utils";
 export { ZodSchemas } from "./zod.schemas";
