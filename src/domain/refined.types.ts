@@ -1,6 +1,6 @@
 import { randomUUID } from "node:crypto";
 import { Result } from "@carbonteq/fp";
-import z from "zod";
+import z, { type ZodError } from "zod";
 import { fromZodError } from "zod-validation-error";
 import { extend } from "../shared/misc.utils";
 import { type DomainError, ValidationError } from "./base.errors";
@@ -21,19 +21,6 @@ type ZodBrandedWithFactory<
 
 const defaultFromZodErr = (_data: unknown, err: z.ZodError) =>
 	new ValidationError(fromZodError(err).message);
-
-const addSerializer = <
-	U extends z.ZodTypeAny,
-	sym extends string | symbol,
-	E extends DomainError,
-	T,
->(
-	branded: ZodBrandedWithFactory<U, sym, E>,
-	serialize: (base: z.infer<U>) => T,
-) =>
-	extend(branded, {
-		serialize,
-	});
 
 export function createRefinedType<
 	sym extends string | symbol,
@@ -129,3 +116,41 @@ export const DateTime = extend(DTInner, {
 	now: () => new Date() as DateTime,
 	from: (d: Date) => d as DateTime,
 });
+
+// Enum types
+export class EnumValidationError extends ValidationError {
+	constructor(
+		msg: string,
+		readonly data: unknown,
+		readonly err: ZodError,
+	) {
+		super(msg);
+	}
+}
+
+export const createEnumType = <
+	Sym extends string,
+	U extends string,
+	T extends [U, ...U[]],
+>(
+	tag: Sym,
+	enumValues: T,
+) => {
+	const innerType = createRefinedType(
+		tag,
+		z.enum(enumValues),
+		(data, err) =>
+			new EnumValidationError(
+				`${tag}: <${data}> must be one of [${enumValues}]`,
+				data,
+				err,
+			),
+	);
+	type Inner = z.infer<typeof innerType>;
+
+	return extend(innerType, {
+		from(val: Unbrand<typeof innerType>) {
+			return val as Inner;
+		},
+	});
+};

@@ -69,7 +69,7 @@ export class AppResult<T> {
 	async zipAsync<U>(
 		f: (r: T) => Promise<Result<U, AppError>>,
 	): Promise<AppResult<[T, U]>> {
-		return this.inner_result.zipAsync(f).then((r) => new AppResult(r));
+		return this.inner_result.zip(f).then((r) => new AppResult(r));
 	}
 
 	bind<U>(f: (r: T) => Result<U, AppError>): AppResult<U> {
