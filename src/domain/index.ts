@@ -11,6 +11,8 @@ export {
 	Email,
 	DateTime,
 	createRefinedType,
+	createEnumType,
+	EnumValidationError,
 	InvalidUUID,
 	type Unbrand,
 } from "./refined.types";
