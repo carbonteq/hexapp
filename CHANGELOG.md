@@ -1,5 +1,11 @@
 # @carbonteq/hexapp
 
+## 0.18.1
+
+### Patch Changes
+
+- 759d906: Simplify app error messages
+
 ## 0.18.0
 
 ### Minor Changes
