@@ -152,5 +152,8 @@ export const createEnumType = <
 		from(val: Unbrand<typeof innerType>) {
 			return val as Inner;
 		},
+		get values(): Readonly<T> {
+			return enumValues;
+		},
 	});
 };
