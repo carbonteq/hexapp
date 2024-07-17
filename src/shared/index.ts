@@ -1,4 +1,9 @@
-export { assertUnreachable, assertUnreachablePassthrough } from "./type.utils";
+export {
+	unsafeCast,
+	assertUnreachable,
+	assertUnreachablePassthrough,
+	isPromise,
+} from "./type.utils";
 export type {
 	ArrType,
 	Constructable,
@@ -9,6 +14,7 @@ export type {
 	IterType,
 	Omitt,
 	PartialBy,
+	UnsafeCast,
 } from "./type.utils";
 export {
 	sortByCreatedAt,
@@ -27,7 +33,6 @@ export {
 	randomChoice,
 	shuffle,
 	shuffleInplace,
-	isPromise,
 } from "./misc.utils";
 export { ZodUtils, handleZodErr } from "./zod.utils";
 export { ZodSchemas } from "./zod.schemas";

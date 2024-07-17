@@ -1,46 +1,56 @@
 import { randomUUID } from "node:crypto";
 import { Result } from "@carbonteq/fp";
-import z, { type ZodError } from "zod";
+import z, { type ZodEnum, type ZodError } from "zod";
 import { fromZodError } from "zod-validation-error";
 import { extend } from "../shared/misc.utils";
+import { unsafeCast } from "../shared/type.utils";
 import { type DomainError, ValidationError } from "./base.errors";
 
+// type OverwriteValueOf<T, Schema extends z.ZodTypeAny> = Omit<T, "valueOf"> & {
+// 	valueOf(): Schema["_output"];
+// };
 type Extensions<
-	U extends z.ZodTypeAny,
-	sym extends string | symbol,
-	E extends DomainError,
+	Schema extends z.ZodTypeAny,
+	Tag extends string | symbol,
+	Err extends DomainError,
 > = {
-	create: (data: unknown) => Result<z.infer<U> & z.BRAND<sym>, E>;
+	create: (data: unknown) => Result<Schema["_output"] & z.BRAND<Tag>, Err>;
+	$infer: Schema["_output"] & z.BRAND<Tag>;
+	$inferInner: Schema["_output"];
+	value(branded: Schema["_output"] & z.BRAND<Tag>): Schema["_output"];
 };
 
 type ZodBrandedWithFactory<
-	U extends z.ZodTypeAny,
-	sym extends string | symbol,
-	E extends DomainError,
-> = z.ZodBranded<U, sym> & Extensions<U, sym, E>;
+	Schema extends z.ZodTypeAny,
+	Tag extends string | symbol,
+	Err extends DomainError,
+> = z.ZodBranded<Schema, Tag> & Extensions<Schema, Tag, Err>;
 
 const defaultFromZodErr = (_data: unknown, err: z.ZodError) =>
 	new ValidationError(fromZodError(err).message);
 
 export function createRefinedType<
+	Tag extends string | symbol,
+	Schema extends z.ZodTypeAny,
+>(
+	_tag: Tag,
+	schema: Schema,
+): ZodBrandedWithFactory<Schema, Tag, ValidationError>;
+export function createRefinedType<
+	Tag extends string | symbol,
+	Schema extends z.ZodTypeAny,
+	Err extends DomainError,
+>(
+	_tag: Tag,
+	schema: Schema,
+	errTransformer: (data: Schema["_input"], err: z.ZodError) => Err,
+): ZodBrandedWithFactory<Schema, Tag, Err>;
+export function createRefinedType<
 	sym extends string | symbol,
 	U extends z.ZodTypeAny,
 	E extends DomainError,
 >(
-	_tag: sym,
-	schema: U,
-	errTransformer: (data: U["_input"], err: z.ZodError) => E,
-): ZodBrandedWithFactory<U, sym, E>;
-export function createRefinedType<
-	sym extends string | symbol,
-	U extends z.ZodTypeAny,
->(_tag: sym, schema: U): ZodBrandedWithFactory<U, sym, ValidationError>;
-export function createRefinedType<
-	sym extends string | symbol,
-	U extends z.ZodTypeAny,
-	E extends DomainError,
->(
-	_tag: sym,
+	tag: sym,
 	schema: U,
 	errConst?: (data: U["_input"], err: z.ZodError) => E,
 ): ZodBrandedWithFactory<U, sym, E> {
@@ -57,6 +67,18 @@ export function createRefinedType<
 
 	const extensions: Extensions<U, sym, E> = {
 		create: factory,
+		//@ts-expect-error
+		$infer: tag,
+		$inferInner: tag,
+		// get $infer(): U["_output"] & z.BRAND<sym> {
+		// 	throw new Error("$infer not meant to be called at runtime");
+		// },
+		// get $inferInner(): U["_output"] {
+		// 	throw new Error("$inferInner not meant to be called at runtime");
+		// },
+		value(branded) {
+			return branded;
+		},
 	};
 	const finalBranded = extend(branded, extensions);
 
@@ -87,7 +109,7 @@ export const Email = createRefinedType(
 
 	(data, _err) => new InvalidEmail(data),
 );
-export type Email = z.infer<typeof Email>;
+export type Email = typeof Email.$infer;
 
 // Not a good example as I wanted to add some custom stuff
 const UUIDInner = createRefinedType(
@@ -95,10 +117,10 @@ const UUIDInner = createRefinedType(
 	z.string().uuid(),
 	(data, _err) => new InvalidUUID(data),
 );
-export type UUID = z.infer<typeof UUIDInner>;
+export type UUID = typeof UUIDInner.$infer;
 export const UUID = extend(UUIDInner, {
 	init: () => randomUUID() as UUID,
-	fromTrusted: (uuid: string) => uuid as UUID,
+	fromTrusted: unsafeCast<UUID, string>,
 });
 
 export class InvalidDateTime extends ValidationError {
@@ -111,15 +133,16 @@ const DTInner = createRefinedType(
 	z.union([z.number(), z.string(), z.date()]).pipe(z.coerce.date()),
 	(data, _err) => new InvalidDateTime(data),
 );
-export type DateTime = z.infer<typeof DTInner>;
+export type DateTime = typeof DTInner.$infer;
 export const DateTime = extend(DTInner, {
 	now: () => new Date() as DateTime,
-	from: (d: Date) => d as DateTime,
+	from: unsafeCast<DateTime, Date | DateTime>,
 });
 
 // Enum types
 export class EnumValidationError extends ValidationError {
 	constructor(
+		readonly tag: string | symbol,
 		msg: string,
 		readonly data: unknown,
 		readonly err: ZodError,
@@ -129,11 +152,11 @@ export class EnumValidationError extends ValidationError {
 }
 
 export const createEnumType = <
-	Sym extends string,
+	Tag extends string | symbol,
 	U extends string,
 	T extends [U, ...U[]],
 >(
-	tag: Sym,
+	tag: Tag,
 	enumValues: T,
 ) => {
 	const innerType = createRefinedType(
@@ -141,19 +164,46 @@ export const createEnumType = <
 		z.enum(enumValues),
 		(data, err) =>
 			new EnumValidationError(
-				`${tag}: <${data}> must be one of [${enumValues}]`,
+				tag,
+				`<${data.valueOf()}> must be one of ${enumValues.valueOf()}`,
 				data,
 				err,
 			),
 	);
-	type Inner = z.infer<typeof innerType>;
 
 	return extend(innerType, {
-		from(val: Unbrand<typeof innerType>) {
-			return val as Inner;
-		},
+		from: unsafeCast<typeof innerType.$infer, T[number]>,
 		get values(): Readonly<T> {
 			return enumValues;
 		},
+		eq(
+			a: T[number] | (T[number] & z.BRAND<Tag>),
+			b: T[number] | (T[number] & z.BRAND<Tag>),
+		): boolean {
+			return a === b;
+		},
 	});
 };
+
+type MatchActions<T extends string | symbol | number, R> = {
+	[K in T]: () => R;
+};
+
+export function matchEnum<
+	Tag extends string | symbol,
+	U extends string,
+	T extends [U, ...U[]],
+	EnumType extends ZodBrandedWithFactory<ZodEnum<T>, Tag, EnumValidationError>,
+	// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+	Actions extends MatchActions<EnumType["$inferInner"], any>,
+>(
+	value: EnumType["$infer"],
+	_enumType: EnumType,
+	actions: Actions,
+): ReturnType<Actions[EnumType["$inferInner"]]> {
+	const key = value as unknown as keyof typeof actions;
+	if (key in actions) {
+		return actions[key]();
+	}
+	throw new Error(`Unhandled enum value: ${value.valueOf()}`);
+}

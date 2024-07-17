@@ -71,3 +71,8 @@ export abstract class BaseEntity implements IEntity {
 	//@ts-ignore
 	abstract serialize();
 }
+
+export type SimpleSerialized<
+	EntityInterface extends IEntity,
+	T extends keyof EntityInterface = keyof IEntity,
+> = SerializedEntity & Omit<EntityInterface, T | keyof IEntity>;
