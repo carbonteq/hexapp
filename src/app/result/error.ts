@@ -14,7 +14,7 @@ export class AppError extends Error {
 	) {
 		let msg: string;
 		if (message) {
-			msg = `<${status}>: "${message}"`;
+			msg = message;
 		} else {
 			msg = `AppError<${status}>`;
 		}
