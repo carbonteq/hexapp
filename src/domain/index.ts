@@ -3,6 +3,7 @@ export type {
 	IEntity,
 	IEntityForUpdate,
 	SerializedEntity,
+	SimpleSerialized,
 } from "./base.entity";
 export {
 	InvalidEmail,
@@ -12,6 +13,7 @@ export {
 	DateTime,
 	createRefinedType,
 	createEnumType,
+	matchEnum,
 	EnumValidationError,
 	InvalidUUID,
 	type Unbrand,

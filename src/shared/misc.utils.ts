@@ -74,16 +74,12 @@ export const extend = <T, U extends Record<string, unknown>>(
 	original: T,
 	extensions: U,
 ): T & U => {
-	const res = original as T & U;
+	//@ts-expect-error
+	return Object.assign(original, extensions);
 
-	//@ts-ignore
-	for (const [k, v] of Object.entries(extensions)) res[k] = v;
-
-	return res;
+	// const res = original as T & U;
+	// //@ts-ignore
+	// for (const [k, v] of Object.entries(extensions)) res[k] = v;
+	//
+	// return res;
 };
-
-// biome-ignore lint/suspicious/noExplicitAny: <explanation>
-export const isPromise = <T>(obj: any): obj is Promise<T> =>
-	!!obj &&
-	(typeof obj === "object" || typeof obj === "function") &&
-	typeof obj.then === "function";

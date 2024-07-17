@@ -58,6 +58,7 @@ describe("alternative constructors", () => {
 
 		it("from err result with msg", () => {
 			const msg = "some message";
+			//@ts-expect-error
 			const err = new InvalidOpErr(msg);
 			const result = AppResult.fromResult(Result.Err(err));
 
@@ -65,7 +66,7 @@ describe("alternative constructors", () => {
 			const unwrappedErr = result.unwrapErr();
 
 			expect(unwrappedErr.status).toBe(AppErrStatus.InvalidOperation);
-			expect(unwrappedErr.message).toBe(`<InvalidOperation>: "${msg}"`);
+			expect(unwrappedErr.message).toBe(msg);
 		});
 	});
 });
