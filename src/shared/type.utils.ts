@@ -1,6 +1,9 @@
 import type { AppResult } from "..//app/result";
 
-export type EmptyObject = Record<string, never>;
+export type EmptyObject = Record<string | number | symbol, never>;
+
+export type UnsafeCast<T, U> = T extends U ? T : U;
+export const unsafeCast = <U, T = unknown>(val: T): U => val as unknown as U;
 
 type JsonValue =
 	| string
@@ -76,3 +79,9 @@ export const assertUnreachable = (x: never): never => {
  * @param x {never} - This is a type that should never be used. It is used to ensure that the switch statement is exhaustive.
  */
 export const assertUnreachablePassthrough = (x: never): never => x;
+
+// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+export const isPromise = <T>(obj: any): obj is Promise<T> =>
+	!!obj &&
+	(typeof obj === "object" || typeof obj === "function") &&
+	typeof obj.then === "function";
