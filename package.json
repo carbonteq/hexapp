@@ -49,9 +49,9 @@
 		"@changesets/cli": "^2.27.7",
 		"@swc-node/core": "^1.13.3",
 		"@swc-node/register": "^1.10.9",
-		"@swc/core": "^1.6.13",
+		"@swc/core": "^1.7.0",
 		"@swc/jest": "^0.2.36",
-		"@swc/types": "^0.1.9",
+		"@swc/types": "^0.1.12",
 		"@tsconfig/node18": "^18.2.4",
 		"@types/jest": "^29.5.12",
 		"@types/node": "18.19.1",
@@ -60,14 +60,14 @@
 		"jest-extended": "^4.0.2",
 		"jsr": "^0.13.1",
 		"rimraf": "^5.0.7",
-		"rollup": "^4.18.1",
+		"rollup": "^4.19.0",
 		"rollup-plugin-node-externals": "^7.1.2",
 		"rollup-plugin-swc3": "0.11.2",
 		"rollup-plugin-typescript-paths": "^1.5.0",
 		"typescript": "5.5.3"
 	},
 	"dependencies": {
-		"@carbonteq/fp": "^0.5.3",
+		"@carbonteq/fp": "^0.6.0",
 		"zod": "^3.23.8",
 		"zod-validation-error": "^3.3.0"
 	},

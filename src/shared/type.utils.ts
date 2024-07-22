@@ -80,8 +80,17 @@ export const assertUnreachable = (x: never): never => {
  */
 export const assertUnreachablePassthrough = (x: never): never => x;
 
-// biome-ignore lint/suspicious/noExplicitAny: <explanation>
-export const isPromise = <T>(obj: any): obj is Promise<T> =>
-	!!obj &&
-	(typeof obj === "object" || typeof obj === "function") &&
-	typeof obj.then === "function";
+export type AppendToTuple<T, U> = T extends [...infer Rest, infer L]
+	? [...Rest, L, U]
+	: [T, U];
+
+export type IsUnion<T, U extends T = T> = ( // biome-ignore lint/suspicious/noExplicitAny: <explanation>
+	T extends any
+		? U extends T
+			? false
+			: true
+		: never
+) extends false
+	? false
+	: true;
+export type EnsureNotUnion<T> = IsUnion<T> extends true ? never : T;
