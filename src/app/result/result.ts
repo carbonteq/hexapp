@@ -46,14 +46,14 @@ export class AppResult<T> {
 		return new AppResult(this.inner_result.and(other.inner_result));
 	}
 
-	do(f: (val: T) => void): AppResult<T> {
-		this.inner_result.do(f);
+	tap(f: (val: T) => void): AppResult<T> {
+		this.inner_result.tap(f);
 
 		return this;
 	}
 
-	async doAsync(f: (val: T) => Promise<void>): Promise<AppResult<T>> {
-		await this.inner_result.doAsync(f);
+	async tapAsync(f: (val: T) => Promise<void>): Promise<AppResult<T>> {
+		await this.inner_result.tapAsync(f);
 
 		return this;
 	}
@@ -62,24 +62,16 @@ export class AppResult<T> {
 		return new AppResult(result.inner_result);
 	}
 
-	zip<U>(f: (r: T) => Result<U, AppError>): AppResult<[T, U]> {
-		return new AppResult(this.inner_result.zip(f));
+	zip<U>(fn: (r: T) => U): AppResult<[T, U]> {
+		return new AppResult(this.inner_result.zip(fn));
 	}
 
-	async zipAsync<U>(
-		f: (r: T) => Promise<Result<U, AppError>>,
-	): Promise<AppResult<[T, U]>> {
-		return this.inner_result.zip(f).then((r) => new AppResult(r));
+	flatZip<U>(f: (r: T) => Result<U, AppError>): AppResult<[T, U]> {
+		return new AppResult(this.inner_result.flatZip(f));
 	}
 
-	bind<U>(f: (r: T) => Result<U, AppError>): AppResult<U> {
-		return new AppResult(this.inner_result.bind(f));
-	}
-
-	async bindAsync<U>(
-		f: (r: T) => Promise<Result<U, AppError>>,
-	): Promise<AppResult<U>> {
-		return this.inner_result.bind(f).then((r) => new AppResult(r));
+	flatMap<U>(f: (r: T) => Result<U, AppError>): AppResult<U> {
+		return new AppResult(this.inner_result.flatMap(f));
 	}
 
 	unwrap(): T {
@@ -100,7 +92,7 @@ export class AppResult<T> {
 		return this.inner_result.unwrapOrElse(fn as () => T); // type patch
 	}
 
-	map<U>(fn: (val: T) => U): AppResult<U> {
+	map<U>(fn: (val: T) => U) {
 		const newResult = this.inner_result.map(fn);
 
 		return new AppResult(newResult);
