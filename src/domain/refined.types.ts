@@ -16,8 +16,8 @@ type Extensions<
 > = {
 	create: (data: unknown) => Result<Schema["_output"] & z.BRAND<Tag>, Err>;
 	$infer: Schema["_output"] & z.BRAND<Tag>;
-	$inferInner: Schema["_output"];
-	value(branded: Schema["_output"] & z.BRAND<Tag>): Schema["_output"];
+	$inferPrimitive: Schema["_output"];
+	primitive(branded: Schema["_output"] & z.BRAND<Tag>): Schema["_output"];
 };
 
 type ZodBrandedWithFactory<
@@ -69,14 +69,14 @@ export function createRefinedType<
 		create: factory,
 		//@ts-expect-error
 		$infer: tag,
-		$inferInner: tag,
+		$inferPrimitive: tag,
 		// get $infer(): U["_output"] & z.BRAND<sym> {
 		// 	throw new Error("$infer not meant to be called at runtime");
 		// },
 		// get $inferInner(): U["_output"] {
 		// 	throw new Error("$inferInner not meant to be called at runtime");
 		// },
-		value(branded) {
+		primitive(branded) {
 			return branded;
 		},
 	};
@@ -195,12 +195,12 @@ export function matchEnum<
 	T extends [U, ...U[]],
 	EnumType extends ZodBrandedWithFactory<ZodEnum<T>, Tag, EnumValidationError>,
 	// biome-ignore lint/suspicious/noExplicitAny: <explanation>
-	Actions extends MatchActions<EnumType["$inferInner"], any>,
+	Actions extends MatchActions<EnumType["$inferPrimitive"], any>,
 >(
 	value: EnumType["$infer"],
 	_enumType: EnumType,
 	actions: Actions,
-): ReturnType<Actions[EnumType["$inferInner"]]> {
+): ReturnType<Actions[EnumType["$inferPrimitive"]]> {
 	const key = value as unknown as keyof typeof actions;
 	if (key in actions) {
 		return actions[key]();
