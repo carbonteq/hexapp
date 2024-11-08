@@ -33,8 +33,10 @@ describe("base entity", () => {
 			const serializedEnt = ent.serialize();
 			const expectedObj: TestEntitySerialized = {
 				id: ent.id,
+				sId: ent.sId,
 				createdAt: ent.createdAt,
 				updatedAt: ent.updatedAt,
+				deletedAt: ent.deletedAt,
 				random: ent.random,
 			};
 
