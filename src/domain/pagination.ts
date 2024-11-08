@@ -11,7 +11,7 @@ export class PaginationOptionsValidationError extends ValidationError {
 
 const DEFAULT_PAGINATION_OPTS = {
 	pageNum: 1,
-	pageSize: 100,
+	pageSize: 10,
 } as const;
 
 const DISCRIMINANT = Symbol("PaginationOptions");
@@ -42,8 +42,7 @@ export class PaginationOptions {
 		readonly pageNum: number,
 		readonly pageSize: number,
 	) {
-		this.offset = pageSize * pageNum;
-		// this.offset1 = pageSize * (pageNum - 1);
+		this.offset = pageSize * (pageNum - 1);
 	}
 
 	/**
