@@ -67,6 +67,7 @@ export abstract class BaseEntity implements IEntity {
 		this.#sId = other.sId;
 		this.#createdAt = DateTime.from(other.createdAt);
 		this.#updatedAt = DateTime.from(other.updatedAt);
+		this.#deletedAt = other.deletedAt ? DateTime.from(other.deletedAt) : null;
 	}
 
 	protected _fromSerialized(other: Readonly<SerializedEntity>) {
@@ -74,6 +75,7 @@ export abstract class BaseEntity implements IEntity {
 		this.#id = UUID.fromTrusted(other.id); // only to simplify fromSerialized implementation on developer side
 		this.#createdAt = DateTime.from(other.createdAt);
 		this.#updatedAt = DateTime.from(other.updatedAt);
+		this.#deletedAt = other.deletedAt ? DateTime.from(other.deletedAt) : null;
 
 		return this;
 	}
