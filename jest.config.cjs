@@ -14,7 +14,8 @@ const config = {
 	},
 	transformIgnorePatterns: ["/node_modules/"],
 	moduleNameMapper: {
-		"^@carbonteq/hexapp(.*)$": ["<rootDir>/lib"],
+		"^@carbonteq/hexapp(.*)$": ["<rootDir>/dist"],
+		"^@(.*)$": ["<rootDir>/dist"],
 	},
 	setupFilesAfterEnv: ["jest-extended/all"],
 };

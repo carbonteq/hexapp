@@ -1,4 +1,4 @@
-export { AppResult } from "./result";
-export type { EmptyResult } from "./result";
-export { AppErrStatus } from "./status";
-export { AppError } from "./error";
+export { AppResult } from "./result.js";
+export type { EmptyResult } from "./result.ts";
+export { AppErrStatus } from "./status.js";
+export { AppError } from "./error.js";

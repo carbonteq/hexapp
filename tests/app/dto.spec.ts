@@ -1,6 +1,11 @@
+import * as assert from "node:assert";
+import { describe, it } from "node:test";
 import type { Result } from "@carbonteq/fp";
+import {
+	BaseDto,
+	DtoValidationError,
+} from "@carbonteq/hexapp/app/dto/index.js";
 import { z } from "zod";
-import { BaseDto, DtoValidationError } from "../../lib";
 
 const COLOR_LEN = 7;
 const FONT_MIN_LEN = 3;
@@ -71,23 +76,23 @@ describe("when dto input", () => {
 		it("should return OK result with DTO when given valid data 1", () => {
 			const dtoResult = NewThemeDto.create(validData1);
 
-			expect(dtoResult.isOk());
+			assert.ok(dtoResult.isOk());
 
 			const dto = dtoResult.unwrap();
-			expect(dto).toBeInstanceOf(NewThemeDto);
+			assert.ok(dto instanceof NewThemeDto);
 
-			expect(dto.validData).toEqual(validData1);
+			assert.deepStrictEqual(dto.validData, validData1);
 		});
 
 		it("should return OK result with DTO when given valid data 2", () => {
 			const dtoResult = NewThemeDto.create(validData2);
 
-			expect(dtoResult.isOk());
+			assert.ok(dtoResult.isOk());
 
 			const dto = dtoResult.unwrap();
-			expect(dto).toBeInstanceOf(NewThemeDto);
+			assert.ok(dto instanceof NewThemeDto);
 
-			expect(dto.validData).toEqual(validData2);
+			assert.deepStrictEqual(dto.validData, validData2);
 		});
 	});
 
@@ -97,13 +102,14 @@ describe("when dto input", () => {
 
 			const dtoRes = NewThemeDto.create(badData);
 
-			expect(dtoRes.isErr());
+			assert.ok(dtoRes.isErr());
 
 			const dtoErr = dtoRes.unwrapErr();
 
-			expect(dtoErr).toBeInstanceOf(DtoValidationError);
+			assert.ok(dtoErr instanceof DtoValidationError);
 
-			expect(dtoErr.message).toEqual(
+			assert.strictEqual(
+				dtoErr.message,
 				'Validation error: String must contain exactly 7 character(s) at "primaryColor"',
 			);
 		});
@@ -113,13 +119,14 @@ describe("when dto input", () => {
 
 			const dtoRes = NewThemeDto.create(badData);
 
-			expect(dtoRes.isErr());
+			assert.ok(dtoRes.isErr());
 
 			const dtoErr = dtoRes.unwrapErr();
 
-			expect(dtoErr).toBeInstanceOf(DtoValidationError);
+			assert.ok(dtoErr instanceof DtoValidationError);
 
-			expect(dtoErr.message).toEqual(
+			assert.deepStrictEqual(
+				dtoErr.message,
 				'Validation error: String must contain exactly 7 character(s) at "secondaryColor"',
 			);
 		});
@@ -129,13 +136,14 @@ describe("when dto input", () => {
 
 			const dtoRes = NewThemeDto.create(badData);
 
-			expect(dtoRes.isErr());
+			assert.ok(dtoRes.isErr());
 
 			const dtoErr = dtoRes.unwrapErr();
 
-			expect(dtoErr).toBeInstanceOf(DtoValidationError);
+			assert.ok(dtoErr instanceof DtoValidationError);
 
-			expect(dtoErr.message).toEqual(
+			assert.deepStrictEqual(
+				dtoErr.message,
 				'Validation error: String must contain at least 3 character(s) at "primaryFont"',
 			);
 		});
@@ -145,13 +153,14 @@ describe("when dto input", () => {
 
 			const dtoRes = NewThemeDto.create(badData);
 
-			expect(dtoRes.isErr());
+			assert.ok(dtoRes.isErr());
 
 			const dtoErr = dtoRes.unwrapErr();
 
-			expect(dtoErr).toBeInstanceOf(DtoValidationError);
+			assert.ok(dtoErr instanceof DtoValidationError);
 
-			expect(dtoErr.message).toEqual(
+			assert.strictEqual(
+				dtoErr.message,
 				'Validation error: String must contain at least 3 character(s) at "secondaryFont"',
 			);
 		});
@@ -161,13 +170,14 @@ describe("when dto input", () => {
 
 			const dtoRes = NewThemeDto.create(badData);
 
-			expect(dtoRes.isErr());
+			assert.ok(dtoRes.isErr());
 
 			const dtoErr = dtoRes.unwrapErr();
 
-			expect(dtoErr).toBeInstanceOf(DtoValidationError);
+			assert.ok(dtoErr instanceof DtoValidationError);
 
-			expect(dtoErr.message).toEqual(
+			assert.deepStrictEqual(
+				dtoErr.message,
 				"Validation error: Invalid enum value. Expected 'default' | 'rounded' | 'rectangle', received 'random' at \"label\"",
 			);
 		});
@@ -183,13 +193,14 @@ describe("when dto input", () => {
 
 			const dtoRes = NewThemeDto.create(badData);
 
-			expect(dtoRes.isErr());
+			assert.ok(dtoRes.isErr());
 
 			const dtoErr = dtoRes.unwrapErr();
 
-			expect(dtoErr).toBeInstanceOf(DtoValidationError);
+			assert.ok(dtoErr instanceof DtoValidationError);
 
-			expect(dtoErr.message).toEqual(
+			assert.deepStrictEqual(
+				dtoErr.message,
 				'Validation error: String must contain exactly 7 character(s) at "primaryColor"; String must contain exactly 7 character(s) at "secondaryColor"; String must contain at least 3 character(s) at "primaryFont"; String must contain at least 3 character(s) at "secondaryFont"; Invalid enum value. Expected \'default\' | \'rounded\' | \'rectangle\', received \'random\' at "label"',
 			);
 		});

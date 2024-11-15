@@ -1,7 +1,7 @@
 import { Result } from "@carbonteq/fp";
 import { z } from "zod";
 import { fromZodError } from "zod-validation-error";
-import { ValidationError } from "./base.errors";
+import { ValidationError } from "./base.errors.js";
 
 export class PaginationOptionsValidationError extends ValidationError {
 	constructor(issues: string) {

@@ -1,4 +1,4 @@
-import { DateTime, UUID } from "./refined.types";
+import { DateTime, UUID } from "./refined.types.js";
 
 export interface IEntity {
 	readonly id: UUID;

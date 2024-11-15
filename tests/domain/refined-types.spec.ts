@@ -1,5 +1,11 @@
-import { Email, InvalidEmail, InvalidUUID, UUID } from "../../lib";
-import "jest-extended";
+import * as assert from "node:assert";
+import { describe, it } from "node:test";
+import {
+	Email,
+	InvalidEmail,
+	InvalidUUID,
+	UUID,
+} from "@/domain/refined.types.js";
 
 describe("nominal types", () => {
 	describe("email creation", () => {
@@ -9,19 +15,22 @@ describe("nominal types", () => {
 		const invalid = Email.create("abcdef.xyz");
 
 		it("should allow valid email", () => {
-			expect(valid.isOk()).toBeTrue();
+			assert.strictEqual(valid.isOk(), true);
 
 			const unwrapped = valid.unwrap();
-			expect(unwrapped).toBeString();
-			expect(unwrapped).toStrictEqual(emailInner);
+			assert.ok(typeof unwrapped === "string");
+			assert.strictEqual(unwrapped, emailInner);
 		});
 
 		it("should not allow invalid email", () => {
-			expect(invalid.isOk()).toBeFalse();
+			assert.strictEqual(invalid.isOk(), false);
 
 			const err = invalid.unwrapErr();
-			expect(err).toBeInstanceOf(InvalidEmail);
-			expect(err.message).toStartWith("Invalid Email: ");
+			assert.ok(err instanceof InvalidEmail);
+			assert.ok(
+				typeof err.message === "string" &&
+					err.message.startsWith("Invalid Email: "),
+			);
 		});
 	});
 
@@ -34,26 +43,30 @@ describe("nominal types", () => {
 		it("should create valid UUID with init", () => {
 			const created = UUID.init();
 
-			expect(created).toBeString();
-			expect(created).toMatch(
+			assert.ok(typeof created === "string");
+			assert.match(
+				created,
 				/^[0-9A-F]{8}-[0-9A-F]{4}-[4][0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$/i,
 			);
 		});
 
 		it("should allow valid email", () => {
-			expect(valid.isOk()).toBeTrue();
+			assert.strictEqual(valid.isOk(), true);
 
 			const unwrapped = valid.unwrap();
-			expect(unwrapped).toBeString();
-			expect(unwrapped).toStrictEqual(innerUUID);
+			assert.ok(typeof unwrapped === "string");
+			assert.strictEqual(unwrapped, innerUUID);
 		});
 
 		it("should not allow invalid email", () => {
-			expect(invalid.isOk()).toBeFalse();
+			assert.strictEqual(invalid.isOk(), false);
 
 			const err = invalid.unwrapErr();
-			expect(err).toBeInstanceOf(InvalidUUID);
-			expect(err.message).toStartWith("Invalid UUID: ");
+			assert.ok(err instanceof InvalidUUID);
+			assert.ok(
+				typeof err.message === "string" &&
+					err.message.startsWith("Invalid UUID: "),
+			);
 		});
 	});
 });

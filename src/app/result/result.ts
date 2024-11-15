@@ -1,5 +1,5 @@
 import { Result, type UNIT } from "@carbonteq/fp";
-import { AppError } from "./error";
+import { AppError } from "./error.js";
 
 type InnerResult<T> = Result<T, AppError>;
 

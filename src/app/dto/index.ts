@@ -1,2 +1,2 @@
-export { BaseDto, type DtoValidationResult } from "./dto.base";
-export { DtoValidationError } from "./dto.error";
+export { BaseDto, type DtoValidationResult } from "./dto.base.js";
+export { DtoValidationError } from "./dto.error.js";
