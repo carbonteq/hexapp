@@ -1,11 +1,13 @@
 {
-	"name": "@carbonteq/hexapp",
-	"version": "0.19.1",
-	"publish": {
-		"include": ["src", "README.md", "LICENCE", "package.json", "deno.jsonc"]
-	},
-	"exports": "./src/index.ts",
-	"imports": {
-		"@/": "./src/"
-	}
+  "name": "@carbonteq/hexapp",
+  "version": "0.19.1",
+  "publish": {
+    "include": ["src", "README.md", "LICENCE", "package.json", "deno.jsonc"]
+  },
+  "exports": "./src/index.ts",
+  "imports": {
+    "@/": "./src/",
+    "@carbonteq/hexapp/": "./dist/",
+    "@carbonteq/fp": "npm:@carbonteq/fp@0.7.0"
+  }
 }
