@@ -1,8 +1,8 @@
-import { Result } from "@carbonteq/fp";
-import { AppErrStatus, AppError, AppResult } from "@/app/result/index.js";
-import { InvalidOperation } from "@/domain/base.errors.js";
 import * as assert from "node:assert";
 import { describe, it } from "node:test";
+import { AppErrStatus, AppError, AppResult } from "@/app/result/index.js";
+import { InvalidOperation } from "@/domain/base.errors.js";
+import { Result } from "@carbonteq/fp";
 
 describe("when result", () => {
 	describe("is okay", () => {

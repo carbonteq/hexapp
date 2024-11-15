@@ -1,5 +1,9 @@
 import { randomInt } from "node:crypto";
-import { BaseEntity, type IEntity, type SerializedEntity } from "../../lib";
+import {
+	BaseEntity,
+	type IEntity,
+	type SerializedEntity,
+} from "@/domain/base.entity.js";
 
 export interface ITestEntity extends IEntity {
 	random: number;

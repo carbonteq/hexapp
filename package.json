@@ -13,9 +13,7 @@
 			"import": "./dist/index.js"
 		}
 	},
-	"files": [
-		"/dist"
-	],
+	"files": ["/dist"],
 	"scope": "@carbonteq",
 	"repository": {
 		"type": "git",
@@ -40,8 +38,8 @@
 		"prebuild": "rimraf lib",
 		"build": "tsup",
 		"dev": "tsup --watch",
-		"test": "jest --verbose",
-		"test:dbg": "node --inspect-brk ./node_modules/jest/bin/jest.js --runInBand",
+		"test": "tsx --test tests/**/*.spec.ts",
+		"test:debug": "tsx --test --inspect-brk tests/**/*.spec.ts",
 		"release": "changeset publish"
 	},
 	"devDependencies": {

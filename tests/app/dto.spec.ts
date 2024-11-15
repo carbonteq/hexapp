@@ -1,11 +1,11 @@
-import { describe, it } from "node:test";
 import * as assert from "node:assert";
+import { describe, it } from "node:test";
 import type { Result } from "@carbonteq/fp";
-import { z } from "zod";
 import {
 	BaseDto,
 	DtoValidationError,
 } from "@carbonteq/hexapp/app/dto/index.js";
+import { z } from "zod";
 
 const COLOR_LEN = 7;
 const FONT_MIN_LEN = 3;

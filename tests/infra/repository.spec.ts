@@ -1,6 +1,10 @@
-import { AppErrStatus, AppResult, type MockRepository } from "../../lib";
-import { TestEntity } from "../dummy-objects/test.entity";
-import { DummyTestRepository } from "../dummy-objects/test.repository";
+import * as assert from "node:assert";
+import { beforeEach, describe, it } from "node:test";
+import { AppResult } from "@/app/result/result.js";
+import { AppErrStatus } from "@/app/result/status.js";
+import type { MockRepository } from "@/infra/db/mock.repository.ts";
+import { TestEntity } from "../dummy-objects/test.entity.js";
+import { DummyTestRepository } from "../dummy-objects/test.repository.js";
 
 describe("test repository", () => {
 	let repo: MockRepository<TestEntity>;
@@ -18,13 +22,13 @@ describe("test repository", () => {
 		it("on fetch", async () => {
 			const res = await repo.fetchById(ent1.id);
 
-			expect(res.unwrap()).toEqual(ent1.serialize());
+			assert.deepEqual(res.unwrap(), ent1.serialize());
 		});
 
 		it("on insert", async () => {
 			const res = await repo.insert(ent2);
 
-			expect(res.unwrap()).toBe(ent2);
+			assert.equal(res.unwrap(), ent2);
 		});
 
 		it("on update", async () => {
@@ -35,15 +39,15 @@ describe("test repository", () => {
 
 			const entReturned = res.unwrap();
 
-			expect(entReturned).toBe(ent1Changed);
-			expect(entReturned?.id).toBe(ent1.id);
-			expect(entReturned?.random).not.toBe(ent1.random);
+			assert.equal(entReturned, ent1Changed);
+			assert.equal(entReturned?.id, ent1.id);
+			assert.notEqual(entReturned?.random, ent1.random);
 		});
 
 		it("on delete", async () => {
 			const res = await repo.deleteById(ent1.id);
 
-			expect(res.unwrap()).toEqual(ent1.serialize());
+			assert.deepEqual(res.unwrap(), ent1.serialize());
 		});
 	});
 
@@ -53,18 +57,18 @@ describe("test repository", () => {
 
 			const res = AppResult.fromResult(fetchResult);
 
-			expect(res.isOk()).toBeFalse();
+			assert.equal(res.isOk(), false);
 
 			const err = res.unwrapErr();
-			expect(err).toBeDefined();
-			expect(err.status).toBe(AppErrStatus.NotFound);
+			assert.ok(err !== undefined);
+			assert.equal(err.status, AppErrStatus.NotFound);
 		});
 
 		it("on insert", async () => {
 			const opRes = await repo.insert(ent1);
 			const res = AppResult.fromResult(opRes);
 
-			expect(res.unwrapErr().status).toBe(AppErrStatus.AlreadyExists);
+			assert.equal(res.unwrapErr().status, AppErrStatus.AlreadyExists);
 		});
 
 		it("on update", async () => {
@@ -73,7 +77,7 @@ describe("test repository", () => {
 
 			const res = AppResult.fromResult(opRes);
 
-			expect(res.unwrapErr().status).toBe(AppErrStatus.NotFound);
+			assert.equal(res.unwrapErr().status, AppErrStatus.NotFound);
 		});
 
 		it("on delete", async () => {
@@ -81,7 +85,7 @@ describe("test repository", () => {
 
 			const res = AppResult.fromResult(opRes);
 
-			expect(res.unwrapErr().status).toBe(AppErrStatus.NotFound);
+			assert.equal(res.unwrapErr().status, AppErrStatus.NotFound);
 		});
 	});
 });

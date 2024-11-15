@@ -1,11 +1,11 @@
+import * as assert from "node:assert";
+import { describe, it } from "node:test";
 import {
 	Email,
 	InvalidEmail,
 	InvalidUUID,
 	UUID,
 } from "@/domain/refined.types.js";
-import { describe, it } from "node:test";
-import * as assert from "node:assert";
 
 describe("nominal types", () => {
 	describe("email creation", () => {
@@ -44,7 +44,10 @@ describe("nominal types", () => {
 			const created = UUID.init();
 
 			assert.ok(typeof created === "string");
-			assert.match(created, /^[0-9A-F]{8}-[0-9A-F]{4}-[4][0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$/i);
+			assert.match(
+				created,
+				/^[0-9A-F]{8}-[0-9A-F]{4}-[4][0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$/i,
+			);
 		});
 
 		it("should allow valid email", () => {

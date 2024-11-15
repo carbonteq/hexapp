@@ -1,11 +1,11 @@
+import * as assert from "node:assert";
+import { describe, it } from "node:test";
+import { setTimeout } from "node:timers/promises";
 import { UUID } from "@/domain/refined.types.js";
 import {
 	TestEntity,
 	type TestEntitySerialized,
 } from "../dummy-objects/test.entity.js";
-import { setTimeout } from "node:timers/promises";
-import { describe, it } from "node:test";
-import * as assert from "node:assert";
 
 const getCurrentDate = () => new Date();
 
