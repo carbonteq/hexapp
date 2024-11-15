@@ -1,11 +1,11 @@
 import type { Result } from "@carbonteq/fp";
-import type { BaseEntity } from "../domain/base.entity";
+import type { BaseEntity } from "../domain/base.entity.ts";
 import type {
 	AlreadyExistsError,
 	InvalidOperation,
 	NotFoundError,
-} from "../domain/base.errors";
-import type { Paginated, PaginationOptions } from "../domain/pagination";
+} from "../domain/base.errors.ts";
+import type { Paginated, PaginationOptions } from "../domain/pagination.ts";
 
 export type RepositoryError =
 	| NotFoundError

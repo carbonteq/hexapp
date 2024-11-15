@@ -2,7 +2,7 @@ export {
 	unsafeCast,
 	assertUnreachable,
 	assertUnreachablePassthrough,
-} from "./type.utils";
+} from "./type.utils.js";
 export type {
 	ArrType,
 	Constructable,
@@ -17,7 +17,7 @@ export type {
 	AppendToTuple,
 	IsUnion,
 	EnsureNotUnion,
-} from "./type.utils";
+} from "./type.utils.ts";
 export {
 	sortByCreatedAt,
 	sortByCreatedAtDesc,
@@ -26,7 +26,7 @@ export {
 	sortByDatesDesc,
 	sortByUpdatedAt,
 	sortByUpdatedAtDesc,
-} from "./sort.utils";
+} from "./sort.utils.js";
 export {
 	counter,
 	extend,
@@ -35,15 +35,15 @@ export {
 	randomChoice,
 	shuffle,
 	shuffleInplace,
-} from "./misc.utils";
+} from "./misc.utils.js";
 export {
 	extractId,
 	extractProp,
 	extractProps,
 	toSerialized,
 	nestWithKey,
-} from "./composition.utils";
-export { ZodUtils, handleZodErr } from "./zod.utils";
-export { ZodSchemas } from "./zod.schemas";
-export { LOG_LEVEL, Logger } from "./base.logger";
-export type { LogLevel } from "./base.logger";
+} from "./composition.utils.js";
+export { ZodUtils, handleZodErr } from "./zod.utils.js";
+export { ZodSchemas } from "./zod.schemas.js";
+export { LOG_LEVEL, Logger } from "./base.logger.js";
+export type { LogLevel } from "./base.logger.js";

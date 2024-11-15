@@ -1,7 +1,7 @@
 import type { Result } from "@carbonteq/fp";
 import type { z } from "zod";
-import { ZodUtils } from "../../shared/zod.utils";
-import { DtoValidationError } from "./dto.error";
+import { ZodUtils } from "../../shared/zod.utils.js";
+import { DtoValidationError } from "./dto.error.js";
 
 export type DtoValidationResult<T> = Result<T, DtoValidationError>;
 

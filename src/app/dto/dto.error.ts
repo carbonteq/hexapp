@@ -1,6 +1,6 @@
 import type { ZodError } from "zod";
 import { fromZodError as zodErrTransform } from "zod-validation-error";
-import { ValidationError } from "../../domain/base.errors";
+import { ValidationError } from "../../domain/base.errors.js";
 
 export class DtoValidationError extends ValidationError {
 	constructor(msg: string, err?: Error) {

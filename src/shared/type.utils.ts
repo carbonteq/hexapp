@@ -1,4 +1,4 @@
-import type { AppResult } from "..//app/result";
+import type { AppResult } from "../app/result/index.ts";
 
 export type EmptyObject = Record<string | number | symbol, never>;
 

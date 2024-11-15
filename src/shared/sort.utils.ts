@@ -1,4 +1,4 @@
-import type { GetKeysWithSpecificTypeValue } from "./type.utils";
+import type { GetKeysWithSpecificTypeValue } from "./type.utils.ts";
 
 type WithCreatedAt = { createdAt: Date };
 

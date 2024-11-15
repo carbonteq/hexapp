@@ -1,1 +1,1 @@
-export { dataURIToBuffer } from "./utils";
+export { dataURIToBuffer } from "./utils.js";

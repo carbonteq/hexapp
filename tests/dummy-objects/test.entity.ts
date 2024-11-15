@@ -1,5 +1,9 @@
 import { randomInt } from "node:crypto";
-import { BaseEntity, type IEntity, type SerializedEntity } from "../../lib";
+import {
+	BaseEntity,
+	type IEntity,
+	type SerializedEntity,
+} from "@/domain/base.entity.js";
 
 export interface ITestEntity extends IEntity {
 	random: number;
@@ -10,7 +14,7 @@ export interface TestEntitySerialized extends SerializedEntity {
 }
 
 export class TestEntity extends BaseEntity implements ITestEntity {
-	static readonly MAX_RANDOM = 42;
+	static readonly MAX_RANDOM = 5000;
 	static readonly MIN_RANDOM = 13;
 
 	private _random: number; // as `random` is public, it must be readonly to prevent tampering from outside

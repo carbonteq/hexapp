@@ -1,0 +1,9 @@
+{
+	"lspconfig": {
+		"yamlls": {
+			"yaml.schemas": {
+				"https://raw.githubusercontent.com/ast-grep/ast-grep/main/schemas/rule.json": "asg/**/*.yml"
+			}
+		}
+	}
+}
