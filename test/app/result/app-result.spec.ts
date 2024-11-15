@@ -1,25 +1,23 @@
 import { Result } from "@carbonteq/fp";
-import {
-	AppErrStatus,
-	AppError,
-	AppResult,
-	InvalidOperation,
-} from "../../../lib";
+import { AppErrStatus, AppError, AppResult } from "@/app/result/index.js";
+import { InvalidOperation } from "@/domain/base.errors.js";
+import * as assert from "node:assert";
+import { describe, it } from "node:test";
 
 describe("when result", () => {
 	describe("is okay", () => {
 		const okResult = AppResult.Ok(2);
 
 		it("isOkay is true", () => {
-			expect(okResult.isOk()).toBeTrue();
+			assert.equal(okResult.isOk(), true);
 		});
 
 		it("safeUnwrap returns the correct value", () => {
-			expect(okResult.safeUnwrap()).toBe(2);
+			assert.equal(okResult.safeUnwrap(), 2);
 		});
 
 		it("unwrap returns the correct value", () => {
-			expect(okResult.unwrap()).toBe(2);
+			assert.equal(okResult.unwrap(), 2);
 		});
 	});
 
@@ -27,15 +25,15 @@ describe("when result", () => {
 		const errResult = AppResult.Err(AppError.NotFound());
 
 		it("isOkay is false", () => {
-			expect(errResult.isOk()).toBeFalse();
+			assert.equal(errResult.isOk(), false);
 		});
 
 		it("safeUnwrap returns null", () => {
-			expect(errResult.safeUnwrap()).toBeNull();
+			assert.equal(errResult.safeUnwrap(), null);
 		});
 
 		it("unwrap throws an error", () => {
-			expect(() => errResult.unwrap()).toThrow("NotFound");
+			assert.throws(() => errResult.unwrap(), "NotFound");
 		});
 	});
 });
@@ -47,13 +45,13 @@ describe("alternative constructors", () => {
 		it("ok result from ok result", () => {
 			const result = AppResult.fromResult(Result.Ok<number, Error>(20));
 
-			expect(result.isOk()).toBeTrue();
+			assert.equal(result.isOk(), true);
 		});
 
 		it("err result from err result", () => {
 			const result = AppResult.fromResult(Result.Err(AppError.Generic("")));
 
-			expect(result.isOk()).toBeFalse();
+			assert.equal(result.isOk(), false);
 		});
 
 		it("from err result with msg", () => {
@@ -62,11 +60,11 @@ describe("alternative constructors", () => {
 			const err = new InvalidOpErr(msg);
 			const result = AppResult.fromResult(Result.Err(err));
 
-			expect(result.isOk()).toBeFalse();
+			assert.equal(result.isOk(), false);
 			const unwrappedErr = result.unwrapErr();
 
-			expect(unwrappedErr.status).toBe(AppErrStatus.InvalidOperation);
-			expect(unwrappedErr.message).toBe(msg);
+			assert.equal(unwrappedErr.status, AppErrStatus.InvalidOperation);
+			assert.equal(unwrappedErr.message, msg);
 		});
 	});
 });
