@@ -22,13 +22,13 @@ describe("test repository", () => {
 		it("on fetch", async () => {
 			const res = await repo.fetchById(ent1.id);
 
-			assert.deepEqual(res.unwrap(), ent1.serialize());
+			assert.deepStrictEqual(res.unwrap(), ent1.serialize());
 		});
 
 		it("on insert", async () => {
 			const res = await repo.insert(ent2);
 
-			assert.equal(res.unwrap(), ent2);
+			assert.strictEqual(res.unwrap(), ent2);
 		});
 
 		it("on update", async () => {
@@ -39,15 +39,15 @@ describe("test repository", () => {
 
 			const entReturned = res.unwrap();
 
-			assert.equal(entReturned, ent1Changed);
-			assert.equal(entReturned?.id, ent1.id);
-			assert.notEqual(entReturned?.random, ent1.random);
+			assert.strictEqual(entReturned, ent1Changed);
+			assert.deepStrictEqual(entReturned?.id, ent1.id);
+			assert.notStrictEqual(entReturned?.random, ent1.random);
 		});
 
 		it("on delete", async () => {
 			const res = await repo.deleteById(ent1.id);
 
-			assert.deepEqual(res.unwrap(), ent1.serialize());
+			assert.deepStrictEqual(res.unwrap(), ent1.serialize());
 		});
 	});
 
@@ -57,18 +57,18 @@ describe("test repository", () => {
 
 			const res = AppResult.fromResult(fetchResult);
 
-			assert.equal(res.isOk(), false);
+			assert.strictEqual(res.isOk(), false);
 
 			const err = res.unwrapErr();
 			assert.ok(err !== undefined);
-			assert.equal(err.status, AppErrStatus.NotFound);
+			assert.strictEqual(err.status, AppErrStatus.NotFound);
 		});
 
 		it("on insert", async () => {
 			const opRes = await repo.insert(ent1);
 			const res = AppResult.fromResult(opRes);
 
-			assert.equal(res.unwrapErr().status, AppErrStatus.AlreadyExists);
+			assert.strictEqual(res.unwrapErr().status, AppErrStatus.AlreadyExists);
 		});
 
 		it("on update", async () => {
@@ -77,7 +77,7 @@ describe("test repository", () => {
 
 			const res = AppResult.fromResult(opRes);
 
-			assert.equal(res.unwrapErr().status, AppErrStatus.NotFound);
+			assert.strictEqual(res.unwrapErr().status, AppErrStatus.NotFound);
 		});
 
 		it("on delete", async () => {
@@ -85,7 +85,7 @@ describe("test repository", () => {
 
 			const res = AppResult.fromResult(opRes);
 
-			assert.equal(res.unwrapErr().status, AppErrStatus.NotFound);
+			assert.strictEqual(res.unwrapErr().status, AppErrStatus.NotFound);
 		});
 	});
 });

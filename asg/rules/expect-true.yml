@@ -4,4 +4,4 @@ id: expect-true
 language: TypeScript
 rule:
   pattern: expect($OBJ).toBeTrue()
-fix: assert.equal($OBJ, true)
+fix: assert.strictEqual($OBJ, true)

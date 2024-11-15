@@ -4,4 +4,4 @@ id: expect-null
 language: TypeScript
 rule:
   pattern: expect($OBJ).toBeNull()
-fix: assert.equal($OBJ, null)
+fix: assert.strictEqual($OBJ, null)

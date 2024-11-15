@@ -9,15 +9,15 @@ describe("when result", () => {
 		const okResult = AppResult.Ok(2);
 
 		it("isOkay is true", () => {
-			assert.equal(okResult.isOk(), true);
+			assert.strictEqual(okResult.isOk(), true);
 		});
 
 		it("safeUnwrap returns the correct value", () => {
-			assert.equal(okResult.safeUnwrap(), 2);
+			assert.strictEqual(okResult.safeUnwrap(), 2);
 		});
 
 		it("unwrap returns the correct value", () => {
-			assert.equal(okResult.unwrap(), 2);
+			assert.strictEqual(okResult.unwrap(), 2);
 		});
 	});
 
@@ -25,11 +25,11 @@ describe("when result", () => {
 		const errResult = AppResult.Err(AppError.NotFound());
 
 		it("isOkay is false", () => {
-			assert.equal(errResult.isOk(), false);
+			assert.strictEqual(errResult.isOk(), false);
 		});
 
 		it("safeUnwrap returns null", () => {
-			assert.equal(errResult.safeUnwrap(), null);
+			assert.strictEqual(errResult.safeUnwrap(), null);
 		});
 
 		it("unwrap throws an error", () => {
@@ -45,13 +45,13 @@ describe("alternative constructors", () => {
 		it("ok result from ok result", () => {
 			const result = AppResult.fromResult(Result.Ok<number, Error>(20));
 
-			assert.equal(result.isOk(), true);
+			assert.strictEqual(result.isOk(), true);
 		});
 
 		it("err result from err result", () => {
 			const result = AppResult.fromResult(Result.Err(AppError.Generic("")));
 
-			assert.equal(result.isOk(), false);
+			assert.strictEqual(result.isOk(), false);
 		});
 
 		it("from err result with msg", () => {
@@ -60,11 +60,11 @@ describe("alternative constructors", () => {
 			const err = new InvalidOpErr(msg);
 			const result = AppResult.fromResult(Result.Err(err));
 
-			assert.equal(result.isOk(), false);
+			assert.strictEqual(result.isOk(), false);
 			const unwrappedErr = result.unwrapErr();
 
-			assert.equal(unwrappedErr.status, AppErrStatus.InvalidOperation);
-			assert.equal(unwrappedErr.message, msg);
+			assert.strictEqual(unwrappedErr.status, AppErrStatus.InvalidOperation);
+			assert.strictEqual(unwrappedErr.message, msg);
 		});
 	});
 });

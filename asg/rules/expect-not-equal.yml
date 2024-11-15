@@ -4,4 +4,4 @@ id: expect-not-equal
 language: TypeScript
 rule:
   pattern: expect($OBJ).not.toEqual($EXPECTED)
-fix: assert.notEqual($OBJ, $EXPECTED)
+fix: assert.notStrictEqual($OBJ, $EXPECTED)

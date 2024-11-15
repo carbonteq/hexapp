@@ -15,15 +15,15 @@ describe("nominal types", () => {
 		const invalid = Email.create("abcdef.xyz");
 
 		it("should allow valid email", () => {
-			assert.equal(valid.isOk(), true);
+			assert.strictEqual(valid.isOk(), true);
 
 			const unwrapped = valid.unwrap();
 			assert.ok(typeof unwrapped === "string");
-			assert.equal(unwrapped, emailInner);
+			assert.strictEqual(unwrapped, emailInner);
 		});
 
 		it("should not allow invalid email", () => {
-			assert.equal(invalid.isOk(), false);
+			assert.strictEqual(invalid.isOk(), false);
 
 			const err = invalid.unwrapErr();
 			assert.ok(err instanceof InvalidEmail);
@@ -51,15 +51,15 @@ describe("nominal types", () => {
 		});
 
 		it("should allow valid email", () => {
-			assert.equal(valid.isOk(), true);
+			assert.strictEqual(valid.isOk(), true);
 
 			const unwrapped = valid.unwrap();
 			assert.ok(typeof unwrapped === "string");
-			assert.equal(unwrapped, innerUUID);
+			assert.strictEqual(unwrapped, innerUUID);
 		});
 
 		it("should not allow invalid email", () => {
-			assert.equal(invalid.isOk(), false);
+			assert.strictEqual(invalid.isOk(), false);
 
 			const err = invalid.unwrapErr();
 			assert.ok(err instanceof InvalidUUID);

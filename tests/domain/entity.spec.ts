@@ -23,7 +23,7 @@ describe("base entity", () => {
 			assert.ok(ent.updatedAt !== undefined);
 			assert.ok(ent.updatedAt instanceof Date);
 
-			assert.deepEqual(ent.updatedAt, ent.createdAt);
+			assert.deepStrictEqual(ent.updatedAt, ent.createdAt);
 		});
 
 		it("serialize method returns SerializedEntity object", () => {
@@ -35,7 +35,7 @@ describe("base entity", () => {
 				random: ent.random,
 			};
 
-			assert.deepEqual(serializedEnt, expectedObj);
+			assert.deepStrictEqual(serializedEnt, expectedObj);
 		});
 
 		it("ids are not the same when multiple created", () => {
@@ -44,7 +44,7 @@ describe("base entity", () => {
 
 			assert.ok(ent2.id !== undefined);
 			assert.ok(ent3.id !== undefined);
-			assert.notEqual(ent2.id, ent3.id);
+			assert.notStrictEqual(ent2.id, ent3.id);
 		});
 	});
 
@@ -62,10 +62,10 @@ describe("base entity", () => {
 		});
 
 		it("matches the given data", () => {
-			assert.equal(ent.id, id);
-			assert.equal(ent.createdAt, createdAt);
-			assert.equal(ent.updatedAt, updatedAt);
-			assert.equal(ent.random, random);
+			assert.strictEqual(ent.id, id);
+			assert.strictEqual(ent.createdAt, createdAt);
+			assert.strictEqual(ent.updatedAt, updatedAt);
+			assert.strictEqual(ent.random, random);
 		});
 	});
 
@@ -73,7 +73,7 @@ describe("base entity", () => {
 		const ent = TestEntity.create();
 		await setTimeout(1); // to add delay between creation and update
 
-		assert.deepEqual(ent.updatedAt, ent.createdAt);
+		assert.deepStrictEqual(ent.updatedAt, ent.createdAt);
 
 		ent.updateRandomly();
 

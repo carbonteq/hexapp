@@ -4,6 +4,6 @@ id: expect-to-be
 language: TypeScript
 rule:
   pattern: expect($OBJ).not.toBe($OTHER)
-fix: assert.notEqual($OBJ, $OTHER)
+fix: assert.notStrictEqual($OBJ, $OTHER)
 # utils: Extract repeated rule as local utility here.
 
