@@ -1,5 +1,5 @@
 import { Result } from "@carbonteq/fp";
-import { z } from "zod";
+import { type ZodObject, z } from "zod";
 import { ValidationError } from "./base.errors.js";
 import { DateTime } from "./refined.types.js";
 
@@ -15,10 +15,13 @@ export interface IDateRange {
   startDate: DateTime;
   endDate: DateTime;
 }
-const dateRangeParser = z.object({
-  startDate: DateTime,
-  endDate: DateTime,
-});
+const dateRangeParser: ZodObject<{ startDate: DateTime; endDate: DateTime }> =
+  z.object({
+    startDate: DateTime,
+    endDate: DateTime,
+  });
+type DateRangeParser = typeof dateRangeParser;
+
 // Can be Domain Error
 export class InvalidDateRange extends ValidationError {}
 
@@ -52,11 +55,11 @@ export class DateRange extends BaseValueObject<IDateRange> {
     return range.ensureValidRange();
   }
 
-  static from(other: IDateRange) {
+  static from(other: IDateRange): DateRange {
     return new DateRange(other.startDate, other.endDate);
   }
 
-  intervalMs() {
+  intervalMs(): number {
     return this.end.getTime() - this.start.getTime();
   }
 
@@ -64,7 +67,7 @@ export class DateRange extends BaseValueObject<IDateRange> {
     return { startDate: this.start, endDate: this.end };
   }
 
-  getParser() {
+  getParser(): DateRangeParser {
     return dateRangeParser;
   }
 }

@@ -103,7 +103,8 @@ export class InvalidEmail extends ValidationError {
   }
 }
 
-export const Email = createRefinedType(
+type TEmail = ZodBrandedWithFactory<z.ZodString, "Email", InvalidEmail>;
+export const Email: TEmail = createRefinedType(
   "Email",
   z.string().email(),
 
@@ -112,13 +113,19 @@ export const Email = createRefinedType(
 export type Email = typeof Email.$infer;
 
 // Not a good example as I wanted to add some custom stuff
-const UUIDInner = createRefinedType(
+type TUUIDSchema = z.ZodString;
+type TUUIDInner = ZodBrandedWithFactory<TUUIDSchema, "UUID", InvalidUUID>;
+const UUIDInner: TUUIDInner = createRefinedType(
   "UUID",
   z.string().uuid(),
   (data, _err) => new InvalidUUID(data),
 );
 export type UUID = typeof UUIDInner.$infer;
-export const UUID = extend(UUIDInner, {
+type TUUID = TUUIDInner & {
+  init: () => UUID;
+  fromTrusted: (s: string) => UUID;
+};
+export const UUID: TUUID = extend(UUIDInner, {
   init: () => randomUUID() as UUID,
   fromTrusted: unsafeCast<UUID, string>,
 });
@@ -128,13 +135,27 @@ export class InvalidDateTime extends ValidationError {
     super(`Invalid DateTime: ${data}`);
   }
 }
-const DTInner = createRefinedType(
+
+type TDTInnerSchema = z.ZodPipeline<
+  z.ZodUnion<[z.ZodNumber, z.ZodString, z.ZodDate]>,
+  z.ZodDate
+>;
+type TDTInner = ZodBrandedWithFactory<
+  TDTInnerSchema,
+  "DateTime",
+  InvalidDateTime
+>;
+const DTInner: TDTInner = createRefinedType(
   "DateTime",
   z.union([z.number(), z.string(), z.date()]).pipe(z.coerce.date()),
   (data, _err) => new InvalidDateTime(data),
 );
 export type DateTime = typeof DTInner.$infer;
-export const DateTime = extend(DTInner, {
+type TDateTime = TDTInner & {
+  now: () => DateTime;
+  from: (d: Date | DateTime) => DateTime;
+};
+export const DateTime: TDateTime = extend(DTInner, {
   now: () => new Date() as DateTime,
   from: unsafeCast<DateTime, Date | DateTime>,
 });
@@ -151,6 +172,23 @@ export class EnumValidationError extends ValidationError {
   }
 }
 
+type EnumTypeUtil<
+  Tag extends string | symbol,
+  U extends string,
+  T extends [U, ...U[]],
+> = ZodBrandedWithFactory<
+  z.ZodEnum<z.Writeable<T>>,
+  Tag,
+  EnumValidationError
+> & {
+  from: (v: T[number]) => z.Writeable<T>[number] & z.BRAND<Tag>;
+  values: Readonly<T>;
+  eq: (
+    a: T[number] | (T[number] & z.BRAND<Tag>),
+    b: T[number] | (T[number] & z.BRAND<Tag>),
+  ) => boolean;
+};
+
 export const createEnumType = <
   Tag extends string | symbol,
   U extends string,
@@ -158,8 +196,13 @@ export const createEnumType = <
 >(
   tag: Tag,
   enumValues: T,
-) => {
-  const innerType = createRefinedType(
+): EnumTypeUtil<Tag, U, T> => {
+  type InnerType = ZodBrandedWithFactory<
+    z.ZodEnum<z.Writeable<T>>,
+    Tag,
+    EnumValidationError
+  >;
+  const innerType: InnerType = createRefinedType(
     tag,
     z.enum(enumValues),
     (data, err) =>
@@ -171,7 +214,16 @@ export const createEnumType = <
       ),
   );
 
-  return extend(innerType, {
+  type ExtendedType = InnerType & {
+    from: (v: T[number]) => z.Writeable<T>[number] & z.BRAND<Tag>;
+    values: Readonly<T>;
+    eq: (
+      a: T[number] | (T[number] & z.BRAND<Tag>),
+      b: T[number] | (T[number] & z.BRAND<Tag>),
+    ) => boolean;
+  };
+
+  const extended: ExtendedType = extend(innerType, {
     from: unsafeCast<typeof innerType.$infer, T[number]>,
     get values(): Readonly<T> {
       return enumValues;
@@ -183,6 +235,8 @@ export const createEnumType = <
       return a === b;
     },
   });
+
+  return extended;
 };
 
 type MatchActions<T extends string | symbol | number, R> = {

@@ -22,26 +22,28 @@ export class AppError extends Error {
     super(msg);
   }
 
-  static NotFound = (msg?: string) => new AppError(AppErrStatus.NotFound, msg);
+  static NotFound = (msg?: string): AppError =>
+    new AppError(AppErrStatus.NotFound, msg);
 
-  static Unauthorized = (msg?: string) =>
+  static Unauthorized = (msg?: string): AppError =>
     new AppError(AppErrStatus.Unauthorized, msg);
 
-  static InvalidData = (msg?: string) =>
+  static InvalidData = (msg?: string): AppError =>
     new AppError(AppErrStatus.InvalidData, msg);
 
-  static InvalidOperation = (msg?: string) =>
+  static InvalidOperation = (msg?: string): AppError =>
     new AppError(AppErrStatus.InvalidOperation, msg);
 
-  static AlreadyExists = (msg?: string) =>
+  static AlreadyExists = (msg?: string): AppError =>
     new AppError(AppErrStatus.AlreadyExists, msg);
 
-  static GuardViolation = (msg?: string) =>
+  static GuardViolation = (msg?: string): AppError =>
     new AppError(AppErrStatus.GuardViolation, msg);
 
-  static Generic = (msg: string) => new AppError(AppErrStatus.Generic, msg);
+  static Generic = (msg: string): AppError =>
+    new AppError(AppErrStatus.Generic, msg);
 
-  static fromErr = (e: Error) => {
+  static fromErr = (e: Error): AppError => {
     if (e instanceof AppError) {
       return new AppError(e.status, e.message);
     }
