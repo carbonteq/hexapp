@@ -37,3 +37,7 @@ jobs:
           createGithubReleases: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Update version for deno/jsr
+        if: steps.changesets.outputs.hasChangesets == 'false'
+        run: node sync_versions.mjs
