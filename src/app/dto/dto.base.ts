@@ -6,18 +6,18 @@ import { DtoValidationError } from "./dto.error.js";
 export type DtoValidationResult<T> = Result<T, DtoValidationError>;
 
 export abstract class BaseDto {
-	protected constructor() {}
+  protected constructor() {}
 
-	protected static validate<T = unknown, U extends z.ZodType<T> = z.ZodType<T>>(
-		schema: U,
-		data: unknown,
-	): DtoValidationResult<z.infer<U>> {
-		return ZodUtils.safeParseResult(
-			schema,
-			data,
-			DtoValidationError.fromZodError,
-		);
-	}
+  protected static validate<T = unknown, U extends z.ZodType<T> = z.ZodType<T>>(
+    schema: U,
+    data: unknown,
+  ): DtoValidationResult<z.infer<U>> {
+    return ZodUtils.safeParseResult(
+      schema,
+      data,
+      DtoValidationError.fromZodError,
+    );
+  }
 }
 
 // export class DtoValidationResult<T> extends Result<T, DtoValidationError> {

@@ -16,34 +16,34 @@ export const STRICT_NUMBER_SCHEMA = z.number();
 
 // Could add date here
 const jsonLiteralSchema = z.union([
-	z.string(),
-	z.number(),
-	z.boolean(),
-	z.null(),
+  z.string(),
+  z.number(),
+  z.boolean(),
+  z.null(),
 ]);
 type JsonLiteral = z.infer<typeof jsonLiteralSchema>;
 type Json = JsonLiteral | { [key: string]: Json } | Json[];
 const jsonSchema: z.ZodType<Json> = z.lazy(() =>
-	z.union([jsonLiteralSchema, z.array(jsonSchema), z.record(jsonSchema)]),
+  z.union([jsonLiteralSchema, z.array(jsonSchema), z.record(jsonSchema)]),
 );
 
 export const ZodSchemas = {
-	STR: STRING_SCHEMA,
-	OPTIONAL_STR: OPTIONAL_STR_SCHEMA,
-	URL: URL_SCHEMA,
-	NON_EMPTY_STRING,
-	NUMBER: NUMBER_SCHEMA,
-	BOOL: BOOL_SCHEMA,
-	STRICT_BOOL: STRICT_BOOLEAN_SCHEMA,
-	STRICT_NUM: STRICT_NUMBER_SCHEMA,
-	// QUERY: QUERY_SCHEMA,
+  STR: STRING_SCHEMA,
+  OPTIONAL_STR: OPTIONAL_STR_SCHEMA,
+  URL: URL_SCHEMA,
+  NON_EMPTY_STRING,
+  NUMBER: NUMBER_SCHEMA,
+  BOOL: BOOL_SCHEMA,
+  STRICT_BOOL: STRICT_BOOLEAN_SCHEMA,
+  STRICT_NUM: STRICT_NUMBER_SCHEMA,
+  // QUERY: QUERY_SCHEMA,
 
-	BUFFER_SCHEMA: z.custom<Buffer>((data: unknown) => Buffer.isBuffer(data), {
-		message: "Buffer expected",
-	}),
+  BUFFER_SCHEMA: z.custom<Buffer>((data: unknown) => Buffer.isBuffer(data), {
+    message: "Buffer expected",
+  }),
 
-	DATE_SCHEMA: z.date(),
+  DATE_SCHEMA: z.date(),
 
-	JSON_LITERAL_SCHEMA: jsonLiteralSchema,
-	JSON_SCHEMA: jsonSchema as z.ZodType<Json>,
+  JSON_LITERAL_SCHEMA: jsonLiteralSchema,
+  JSON_SCHEMA: jsonSchema as z.ZodType<Json>,
 } as const;

@@ -47,16 +47,17 @@
 		"@biomejs/biome": "^1.8.3",
 		"@changesets/cli": "^2.27.7",
 		"@microsoft/api-extractor": "^7.47.11",
+		"@swc/core": "^1.9.2",
 		"@tsconfig/node20": "^20.1.4",
 		"@types/node": "18.19.1",
 		"changesets": "^1.0.2",
 		"jsr": "^0.13.1",
 		"tsup": "^8.3.5",
 		"tsx": "^4.19.2",
-		"typescript": "5.5.3"
+		"typescript": "5.6.3"
 	},
 	"dependencies": {
-		"@carbonteq/fp": "^0.6.0",
+		"@carbonteq/fp": "^0.7.0",
 		"zod": "^3.23.8",
 		"zod-validation-error": "^3.3.0"
 	},

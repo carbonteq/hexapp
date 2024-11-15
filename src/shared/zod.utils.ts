@@ -6,21 +6,21 @@ import { ValidationError } from "../domain/base.errors.js";
 export type ParsedSchema<T extends ZodType> = Readonly<z.infer<T>>;
 
 export const handleZodErr = (err: z.ZodError) => {
-	return new ValidationError(fromZodError(err).message);
+  return new ValidationError(fromZodError(err).message);
 };
 
 export const ZodUtils = {
-	safeParseResult<E, T = unknown, U extends z.ZodType<T> = z.ZodType<T>>(
-		schema: U,
-		data: unknown,
-		errConst: (err: z.ZodError) => E,
-	): Result<z.infer<U>, E> {
-		const r = schema.safeParse(data);
+  safeParseResult<E, T = unknown, U extends z.ZodType<T> = z.ZodType<T>>(
+    schema: U,
+    data: unknown,
+    errConst: (err: z.ZodError) => E,
+  ): Result<z.infer<U>, E> {
+    const r = schema.safeParse(data);
 
-		if (r.success) {
-			return Result.Ok(r.data);
-		}
-		const err = errConst(r.error);
-		return Result.Err(err);
-	},
+    if (r.success) {
+      return Result.Ok(r.data);
+    }
+    const err = errConst(r.error);
+    return Result.Err(err);
+  },
 };
