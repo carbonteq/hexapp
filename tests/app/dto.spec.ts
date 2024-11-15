@@ -108,7 +108,10 @@ describe("when dto input", () => {
 
 			assert.ok(dtoErr instanceof DtoValidationError);
 
-			assert.strictEqual(dtoErr.message, 'Validation error: String must contain exactly 7 character(s) at "primaryColor"');
+			assert.strictEqual(
+				dtoErr.message,
+				'Validation error: String must contain exactly 7 character(s) at "primaryColor"',
+			);
 		});
 
 		it("should return error for secondaryColor", () => {
@@ -122,7 +125,10 @@ describe("when dto input", () => {
 
 			assert.ok(dtoErr instanceof DtoValidationError);
 
-			assert.deepStrictEqual(dtoErr.message, 'Validation error: String must contain exactly 7 character(s) at "secondaryColor"');
+			assert.deepStrictEqual(
+				dtoErr.message,
+				'Validation error: String must contain exactly 7 character(s) at "secondaryColor"',
+			);
 		});
 
 		it("should return error for primaryFont", () => {
@@ -136,7 +142,10 @@ describe("when dto input", () => {
 
 			assert.ok(dtoErr instanceof DtoValidationError);
 
-			assert.deepStrictEqual(dtoErr.message, 'Validation error: String must contain at least 3 character(s) at "primaryFont"');
+			assert.deepStrictEqual(
+				dtoErr.message,
+				'Validation error: String must contain at least 3 character(s) at "primaryFont"',
+			);
 		});
 
 		it("should return error for secondaryFont", () => {
@@ -150,7 +159,10 @@ describe("when dto input", () => {
 
 			assert.ok(dtoErr instanceof DtoValidationError);
 
-			assert.strictEqual(dtoErr.message, 'Validation error: String must contain at least 3 character(s) at "secondaryFont"');
+			assert.strictEqual(
+				dtoErr.message,
+				'Validation error: String must contain at least 3 character(s) at "secondaryFont"',
+			);
 		});
 
 		it("should return error for label", () => {
@@ -164,7 +176,10 @@ describe("when dto input", () => {
 
 			assert.ok(dtoErr instanceof DtoValidationError);
 
-			assert.deepStrictEqual(dtoErr.message, "Validation error: Invalid enum value. Expected 'default' | 'rounded' | 'rectangle', received 'random' at \"label\"");
+			assert.deepStrictEqual(
+				dtoErr.message,
+				"Validation error: Invalid enum value. Expected 'default' | 'rounded' | 'rectangle', received 'random' at \"label\"",
+			);
 		});
 
 		it("should return multiple errors", () => {
@@ -184,7 +199,10 @@ describe("when dto input", () => {
 
 			assert.ok(dtoErr instanceof DtoValidationError);
 
-			assert.deepStrictEqual(dtoErr.message, 'Validation error: String must contain exactly 7 character(s) at "primaryColor"; String must contain exactly 7 character(s) at "secondaryColor"; String must contain at least 3 character(s) at "primaryFont"; String must contain at least 3 character(s) at "secondaryFont"; Invalid enum value. Expected \'default\' | \'rounded\' | \'rectangle\', received \'random\' at "label"');
+			assert.deepStrictEqual(
+				dtoErr.message,
+				'Validation error: String must contain exactly 7 character(s) at "primaryColor"; String must contain exactly 7 character(s) at "secondaryColor"; String must contain at least 3 character(s) at "primaryFont"; String must contain at least 3 character(s) at "secondaryFont"; Invalid enum value. Expected \'default\' | \'rounded\' | \'rectangle\', received \'random\' at "label"',
+			);
 		});
 	});
 });
