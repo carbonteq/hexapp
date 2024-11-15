@@ -7,85 +7,85 @@ import { TestEntity } from "../dummy-objects/test.entity.js";
 import { DummyTestRepository } from "../dummy-objects/test.repository.js";
 
 describe("test repository", () => {
-	let repo: MockRepository<TestEntity>;
-	let ent1: TestEntity;
-	let ent2: TestEntity;
+  let repo: MockRepository<TestEntity>;
+  let ent1: TestEntity;
+  let ent2: TestEntity;
 
-	beforeEach(() => {
-		repo = new DummyTestRepository();
-		ent1 = TestEntity.create();
-		ent2 = TestEntity.create();
-		repo.insert(ent1);
-	});
+  beforeEach(() => {
+    repo = new DummyTestRepository();
+    ent1 = TestEntity.create();
+    ent2 = TestEntity.create();
+    repo.insert(ent1);
+  });
 
-	describe("valid operations", () => {
-		it("on fetch", async () => {
-			const res = await repo.fetchById(ent1.id);
+  describe("valid operations", () => {
+    it("on fetch", async () => {
+      const res = await repo.fetchById(ent1.id);
 
-			assert.deepStrictEqual(res.unwrap(), ent1.serialize());
-		});
+      assert.deepStrictEqual(res.unwrap(), ent1.serialize());
+    });
 
-		it("on insert", async () => {
-			const res = await repo.insert(ent2);
+    it("on insert", async () => {
+      const res = await repo.insert(ent2);
 
-			assert.strictEqual(res.unwrap(), ent2);
-		});
+      assert.strictEqual(res.unwrap(), ent2);
+    });
 
-		it("on update", async () => {
-			const ent1Changed = TestEntity.from(ent1);
-			ent1Changed.updateRandomly();
+    it("on update", async () => {
+      const ent1Changed = TestEntity.from(ent1);
+      ent1Changed.updateRandomly();
 
-			const res = await repo.update(ent1Changed);
+      const res = await repo.update(ent1Changed);
 
-			const entReturned = res.unwrap();
+      const entReturned = res.unwrap();
 
-			assert.strictEqual(entReturned, ent1Changed);
-			assert.deepStrictEqual(entReturned?.id, ent1.id);
-			assert.notStrictEqual(entReturned?.random, ent1.random);
-		});
+      assert.strictEqual(entReturned, ent1Changed);
+      assert.deepStrictEqual(entReturned?.id, ent1.id);
+      assert.notStrictEqual(entReturned?.random, ent1.random);
+    });
 
-		it("on delete", async () => {
-			const res = await repo.deleteById(ent1.id);
+    it("on delete", async () => {
+      const res = await repo.deleteById(ent1.id);
 
-			assert.deepStrictEqual(res.unwrap(), ent1.serialize());
-		});
-	});
+      assert.deepStrictEqual(res.unwrap(), ent1.serialize());
+    });
+  });
 
-	describe("bubbling errors with app result tryFromPromise", () => {
-		it("on fetch", async () => {
-			const fetchResult = await repo.fetchById(ent2.id);
+  describe("bubbling errors with app result tryFromPromise", () => {
+    it("on fetch", async () => {
+      const fetchResult = await repo.fetchById(ent2.id);
 
-			const res = AppResult.fromResult(fetchResult);
+      const res = AppResult.fromResult(fetchResult);
 
-			assert.strictEqual(res.isOk(), false);
+      assert.strictEqual(res.isOk(), false);
 
-			const err = res.unwrapErr();
-			assert.ok(err !== undefined);
-			assert.strictEqual(err.status, AppErrStatus.NotFound);
-		});
+      const err = res.unwrapErr();
+      assert.ok(err !== undefined);
+      assert.strictEqual(err.status, AppErrStatus.NotFound);
+    });
 
-		it("on insert", async () => {
-			const opRes = await repo.insert(ent1);
-			const res = AppResult.fromResult(opRes);
+    it("on insert", async () => {
+      const opRes = await repo.insert(ent1);
+      const res = AppResult.fromResult(opRes);
 
-			assert.strictEqual(res.unwrapErr().status, AppErrStatus.AlreadyExists);
-		});
+      assert.strictEqual(res.unwrapErr().status, AppErrStatus.AlreadyExists);
+    });
 
-		it("on update", async () => {
-			ent2.updateRandomly();
-			const opRes = await repo.update(ent2);
+    it("on update", async () => {
+      ent2.updateRandomly();
+      const opRes = await repo.update(ent2);
 
-			const res = AppResult.fromResult(opRes);
+      const res = AppResult.fromResult(opRes);
 
-			assert.strictEqual(res.unwrapErr().status, AppErrStatus.NotFound);
-		});
+      assert.strictEqual(res.unwrapErr().status, AppErrStatus.NotFound);
+    });
 
-		it("on delete", async () => {
-			const opRes = await repo.deleteById(ent2.id);
+    it("on delete", async () => {
+      const opRes = await repo.deleteById(ent2.id);
 
-			const res = AppResult.fromResult(opRes);
+      const res = AppResult.fromResult(opRes);
 
-			assert.strictEqual(res.unwrapErr().status, AppErrStatus.NotFound);
-		});
-	});
+      assert.strictEqual(res.unwrapErr().status, AppErrStatus.NotFound);
+    });
+  });
 });

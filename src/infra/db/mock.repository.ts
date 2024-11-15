@@ -1,104 +1,104 @@
 import type { BaseEntity } from "@/domain/base.entity.js";
 import { AlreadyExistsError, NotFoundError } from "@/domain/base.errors.js";
 import {
-	BaseRepository,
-	type RepositoryResult,
+  BaseRepository,
+  type RepositoryResult,
 } from "@/domain/base.repository.js";
 import {
-	type Paginated,
-	type PaginationOptions,
-	Paginator,
+  type Paginated,
+  type PaginationOptions,
+  Paginator,
 } from "@/domain/pagination.js";
 import { Result } from "@carbonteq/fp";
 
 export class MockNotFoundError extends NotFoundError {
-	constructor(entityId: BaseEntity["id"]) {
-		super(`entity with ID<${entityId}> not found by mock repository`);
-	}
+  constructor(entityId: BaseEntity["id"]) {
+    super(`entity with ID<${entityId}> not found by mock repository`);
+  }
 }
 
 export class MockAlreadyExistsError extends AlreadyExistsError {
-	constructor(entityId: BaseEntity["id"]) {
-		super(`entity with ID<${entityId}> already exists in mock repository`);
-	}
+  constructor(entityId: BaseEntity["id"]) {
+    super(`entity with ID<${entityId}> already exists in mock repository`);
+  }
 }
 
 type GetSerialized<Ent extends BaseEntity> = ReturnType<Ent["serialize"]>;
 
 export abstract class MockRepository<
-	T extends BaseEntity,
+  T extends BaseEntity,
 > extends BaseRepository<T> {
-	db: Map<T["id"], GetSerialized<T>>;
+  db: Map<T["id"], GetSerialized<T>>;
 
-	protected constructor() {
-		super();
-		this.db = new Map();
-	}
+  protected constructor() {
+    super();
+    this.db = new Map();
+  }
 
-	fetchById(Id: T["id"]): Promise<RepositoryResult<T, MockNotFoundError>> {
-		const optEnt = this.db.get(Id);
-		let res: Result<GetSerialized<T>, MockNotFoundError>;
+  fetchById(Id: T["id"]): Promise<RepositoryResult<T, MockNotFoundError>> {
+    const optEnt = this.db.get(Id);
+    let res: Result<GetSerialized<T>, MockNotFoundError>;
 
-		if (optEnt) {
-			res = Result.Ok(optEnt);
-		} else {
-			res = Result.Err(new MockNotFoundError(Id));
-		}
+    if (optEnt) {
+      res = Result.Ok(optEnt);
+    } else {
+      res = Result.Err(new MockNotFoundError(Id));
+    }
 
-		return Promise.resolve(res);
-	}
+    return Promise.resolve(res);
+  }
 
-	fetchAll(): Promise<RepositoryResult<T[]>> {
-		return Promise.resolve(Result.Ok(Array.from(this.db.values())));
-	}
+  fetchAll(): Promise<RepositoryResult<T[]>> {
+    return Promise.resolve(Result.Ok(Array.from(this.db.values())));
+  }
 
-	insert(entity: T): Promise<RepositoryResult<T, MockAlreadyExistsError>> {
-		let res: Result<T, AlreadyExistsError>;
+  insert(entity: T): Promise<RepositoryResult<T, MockAlreadyExistsError>> {
+    let res: Result<T, AlreadyExistsError>;
 
-		if (this.db.has(entity.id)) {
-			res = Result.Err(new MockAlreadyExistsError(entity.id));
-		} else {
-			this.db.set(entity.id, entity.serialize());
-			res = Result.Ok(entity);
-		}
+    if (this.db.has(entity.id)) {
+      res = Result.Err(new MockAlreadyExistsError(entity.id));
+    } else {
+      this.db.set(entity.id, entity.serialize());
+      res = Result.Ok(entity);
+    }
 
-		return Promise.resolve(res);
-	}
+    return Promise.resolve(res);
+  }
 
-	fetchPaginated(
-		options: PaginationOptions,
-	): Promise<RepositoryResult<Paginated<T>>> {
-		const all = Array.from(this.db.values());
+  fetchPaginated(
+    options: PaginationOptions,
+  ): Promise<RepositoryResult<Paginated<T>>> {
+    const all = Array.from(this.db.values());
 
-		return Promise.resolve(Result.Ok(Paginator.paginate(all, options)));
-	}
+    return Promise.resolve(Result.Ok(Paginator.paginate(all, options)));
+  }
 
-	update(entity: T): Promise<RepositoryResult<T, MockNotFoundError>> {
-		let res: Result<T, MockNotFoundError>;
+  update(entity: T): Promise<RepositoryResult<T, MockNotFoundError>> {
+    let res: Result<T, MockNotFoundError>;
 
-		if (this.db.has(entity.id)) {
-			this.db.set(entity.id, entity.serialize());
-			res = Result.Ok(entity);
-		} else {
-			res = Result.Err(new MockNotFoundError(entity.id));
-		}
+    if (this.db.has(entity.id)) {
+      this.db.set(entity.id, entity.serialize());
+      res = Result.Ok(entity);
+    } else {
+      res = Result.Err(new MockNotFoundError(entity.id));
+    }
 
-		return Promise.resolve(res);
-	}
+    return Promise.resolve(res);
+  }
 
-	async deleteById(
-		Id: T["id"],
-	): Promise<RepositoryResult<T, MockNotFoundError>> {
-		const res = await this.fetchById(Id);
+  async deleteById(
+    Id: T["id"],
+  ): Promise<RepositoryResult<T, MockNotFoundError>> {
+    const res = await this.fetchById(Id);
 
-		if (res.isOk()) {
-			this.db.delete(Id);
-		}
+    if (res.isOk()) {
+      this.db.delete(Id);
+    }
 
-		return res;
-	}
+    return res;
+  }
 
-	existsById(Id: T["id"]): Promise<RepositoryResult<boolean>> {
-		return Promise.resolve(Result.Ok(this.db.has(Id)));
-	}
+  existsById(Id: T["id"]): Promise<RepositoryResult<boolean>> {
+    return Promise.resolve(Result.Ok(this.db.has(Id)));
+  }
 }

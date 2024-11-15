@@ -6,13 +6,13 @@ export type UnsafeCast<T, U> = T extends U ? T : U;
 export const unsafeCast = <U, T = unknown>(val: T): U => val as unknown as U;
 
 type JsonValue =
-	| string
-	| number
-	| boolean
-	| null
-	| Date
-	| JsonValue[]
-	| { [k: string]: JsonValue }; // JsonObject
+  | string
+  | number
+  | boolean
+  | null
+  | Date
+  | JsonValue[]
+  | { [k: string]: JsonValue }; // JsonObject
 
 type JsonObject = { [x: string]: JsonValue };
 type JsonGuard<T> = T extends JsonValue ? T : never;
@@ -26,26 +26,26 @@ export type ExtractAppResultType<U> = U extends AppResult<infer X> ? X : never;
 
 export type ArrType<T> = T extends Array<infer R> ? R : never;
 export type IterType<T> = T extends { [Symbol.iterator](): infer I }
-	? I
-	: never;
+  ? I
+  : never;
 
 export type InferAppResult<
-	T extends (...args: unknown[]) => Promise<AppResult<unknown>>,
+  T extends (...args: unknown[]) => Promise<AppResult<unknown>>,
 > = ExtractAppResultType<Awaited<ReturnType<T>>>;
 
 export type GetKeysWithSpecificTypeValue<
-	T extends Record<string, unknown>,
-	ValType,
+  T extends Record<string, unknown>,
+  ValType,
 > = {
-	[K in keyof T]: T[K] extends ValType ? K : never;
+  [K in keyof T]: T[K] extends ValType ? K : never;
 }[keyof T];
 
 type FooBar = { a: number; b: number; c: string; d: Date };
 type KeyForNumber = GetKeysWithSpecificTypeValue<FooBar, number>; // is 'a' | 'b'
 
 export type RequireAtLeastOne<T> = {
-	[K in keyof T]-?: Required<Pick<T, K>> &
-		Partial<Pick<T, Exclude<keyof T, K>>>;
+  [K in keyof T]-?: Required<Pick<T, K>> &
+    Partial<Pick<T, Exclude<keyof T, K>>>;
 }[keyof T];
 
 // BETTER TO COMPOSE THE UTILITIES LISTED ABOVE
@@ -68,7 +68,7 @@ export type RequireAtLeastOne<T> = {
  * @param x {never} - This is a type that should never be used. It is used to ensure that the switch statement is exhaustive.
  */
 export const assertUnreachable = (x: never): never => {
-	throw new Error(`Unexpected object: ${x}`);
+  throw new Error(`Unexpected object: ${x}`);
 };
 
 /**
@@ -81,16 +81,16 @@ export const assertUnreachable = (x: never): never => {
 export const assertUnreachablePassthrough = (x: never): never => x;
 
 export type AppendToTuple<T, U> = T extends [...infer Rest, infer L]
-	? [...Rest, L, U]
-	: [T, U];
+  ? [...Rest, L, U]
+  : [T, U];
 
 export type IsUnion<T, U extends T = T> = ( // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-	T extends any
-		? U extends T
-			? false
-			: true
-		: never
+  T extends any
+    ? U extends T
+      ? false
+      : true
+    : never
 ) extends false
-	? false
-	: true;
+  ? false
+  : true;
 export type EnsureNotUnion<T> = IsUnion<T> extends true ? never : T;
