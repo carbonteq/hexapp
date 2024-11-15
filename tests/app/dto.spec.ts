@@ -1,6 +1,9 @@
 import type { Result } from "@carbonteq/fp";
+import {
+	BaseDto,
+	DtoValidationError,
+} from "@carbonteq/hexapp/app/dto/index.js";
 import { z } from "zod";
-import { BaseDto, DtoValidationError } from "../../lib";
 
 const COLOR_LEN = 7;
 const FONT_MIN_LEN = 3;
