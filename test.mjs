@@ -1,4 +1,4 @@
-import { BaseEntity } from "./dist/index.js";
+import { BaseEntity } from "./dist/domain/base.entity";
 
 class Ent extends BaseEntity {
 	// biome-ignore lint/complexity/noUselessConstructor: <explanation>

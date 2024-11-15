@@ -1,32 +1,29 @@
-import { UUID } from "../../lib";
+import { UUID } from "@/domain/refined.types.js";
 import {
 	TestEntity,
 	type TestEntitySerialized,
-} from "../dummy-objects/test.entity";
-import "jest-extended";
+} from "../dummy-objects/test.entity.js";
 import { setTimeout } from "node:timers/promises";
+import { describe, it } from "node:test";
+import * as assert from "node:assert";
 
 const getCurrentDate = () => new Date();
 
 describe("base entity", () => {
-	beforeEach(() => {
-		jest.resetAllMocks();
-	});
-
 	describe("create with default opts", () => {
 		const ent = TestEntity.create();
 
 		it("base entity props are present and of correct type", () => {
-			expect(ent.id).toBeDefined();
-			expect(ent.id).toBeString();
+			assert.ok(ent.id !== undefined);
+			assert.ok(typeof ent.id === "string");
 
-			expect(ent.createdAt).toBeDefined();
-			expect(ent.createdAt).toBeDate();
+			assert.ok(ent.createdAt !== undefined);
+			assert.ok(ent.createdAt instanceof Date);
 
-			expect(ent.updatedAt).toBeDefined();
-			expect(ent.updatedAt).toBeDate();
+			assert.ok(ent.updatedAt !== undefined);
+			assert.ok(ent.updatedAt instanceof Date);
 
-			expect(ent.updatedAt).toEqual(ent.createdAt);
+			assert.deepEqual(ent.updatedAt, ent.createdAt);
 		});
 
 		it("serialize method returns SerializedEntity object", () => {
@@ -38,16 +35,16 @@ describe("base entity", () => {
 				random: ent.random,
 			};
 
-			expect(serializedEnt).toStrictEqual(expectedObj);
+			assert.deepEqual(serializedEnt, expectedObj);
 		});
 
 		it("ids are not the same when multiple created", () => {
 			const ent2 = TestEntity.create();
 			const ent3 = TestEntity.create();
 
-			expect(ent2.id).toBeDefined();
-			expect(ent3.id).toBeDefined();
-			expect(ent2.id).not.toEqual(ent3.id);
+			assert.ok(ent2.id !== undefined);
+			assert.ok(ent3.id !== undefined);
+			assert.notEqual(ent2.id, ent3.id);
 		});
 	});
 
@@ -65,10 +62,10 @@ describe("base entity", () => {
 		});
 
 		it("matches the given data", () => {
-			expect(ent.id).toBe(id);
-			expect(ent.createdAt).toBe(createdAt);
-			expect(ent.updatedAt).toBe(updatedAt);
-			expect(ent.random).toBe(random);
+			assert.equal(ent.id, id);
+			assert.equal(ent.createdAt, createdAt);
+			assert.equal(ent.updatedAt, updatedAt);
+			assert.equal(ent.random, random);
 		});
 	});
 
@@ -76,10 +73,13 @@ describe("base entity", () => {
 		const ent = TestEntity.create();
 		await setTimeout(1); // to add delay between creation and update
 
-		expect(ent.updatedAt).toEqual(ent.createdAt);
+		assert.deepEqual(ent.updatedAt, ent.createdAt);
 
 		ent.updateRandomly();
 
-		expect(ent.updatedAt).toBeAfter(ent.createdAt);
+		assert.ok(
+			ent.updatedAt instanceof Date &&
+				ent.updatedAt.getTime() > ent.createdAt.getTime(),
+		);
 	});
 });
