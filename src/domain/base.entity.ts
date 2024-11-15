@@ -46,13 +46,13 @@ export abstract class BaseEntity implements IEntity {
   }
 
   // for construction within safe boundaries of the domain
-  protected _copyBaseProps(other: IEntity) {
+  protected _copyBaseProps(other: IEntity): void {
     this.#id = other.id;
     this.#createdAt = DateTime.from(other.createdAt);
     this.#updatedAt = DateTime.from(other.updatedAt);
   }
 
-  protected _fromSerialized(other: Readonly<SerializedEntity>) {
+  protected _fromSerialized(other: Readonly<SerializedEntity>): this {
     this.#id = UUID.fromTrusted(other.id); // only to simplify fromSerialized implementation on developer side
     this.#createdAt = DateTime.from(other.createdAt);
     this.#updatedAt = DateTime.from(other.updatedAt);

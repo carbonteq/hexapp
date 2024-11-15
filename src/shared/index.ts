@@ -43,7 +43,6 @@ export {
   toSerialized,
   nestWithKey,
 } from "./composition.utils.js";
-export { ZodUtils, handleZodErr } from "./zod.utils.js";
-export { ZodSchemas } from "./zod.schemas.js";
+export { safeParseResult, handleZodErr } from "./zod.utils.js";
 export { LOG_LEVEL, Logger } from "./base.logger.js";
 export type { LogLevel } from "./base.logger.js";

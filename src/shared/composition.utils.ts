@@ -28,9 +28,13 @@ export const toSerialized = <Serialized>(
   serializable: Serializable<Serialized>,
 ): Serialized => serializable.serialize();
 
+type WithKey<K extends string, T> = IsUnion<K> extends true
+  ? never
+  : { [P in K]: T };
+
 export const nestWithKey =
   <K extends string, T>(key: EnsureNotUnion<K>) =>
-  (obj: T) => {
-    type WithKey = IsUnion<K> extends true ? never : { [P in K]: T };
-    return { [key]: obj } as WithKey;
+  (obj: T): WithKey<K, T> => {
+    type WK = WithKey<K, T>;
+    return { [key]: obj } as WK;
   };
