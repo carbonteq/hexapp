@@ -1,5 +1,11 @@
 # @carbonteq/hexapp
 
+## 0.19.2
+
+### Patch Changes
+
+- d47fa13: Add readme and make deno compatible
+
 ## 0.19.1
 
 ### Patch Changes
