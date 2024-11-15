@@ -19,5 +19,18 @@ yarn add @carbonteq/hexapp
 ### Entity Declaration
 
 ```typescript
-import
+import { BaseEntity } from "@carbonteq/hexapp/domain/base.entity.js";
+
+class User extends BaseEntity {
+  constructor(readonly name: string) {
+    super();
+  }
+
+  serialize() {
+    return {
+      ...super._serialize(),
+      name: this.name,
+    };
+  }
+}
 ```
