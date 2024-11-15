@@ -17,4 +17,4 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Publish
-        run: npx jsr publish --provenance --allow-slow-types
+        run: npx jsr publish --allow-slow-types
