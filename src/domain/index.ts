@@ -1,10 +1,10 @@
-export { BaseEntity } from "./base.entity";
+export { BaseEntity } from "./base.entity.js";
 export type {
 	IEntity,
 	IEntityForUpdate,
 	SerializedEntity,
 	SimpleSerialized,
-} from "./base.entity";
+} from "./base.entity.ts";
 export {
 	InvalidEmail,
 	UUID,
@@ -17,14 +17,14 @@ export {
 	EnumValidationError,
 	InvalidUUID,
 	type Unbrand,
-} from "./refined.types";
-export { AggregateRoot } from "./aggregate-root.entity";
+} from "./refined.types.js";
+export { AggregateRoot } from "./aggregate-root.entity.js";
 export {
 	BaseValueObject,
 	DateRange,
 	InvalidDateRange,
-} from "./base.vo";
-export type { IDateRange } from "./base.vo";
+} from "./base.vo.js";
+export type { IDateRange } from "./base.vo.ts";
 export {
 	AlreadyExistsError,
 	DomainError,
@@ -34,16 +34,16 @@ export {
 	NotFoundError,
 	UnauthorizedOperation,
 	ValidationError,
-} from "./base.errors";
-export type { DomainErr } from "./base.errors";
-export { BaseRepository } from "./base.repository";
+} from "./base.errors.js";
+export type { DomainErr } from "./base.errors.ts";
+export { BaseRepository } from "./base.repository.js";
 export type {
 	RepositoryError,
 	RepositoryResult,
-} from "./base.repository";
+} from "./base.repository.ts";
 export {
 	PaginationOptions,
 	Paginator,
 	PaginationOptionsValidationError,
-} from "./pagination";
-export type { Paginated } from "./pagination";
+} from "./pagination.js";
+export type { Paginated } from "./pagination.ts";

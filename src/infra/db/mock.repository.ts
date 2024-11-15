@@ -1,15 +1,15 @@
 import { Result } from "@carbonteq/fp";
-import type { BaseEntity } from "../../domain/base.entity";
-import { AlreadyExistsError, NotFoundError } from "../../domain/base.errors";
+import type { BaseEntity } from "@/domain/base.entity.js";
+import { AlreadyExistsError, NotFoundError } from "@/domain/base.errors.js";
 import {
 	BaseRepository,
 	type RepositoryResult,
-} from "../../domain/base.repository";
+} from "@/domain/base.repository.js";
 import {
 	type Paginated,
 	type PaginationOptions,
 	Paginator,
-} from "../../domain/pagination";
+} from "@/domain/pagination.js";
 
 export class MockNotFoundError extends NotFoundError {
 	constructor(entityId: BaseEntity["id"]) {

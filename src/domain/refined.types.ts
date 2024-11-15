@@ -2,9 +2,9 @@ import { randomUUID } from "node:crypto";
 import { Result } from "@carbonteq/fp";
 import z, { type ZodEnum, type ZodError } from "zod";
 import { fromZodError } from "zod-validation-error";
-import { extend } from "../shared/misc.utils";
-import { unsafeCast } from "../shared/type.utils";
-import { type DomainError, ValidationError } from "./base.errors";
+import { extend } from "../shared/misc.utils.js";
+import { unsafeCast } from "../shared/type.utils.js";
+import { type DomainError, ValidationError } from "./base.errors.js";
 
 // type OverwriteValueOf<T, Schema extends z.ZodTypeAny> = Omit<T, "valueOf"> & {
 // 	valueOf(): Schema["_output"];

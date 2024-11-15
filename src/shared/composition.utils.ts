@@ -1,4 +1,4 @@
-import type { EnsureNotUnion, IsUnion } from "./type.utils";
+import type { EnsureNotUnion, IsUnion } from "./type.utils.ts";
 
 export const extractProp =
 	<T, K extends keyof T = keyof T>(k: K) =>

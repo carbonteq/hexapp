@@ -1,7 +1,7 @@
 import { Result } from "@carbonteq/fp";
 import { z } from "zod";
-import { ValidationError } from "./base.errors";
-import { DateTime } from "./refined.types";
+import { ValidationError } from "./base.errors.js";
+import { DateTime } from "./refined.types.js";
 
 export abstract class BaseValueObject<T> {
 	abstract serialize(): T;

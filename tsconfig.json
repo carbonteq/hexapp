@@ -2,12 +2,13 @@
 	"extends": "@tsconfig/node18/tsconfig.json",
 	"compilerOptions": {
 		"target": "ES2020",
+		"moduleResolution": "node16",
+		"module": "Node16",
 		"composite": false,
 		"declarationMap": true,
 		"forceConsistentCasingInFileNames": true,
 		"inlineSources": false,
 		"isolatedModules": true,
-		"moduleResolution": "Node16",
 		"noUnusedLocals": false,
 		"noUnusedParameters": false,
 		"preserveWatchOutput": true,
@@ -20,9 +21,17 @@
 		"sourceMap": true,
 		"baseUrl": ".",
 		"paths": {
+			"@": ["./src"],
+			"@/*": ["./src/*"],
 			"@carbonteq/hexapp": ["./src"],
 			"@carbonteq/hexapp/*": ["./src/*"]
 		}
 	},
-	"exclude": ["node_modules", "jest.config.js", "lib"]
+	"exclude": [
+		"node_modules",
+		"jest.config.js",
+		"lib",
+		"tsup.config.ts",
+		"rollup.config.ts"
+	]
 }
