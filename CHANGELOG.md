@@ -1,5 +1,11 @@
 # @carbonteq/hexapp
 
+## 0.19.1
+
+### Patch Changes
+
+- f9bf649: empty
+
 ## 0.19.0
 
 ### Minor Changes
