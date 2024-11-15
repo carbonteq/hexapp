@@ -13,9 +13,7 @@
 			"import": "./dist/index.js"
 		}
 	},
-	"files": [
-		"/dist"
-	],
+	"files": ["/dist"],
 	"scope": "@carbonteq",
 	"repository": {
 		"type": "git",
@@ -40,7 +38,8 @@
 		"dev": "tsup --watch",
 		"test": "tsx --test tests/**/*.spec.ts",
 		"test:debug": "tsx --test --inspect-brk tests/**/*.spec.ts",
-		"release": "changeset publish"
+		"release": "changeset publish",
+		"tag": "changeset tag"
 	},
 	"devDependencies": {
 		"@biomejs/biome": "^1.8.3",
