@@ -1,5 +1,12 @@
 # @carbonteq/hexapp
 
+## 0.19.3
+
+### Patch Changes
+
+- 3dacb34: Fix readme example
+- eca4dcf: Remove slow types
+
 ## 0.19.2
 
 ### Patch Changes
