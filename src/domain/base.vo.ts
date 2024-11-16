@@ -15,12 +15,13 @@ export interface IDateRange {
   startDate: DateTime;
   endDate: DateTime;
 }
-const dateRangeParser: ZodObject<{ startDate: DateTime; endDate: DateTime }> =
-  z.object({
-    startDate: DateTime,
-    endDate: DateTime,
-  });
-type DateRangeParser = typeof dateRangeParser;
+
+type TDateTime = typeof DateTime;
+type DateRangeParser = ZodObject<{ startDate: TDateTime; endDate: TDateTime }>;
+const dateRangeParser: DateRangeParser = z.object({
+  startDate: DateTime,
+  endDate: DateTime,
+});
 
 // Can be Domain Error
 export class InvalidDateRange extends ValidationError {}
