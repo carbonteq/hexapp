@@ -28,4 +28,4 @@ jobs:
         run: pnpm install
 
       - name: Publish
-        run: npx jsr publish --allow-slow-types
+        run: npx jsr publish
