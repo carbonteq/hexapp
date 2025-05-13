@@ -1,9 +1,9 @@
 {
   "name": "@carbonteq/hexapp",
   "version": "0.19.3",
-  "main": "lib/index.js",
-  "module": "lib/index.mjs",
-  "types": "lib/index.d.ts",
+  "main": "dist/index.cjs",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
   "license": "MIT",
   "type": "module",
   "exports": {
@@ -35,9 +35,9 @@
     "lint:fix": "biome check src tests --write --unsafe",
     "fmt:dry": "biome format src tests",
     "fmt": "biome format src tests --write",
-    "tc": "tsc --pretty --noEmit --skipLibCheck --project tsconfig.build.json",
-    "build": "tsup",
-    "dev": "tsup --watch",
+    "tc": "tsc --pretty --noEmit  --project tsconfig.build.json",
+    "build": "tsdown",
+    "dev": "tsdown --watch",
     "test": "tsx --test tests/**/*.spec.ts",
     "test:debug": "tsx --test --inspect-brk tests/**/*.spec.ts",
     "release": "changeset publish",
@@ -45,26 +45,26 @@
   },
   "devDependencies": {
     "@biomejs/biome": "^1.8.3",
-    "@changesets/cli": "^2.27.7",
-    "@microsoft/api-extractor": "^7.47.11",
-    "@swc/core": "^1.9.2",
-    "@tsconfig/node20": "^20.1.4",
-    "@types/node": "18.19.1",
+    "@changesets/cli": "^2.29.4",
+    "@microsoft/api-extractor": "^7.52.8",
+    "@swc/core": "^1.11.24",
+    "@tsconfig/node22": "^22.0.1",
+    "@types/node": "22.15.17",
     "changesets": "^1.0.2",
-    "jsr": "^0.13.1",
-    "tsup": "^8.3.5",
-    "tsx": "^4.19.2",
-    "typescript": "5.6.3"
+    "jsr": "^0.13.4",
+    "tsdown": "^0.11.7",
+    "tsx": "^4.19.4",
+    "typescript": "5.8.3"
   },
   "dependencies": {
     "@carbonteq/fp": "^0.7.0",
-    "zod": "^3.23.8",
-    "zod-validation-error": "^3.3.0"
+    "zod": "^3.24.4",
+    "zod-validation-error": "^3.4.1"
   },
   "engines": {
     "node": ">=18.0.0",
     "npm": ">=8.0.0",
     "yarn": ">=1.22.0"
   },
-  "packageManager": "pnpm@9.13.1+sha512.5ac37545851c55ec58521b6c285db6f848f93ca70889beb4145f5b40fe234e4ea4faee4dad12ac5c139e494374c65d9c3a6ec9a25954378fa286a250e68d2f20"
+  "packageManager": "pnpm@10.10.0+sha512.d615db246fe70f25dcfea6d8d73dee782ce23e2245e3c4f6f888249fb568149318637dca73c2c5c8ef2a4ca0d5657fb9567188bfab47f566d1ee6ce987815c39"
 }

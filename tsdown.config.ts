@@ -1,13 +1,12 @@
-import { defineConfig } from "tsup";
+import { defineConfig } from "tsdown";
 
 export default defineConfig({
   entry: ["./src/**/*.ts"],
   format: ["esm", "cjs"],
   sourcemap: true,
   clean: true,
-  target: "node20",
+  target: "node22",
   outDir: "dist",
   minify: false,
-  bundle: false,
-  dts: true,
+  dts: true
 });
