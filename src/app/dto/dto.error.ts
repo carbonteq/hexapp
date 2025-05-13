@@ -9,7 +9,7 @@ export class DtoValidationError extends ValidationError {
     this.name = "DTOValidationError";
     this.message = msg;
     if (err) {
-      this.stack = err.stack;
+      this.stack = err.stack as string;
     }
   }
 

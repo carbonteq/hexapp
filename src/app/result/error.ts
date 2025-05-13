@@ -4,7 +4,7 @@ import {
   NotFoundError,
   UnauthorizedOperation,
   ValidationError,
-} from "../../domain/base.errors.js";
+} from "@/domain/base.errors.js";
 import { AppErrStatus } from "./status.js";
 
 export class AppError extends Error {
