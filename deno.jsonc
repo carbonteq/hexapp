@@ -1,6 +1,6 @@
 {
   "name": "@carbonteq/hexapp",
-  "version": "0.19.3",
+  "version": "0.20.1",
   "publish": {
     "include": ["src", "README.md", "LICENCE", "package.json", "deno.jsonc"]
   },
