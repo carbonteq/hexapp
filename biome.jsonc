@@ -9,7 +9,7 @@
   "files": {
     "ignoreUnknown": false,
     "ignore": ["dist", "node_modules"],
-    "include": ["src", "tests", "tmp.ts"]
+    "include": ["src", "tests", "tmp.ts", "deno.jsonc", "biome.jsonc"]
   },
   "formatter": {
     "enabled": true,
