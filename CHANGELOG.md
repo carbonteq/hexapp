@@ -1,5 +1,11 @@
 # @carbonteq/hexapp
 
+## 0.20.1
+
+### Patch Changes
+
+- 085bedf: Fix deno.jsonc
+
 ## 0.20.0
 
 ### Minor Changes
