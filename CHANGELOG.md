@@ -1,5 +1,11 @@
 # @carbonteq/hexapp
 
+## 0.20.0
+
+### Minor Changes
+
+- 35e44d3: Update to NodeNext (esm+cjs) - use tsdown for build
+
 ## 0.19.3
 
 ### Patch Changes
