@@ -1,5 +1,7 @@
 import {
   AlreadyExistsError,
+  GenericDomainError,
+  GuardViolationError,
   InvalidOperation,
   NotFoundError,
   UnauthorizedOperation,
@@ -40,6 +42,9 @@ export class AppError extends Error {
   static GuardViolation = (msg?: string): AppError =>
     new AppError(AppErrStatus.GuardViolation, msg);
 
+  static GenericDomain = (msg?: string): AppError =>
+    new AppError(AppErrStatus.GenericDomain, msg);
+
   static Generic = (msg: string): AppError =>
     new AppError(AppErrStatus.Generic, msg);
 
@@ -66,6 +71,14 @@ export class AppError extends Error {
 
     if (e instanceof ValidationError) {
       return AppError.InvalidData(e.message);
+    }
+
+    if (e instanceof GuardViolationError) { 
+      return AppError.GuardViolation(e.message);
+    }
+
+    if (e instanceof GenericDomainError) {
+      return AppError.GenericDomain(e.message);
     }
 
     return AppError.Generic(e.message);
