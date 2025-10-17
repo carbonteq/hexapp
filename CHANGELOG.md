@@ -1,5 +1,11 @@
 # @carbonteq/hexapp
 
+## 0.20.2
+
+### Patch Changes
+
+- 9c4d458: It adds GuardViolationError and GenericDomainError to the AppError class so that when using AppResult.fromResult, the exact error status is preserved, allowing users to map different status codes in their result interceptors and related logic.
+
 ## 0.20.1
 
 ### Patch Changes
