@@ -73,7 +73,7 @@ export class AppError extends Error {
       return AppError.InvalidData(e.message);
     }
 
-    if (e instanceof GuardViolationError) { 
+    if (e instanceof GuardViolationError) {
       return AppError.GuardViolation(e.message);
     }
 
