@@ -1,6 +1,6 @@
+import { Result } from "@carbonteq/fp";
 import { NotFoundError, type RepositoryResult } from "@/domain/index.js";
 import { MockRepository } from "@/infra/db/mock.repository.js";
-import { Result } from "@carbonteq/fp";
 import type { TestEntity } from "./test.entity.js";
 
 export class DummyRepoError extends NotFoundError {

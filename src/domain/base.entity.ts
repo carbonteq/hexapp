@@ -68,7 +68,7 @@ export abstract class BaseEntity implements IEntity {
     };
   }
 
-  //@ts-ignore
+  //@ts-expect-error
   abstract serialize();
 }
 

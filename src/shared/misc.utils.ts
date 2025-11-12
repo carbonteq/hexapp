@@ -78,7 +78,7 @@ export const extend = <T, U extends Record<string, unknown>>(
   return Object.assign(original, extensions);
 
   // const res = original as T & U;
-  // //@ts-ignore
+  // //@ts-expect-error
   // for (const [k, v] of Object.entries(extensions)) res[k] = v;
   //
   // return res;

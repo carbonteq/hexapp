@@ -8,5 +8,5 @@ export default defineConfig({
   target: "node22",
   outDir: "dist",
   minify: false,
-  dts: true
+  dts: true,
 });

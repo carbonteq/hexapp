@@ -7,7 +7,7 @@ export abstract class BaseValueObject<T> {
   abstract serialize(): T;
 
   /** Util method to use associated parser in boundary validators */
-  //@ts-ignore
+  //@ts-expect-error
   getParser?();
 }
 

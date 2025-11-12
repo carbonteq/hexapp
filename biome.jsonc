@@ -1,5 +1,5 @@
 {
-  "$schema": "https://biomejs.dev/schemas/1.9.4/schema.json",
+  "$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
   "vcs": {
     "enabled": true,
     "clientKind": "git",
@@ -8,20 +8,28 @@
   },
   "files": {
     "ignoreUnknown": false,
-    "ignore": ["dist", "node_modules"],
-    "include": ["src", "tests", "tmp.ts", "deno.jsonc", "biome.jsonc"]
+    "includes": [
+      "src/**/*",
+      "tests/**/*",
+      "./*.ts",
+      "deno.jsonc",
+      "biome.jsonc",
+      "mdsf.json"
+    ]
   },
   "formatter": {
     "enabled": true,
     "indentStyle": "space",
     "indentWidth": 2
   },
-  "organizeImports": {
-    "enabled": true
-  },
   "linter": {
     "enabled": true,
     "rules": {
+      "recommended": true
+    }
+  },
+  "assist": {
+    "actions": {
       "recommended": true
     }
   },
@@ -30,7 +38,10 @@
       "quoteStyle": "double",
       "semicolons": "always",
       "indentStyle": "space",
-      "indentWidth": 2
+      "indentWidth": 2,
+      "arrowParentheses": "always",
+      "trailingCommas": "all",
+      "expand": "auto"
     }
   }
 }

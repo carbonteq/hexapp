@@ -1,39 +1,49 @@
 {
   "extends": "@tsconfig/node22/tsconfig.json",
   "compilerOptions": {
-    "target": "ES2022",
-    "moduleResolution": "nodenext",
-    "module": "NodeNext",
-    "composite": false,
+    "target": "ES2023",
+    "module": "Preserve",
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUncheckedIndexedAccess": true,
+    "noImplicitOverride": true,
+    "declaration": true,
+    "isolatedDeclarations": true,
     "declarationMap": true,
     "forceConsistentCasingInFileNames": true,
-    "inlineSources": false,
     "isolatedModules": true,
     "noUnusedLocals": false,
     "noUnusedParameters": false,
-    "preserveWatchOutput": true,
+    "noPropertyAccessFromIndexSignature": false,
     "allowJs": false,
-    "strict": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "declaration": true,
     "resolveJsonModule": true,
     "exactOptionalPropertyTypes": true,
-    "skipLibCheck": true,
     "sourceMap": true,
-    "baseUrl": ".",
     "paths": {
-      "@": ["./src"],
-      "@/*": ["./src/*"],
-      "@carbonteq/hexapp": ["./src"],
-      "@carbonteq/hexapp/*": ["./src/*"]
+      "@": [
+        "./src"
+      ],
+      "@/*": [
+        "./src/*"
+      ],
+      "@carbonteq/hexapp": [
+        "./src"
+      ],
+      "@carbonteq/hexapp/*": [
+        "./src/*"
+      ]
     }
   },
+  "include": [
+    "src/**/*"
+  ],
   "exclude": [
     "node_modules",
-    "jest.config.js",
-    "lib",
-    "tsup.config.ts",
-    "rollup.config.ts"
+    "lib"
   ]
 }

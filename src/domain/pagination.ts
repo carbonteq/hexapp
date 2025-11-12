@@ -14,7 +14,7 @@ const DEFAULT_PAGINATION_OPTS = {
   pageSize: 100,
 } as const;
 
-const DISCRIMINANT = Symbol("PaginationOptions");
+const _DISCRIMINANT = Symbol("PaginationOptions");
 
 export class PaginationOptions {
   static readonly DEFAULT_PAGE_NUM = DEFAULT_PAGINATION_OPTS.pageNum;
@@ -36,7 +36,6 @@ export class PaginationOptions {
       .positive()
       .default(DEFAULT_PAGINATION_OPTS.pageSize),
   });
-  private readonly _DISCRIMINATOR = DISCRIMINANT;
 
   private constructor(
     readonly pageNum: number,
