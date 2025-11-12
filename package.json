@@ -1,23 +1,12 @@
 {
   "name": "@carbonteq/hexapp",
   "version": "0.20.2",
-  "main": "dist/index.cjs",
-  "module": "dist/index.js",
-  "types": "dist/index.d.ts",
-  "license": "MIT",
   "type": "module",
-  "exports": {
-    ".": {
-      "types": "./dist/index.d.ts",
-      "require": "./dist/index.cjs",
-      "import": "./dist/index.js",
-      "default": "./dist/index.js"
-    },
-    "./package.json": "./package.json"
-  },
   "files": [
-    "/dist"
+    "/dist",
+    "dist"
   ],
+  "license": "MIT",
   "scope": "@carbonteq",
   "repository": {
     "type": "git",
@@ -31,6 +20,239 @@
   "publishConfig": {
     "access": "public",
     "registry": "https://registry.npmjs.org/"
+  },
+  "exports": {
+    ".": {
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      },
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      }
+    },
+    "./web": {
+      "require": {
+        "types": "./dist/web/index.d.cts",
+        "default": "./dist/web/index.cjs"
+      },
+      "import": {
+        "types": "./dist/web/index.d.ts",
+        "default": "./dist/web/index.js"
+      }
+    },
+    "./web/utils": {
+      "require": {
+        "types": "./dist/web/utils.d.cts",
+        "default": "./dist/web/utils.cjs"
+      },
+      "import": {
+        "types": "./dist/web/utils.d.ts",
+        "default": "./dist/web/utils.js"
+      }
+    },
+    "./shared": {
+      "import": {
+        "types": "./dist/shared/index.d.ts",
+        "default": "./dist/shared/index.js"
+      },
+      "require": {
+        "types": "./dist/shared/index.d.cts",
+        "default": "./dist/shared/index.cjs"
+      }
+    },
+    "./shared/sort": {
+      "import": {
+        "types": "./dist/shared/sort.utils.d.ts",
+        "default": "./dist/shared/sort.utils.js"
+      },
+      "require": {
+        "types": "./dist/shared/sort.utils.d.cts",
+        "default": "./dist/shared/sort.utils.cjs"
+      }
+    },
+    "./shared/composition": {
+      "import": {
+        "types": "./dist/shared/composition.utils.d.ts",
+        "default": "./dist/shared/composition.utils.js"
+      },
+      "require": {
+        "types": "./dist/shared/composition.utils.d.cts",
+        "default": "./dist/shared/composition.utils.cjs"
+      }
+    },
+    "./shared/base": {
+      "import": {
+        "types": "./dist/shared/base.logger.d.ts",
+        "default": "./dist/shared/base.logger.js"
+      },
+      "require": {
+        "types": "./dist/shared/base.logger.d.cts",
+        "default": "./dist/shared/base.logger.cjs"
+      }
+    },
+    "./app": {
+      "import": {
+        "types": "./dist/app/index.d.ts",
+        "default": "./dist/app/index.js"
+      },
+      "require": {
+        "types": "./dist/app/index.d.cts",
+        "default": "./dist/app/index.cjs"
+      }
+    },
+    "./app/dto": {
+      "import": {
+        "types": "./dist/app/dto/index.d.ts",
+        "default": "./dist/app/dto/index.js"
+      },
+      "require": {
+        "types": "./dist/app/dto/index.d.cts",
+        "default": "./dist/app/dto/index.cjs"
+      }
+    },
+    "./app/dto/dto": {
+      "import": {
+        "types": "./dist/app/dto/dto.error.d.ts",
+        "default": "./dist/app/dto/dto.error.js"
+      },
+      "require": {
+        "types": "./dist/app/dto/dto.error.d.cts",
+        "default": "./dist/app/dto/dto.error.cjs"
+      }
+    },
+    "./shared/zod": {
+      "import": {
+        "types": "./dist/shared/zod.utils.d.ts",
+        "default": "./dist/shared/zod.utils.js"
+      },
+      "require": {
+        "types": "./dist/shared/zod.utils.d.cts",
+        "default": "./dist/shared/zod.utils.cjs"
+      }
+    },
+    "./app/result": {
+      "import": {
+        "types": "./dist/app/result/index.d.ts",
+        "default": "./dist/app/result/index.js"
+      },
+      "require": {
+        "types": "./dist/app/result/index.d.cts",
+        "default": "./dist/app/result/index.cjs"
+      }
+    },
+    "./app/result/result": {
+      "import": {
+        "types": "./dist/app/result/result.d.ts",
+        "default": "./dist/app/result/result.js"
+      },
+      "require": {
+        "types": "./dist/app/result/result.d.cts",
+        "default": "./dist/app/result/result.cjs"
+      }
+    },
+    "./app/result/error": {
+      "import": {
+        "types": "./dist/app/result/error.d.ts",
+        "default": "./dist/app/result/error.js"
+      },
+      "require": {
+        "types": "./dist/app/result/error.d.cts",
+        "default": "./dist/app/result/error.cjs"
+      }
+    },
+    "./app/result/status": {
+      "import": {
+        "types": "./dist/app/result/status.d.ts",
+        "default": "./dist/app/result/status.js"
+      },
+      "require": {
+        "types": "./dist/app/result/status.d.cts",
+        "default": "./dist/app/result/status.cjs"
+      }
+    },
+    "./infra/db/mock": {
+      "import": {
+        "types": "./dist/infra/db/mock.repository.d.ts",
+        "default": "./dist/infra/db/mock.repository.js"
+      },
+      "require": {
+        "types": "./dist/infra/db/mock.repository.d.cts",
+        "default": "./dist/infra/db/mock.repository.cjs"
+      }
+    },
+    "./domain": {
+      "import": {
+        "types": "./dist/domain/index.d.ts",
+        "default": "./dist/domain/index.js"
+      },
+      "require": {
+        "types": "./dist/domain/index.d.cts",
+        "default": "./dist/domain/index.cjs"
+      }
+    },
+    "./domain/aggregate-root": {
+      "import": {
+        "types": "./dist/domain/aggregate-root.entity.d.ts",
+        "default": "./dist/domain/aggregate-root.entity.js"
+      },
+      "require": {
+        "types": "./dist/domain/aggregate-root.entity.d.cts",
+        "default": "./dist/domain/aggregate-root.entity.cjs"
+      }
+    },
+    "./domain/pagination": {
+      "import": {
+        "types": "./dist/domain/pagination.d.ts",
+        "default": "./dist/domain/pagination.js"
+      },
+      "require": {
+        "types": "./dist/domain/pagination.d.cts",
+        "default": "./dist/domain/pagination.cjs"
+      }
+    },
+    "./domain/base": {
+      "import": {
+        "types": "./dist/domain/base.errors.d.ts",
+        "default": "./dist/domain/base.errors.js"
+      },
+      "require": {
+        "types": "./dist/domain/base.errors.d.cts",
+        "default": "./dist/domain/base.errors.cjs"
+      }
+    },
+    "./domain/refined": {
+      "import": {
+        "types": "./dist/domain/refined.types.d.ts",
+        "default": "./dist/domain/refined.types.js"
+      },
+      "require": {
+        "types": "./dist/domain/refined.types.d.cts",
+        "default": "./dist/domain/refined.types.cjs"
+      }
+    },
+    "./shared/type": {
+      "import": {
+        "types": "./dist/shared/type.utils.d.ts",
+        "default": "./dist/shared/type.utils.js"
+      },
+      "require": {
+        "types": "./dist/shared/type.utils.d.cts",
+        "default": "./dist/shared/type.utils.cjs"
+      }
+    },
+    "./shared/misc": {
+      "import": {
+        "types": "./dist/shared/misc.utils.d.ts",
+        "default": "./dist/shared/misc.utils.js"
+      },
+      "require": {
+        "types": "./dist/shared/misc.utils.d.cts",
+        "default": "./dist/shared/misc.utils.cjs"
+      }
+    },
+    "./package.json": "./package.json"
   },
   "scripts": {
     "lint": "biome check src tests",
@@ -49,7 +271,6 @@
     "@biomejs/biome": "2",
     "@changesets/cli": "^2.29.7",
     "@microsoft/api-extractor": "^7.55.0",
-    "@swc/core": "^1.15.1",
     "@tsconfig/node22": "^22.0.2",
     "@types/node": "^24.10.1",
     "@typescript/native-preview": "^7.0.0-dev.20251112.1",
@@ -59,18 +280,14 @@
     "knip": "^5.69.0",
     "oxlint": "^1.28.0",
     "oxlint-tsgolint": "^0.5.1",
-    "tsdown": "^0.16.3",
-    "tsx": "^4.20.6",
-    "typescript": "^5.9.3"
+    "tsx": "^4.20.6"
   },
-  "dependencies": {
-    "@carbonteq/fp": "^0.8.2",
-    "zod": "^4.1.12",
-    "zod-validation-error": "^5.0.0"
-  },
+  "dependencies": {},
   "peerDependencies": {
     "typescript": "^5",
-    "zod": "^4"
+    "@carbonteq/fp": "^0.8.2",
+    "zod": "^3",
+    "zod-validation-error": "^5.0.0"
   },
   "engines": {
     "node": ">=22.0.0",
@@ -78,7 +295,6 @@
     "yarn": ">=1.22.0"
   },
   "trustedDependencies": [
-    "@swc/core",
     "esbuild"
   ]
 }

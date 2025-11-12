@@ -17,19 +17,19 @@ export const sortByUpdatedAtDesc = (
   b: WithUpdatedAt,
 ): number => b.updatedAt.getTime() - a.updatedAt.getTime();
 
-// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+// biome-ignore lint/suspicious/noExplicitAny: inference
 export const sortByDatesAsc = <T extends Record<string, any>>(
   arr: T[],
   dateKey: GetKeysWithSpecificTypeValue<T, Date>,
 ): T[] => arr.sort((a, b) => a[dateKey].getTime() - b[dateKey].getTime());
 
-// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+// biome-ignore lint/suspicious/noExplicitAny: inference
 export const sortByDatesDesc = <T extends Record<string, any>>(
   arr: T[],
   dateKey: GetKeysWithSpecificTypeValue<T, Date>,
 ): T[] => arr.sort((a, b) => b[dateKey].getTime() - a[dateKey].getTime());
 
-// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+// biome-ignore lint/suspicious/noExplicitAny: inference
 export const sortByDates = <T extends Record<string, any>>(
   arr: T[],
   dateKey: GetKeysWithSpecificTypeValue<T, Date>,

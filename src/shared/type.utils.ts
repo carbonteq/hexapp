@@ -5,17 +5,16 @@ export type EmptyObject = Record<string | number | symbol, never>;
 export type UnsafeCast<T, U> = T extends U ? T : U;
 export const unsafeCast = <U, T = unknown>(val: T): U => val as unknown as U;
 
-type JsonValue =
-  | string
-  | number
-  | boolean
-  | null
-  | Date
-  | JsonValue[]
-  | { [k: string]: JsonValue }; // JsonObject
-
-type JsonObject = { [x: string]: JsonValue };
-type JsonGuard<T> = T extends JsonValue ? T : never;
+// type JsonValue =
+//   | string
+//   | number
+//   | boolean
+//   | null
+//   | Date
+//   | JsonValue[]
+//   | { [k: string]: JsonValue }; // JsonObject
+// type JsonObject = { [x: string]: JsonValue };
+// type JsonGuard<T> = T extends JsonValue ? T : never;
 
 export type PartialBy<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>;
 export type Omitt<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
@@ -39,9 +38,6 @@ export type GetKeysWithSpecificTypeValue<
 > = {
   [K in keyof T]: T[K] extends ValType ? K : never;
 }[keyof T];
-
-type FooBar = { a: number; b: number; c: string; d: Date };
-type KeyForNumber = GetKeysWithSpecificTypeValue<FooBar, number>; // is 'a' | 'b'
 
 export type RequireAtLeastOne<T> = {
   [K in keyof T]-?: Required<Pick<T, K>> &
@@ -84,7 +80,7 @@ export type AppendToTuple<T, U> = T extends [...infer Rest, infer L]
   ? [...Rest, L, U]
   : [T, U];
 
-export type IsUnion<T, U extends T = T> = ( // biome-ignore lint/suspicious/noExplicitAny: <explanation>
+export type IsUnion<T, U extends T = T> = ( // biome-ignore lint/suspicious/noExplicitAny: for inference
   T extends any
     ? U extends T
       ? false

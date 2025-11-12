@@ -34,7 +34,8 @@ export const mapFilter = <T, U>(
 };
 
 export const randomChoice = <T>(arr: T[]): T =>
-  arr[Math.floor(Math.random() * arr.length)];
+  // biome-ignore lint/style/noNonNullAssertion: we know it will be non-null
+  arr[Math.floor(Math.random() * arr.length)]!;
 
 export const shuffleInplace = <T>(arr: T[]): T[] => {
   let currIdx = arr.length;
@@ -44,8 +45,10 @@ export const shuffleInplace = <T>(arr: T[]): T[] => {
     randomIdx = Math.floor(Math.random() * currIdx);
     currIdx--;
 
-    const tmp = arr[currIdx];
-    arr[currIdx] = arr[randomIdx];
+    // biome-ignore lint/style/noNonNullAssertion: we know it will be non-null
+    const tmp = arr[currIdx]!;
+    // biome-ignore lint/style/noNonNullAssertion: we know it will be non-null
+    arr[currIdx] = arr[randomIdx]!;
     arr[randomIdx] = tmp;
   }
 

@@ -5,10 +5,6 @@ import { DateTime } from "./refined.types.js";
 
 export abstract class BaseValueObject<T> {
   abstract serialize(): T;
-
-  /** Util method to use associated parser in boundary validators */
-  //@ts-expect-error
-  getParser?();
 }
 
 export interface IDateRange {

@@ -248,7 +248,7 @@ export function matchEnum<
   U extends string,
   T extends [U, ...U[]],
   EnumType extends ZodBrandedWithFactory<ZodEnum<T>, Tag, EnumValidationError>,
-  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
+  // biome-ignore lint/suspicious/noExplicitAny: Inference
   Actions extends MatchActions<EnumType["$inferPrimitive"], any>,
 >(
   value: EnumType["$infer"],

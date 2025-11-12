@@ -14,7 +14,8 @@
       "./*.ts",
       "deno.jsonc",
       "biome.jsonc",
-      "mdsf.json"
+      "mdsf.json",
+      "package.json"
     ]
   },
   "formatter": {

@@ -35,7 +35,9 @@ export abstract class MockRepository<
     this.db = new Map();
   }
 
-  fetchById(Id: T["id"]): Promise<RepositoryResult<T, MockNotFoundError>> {
+  override fetchById(
+    Id: T["id"],
+  ): Promise<RepositoryResult<T, MockNotFoundError>> {
     const optEnt = this.db.get(Id);
     let res: Result<GetSerialized<T>, MockNotFoundError>;
 
@@ -48,7 +50,7 @@ export abstract class MockRepository<
     return Promise.resolve(res);
   }
 
-  fetchAll(): Promise<RepositoryResult<T[]>> {
+  override fetchAll(): Promise<RepositoryResult<T[]>> {
     return Promise.resolve(Result.Ok(Array.from(this.db.values())));
   }
 
@@ -65,7 +67,7 @@ export abstract class MockRepository<
     return Promise.resolve(res);
   }
 
-  fetchPaginated(
+  override fetchPaginated(
     options: PaginationOptions,
   ): Promise<RepositoryResult<Paginated<T>>> {
     const all = Array.from(this.db.values());
@@ -86,7 +88,7 @@ export abstract class MockRepository<
     return Promise.resolve(res);
   }
 
-  async deleteById(
+  override async deleteById(
     Id: T["id"],
   ): Promise<RepositoryResult<T, MockNotFoundError>> {
     const res = await this.fetchById(Id);

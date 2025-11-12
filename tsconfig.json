@@ -4,6 +4,7 @@
     "target": "ES2023",
     "module": "Preserve",
     "moduleResolution": "bundler",
+    "noEmit": true,
     "allowImportingTsExtensions": true,
     "skipLibCheck": true,
     "strict": true,
@@ -40,7 +41,9 @@
     }
   },
   "include": [
-    "src/**/*"
+    "./*.ts",
+    "src/**/*",
+    "tests/**/*.ts"
   ],
   "exclude": [
     "node_modules",

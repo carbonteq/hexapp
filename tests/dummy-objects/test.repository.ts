@@ -10,12 +10,12 @@ export class DummyRepoError extends NotFoundError {
 }
 
 export class DummyTestRepository extends MockRepository<TestEntity> {
-  // biome-ignore lint/complexity/noUselessConstructor: <explanation>
+  // biome-ignore lint/complexity/noUselessConstructor: For a reason
   constructor() {
     super();
   }
 
-  fetchAll(): Promise<RepositoryResult<TestEntity[]>> {
+  override fetchAll(): Promise<RepositoryResult<TestEntity[]>> {
     return Promise.resolve(Result.Err(new DummyRepoError()));
   }
 }
