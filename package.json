@@ -41,20 +41,26 @@
     "test": "tsx --test tests/**/*.spec.ts",
     "test:debug": "tsx --test --inspect-brk tests/**/*.spec.ts",
     "release": "changeset publish",
-    "tag": "changeset tag"
+    "tag": "changeset tag",
+    "knip": "knip"
   },
   "devDependencies": {
-    "@biomejs/biome": "^1.8.3",
+    "@biomejs/biome": "2",
     "@changesets/cli": "^2.29.4",
     "@microsoft/api-extractor": "^7.52.8",
     "@swc/core": "^1.11.24",
     "@tsconfig/node22": "^22.0.1",
-    "@types/node": "22.15.17",
+    "@types/node": "^24.10.1",
+    "@typescript/native-preview": "^7.0.0-dev.20251111.1",
+    "bunup": "^0.15.14",
     "changesets": "^1.0.2",
     "jsr": "^0.13.4",
+    "knip": "^5.69.0",
+    "oxlint": "^1.28.0",
+    "oxlint-tsgolint": "^0.5.1",
     "tsdown": "^0.11.7",
     "tsx": "^4.19.4",
-    "typescript": "5.8.3"
+    "typescript": "^5.9.3"
   },
   "dependencies": {
     "@carbonteq/fp": "^0.7.0",
@@ -66,5 +72,8 @@
     "npm": ">=8.0.0",
     "yarn": ">=1.22.0"
   },
-  "packageManager": "pnpm@10.10.0+sha512.d615db246fe70f25dcfea6d8d73dee782ce23e2245e3c4f6f888249fb568149318637dca73c2c5c8ef2a4ca0d5657fb9567188bfab47f566d1ee6ce987815c39"
+  "trustedDependencies": [
+    "@swc/core",
+    "esbuild"
+  ]
 }
